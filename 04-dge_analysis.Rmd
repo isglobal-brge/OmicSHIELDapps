@@ -1,0 +1,221 @@
+# Differential gene expression (DGE) analysis
+
+<table><colgroup><col style="width: 100%" /></colgroup><thead><tr class="header"><th style="text-align: left;"><p>`r emo::ji("warning")` RESOURCES USED ALONG THIS SECTION</p></th></tr></thead><tbody><tr class="odd"><td style="text-align: left;"><p>From <a href="https://opal-demo.obiba.org/">https://opal-demo.obiba.org/</a> :</p></td></tr><tr class="even"><td style="text-align: left;"><table><thead><tr class="header"><th><p>STUDY</p></th><th><p>TABLE</p></th><th><p>PROFILE</p></th></tr></thead><tbody><tr class="odd"><td><p>cohort1</p></td><td><p>OMICS.tcga_liver</p></td><td><p>omics</p></td></tr><tr 
+</tbody></table></td></tr></tbody></table>
+
+In this section we will illustrate how to perform transcriptomic data analysis using data from [TCGA project](https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga). We have uploaded to the demo Opal server a resource called `tcga_liver` whose URL is <http://duffel.rail.bio/recount/TCGA/rse_gene_liver.Rdata> which is available through the [recount project](https://jhubiostatistics.shinyapps.io/recount/). 
+
+The `RangedSummarizedExperiment` (RSE) objects are part of the [BioConductor project](https://www.bioconductor.org/), as a brief summary, this types of objects are designed to contain different multi omic data, they can also contain the individuals phenotypes and additional metadata associated with a particular experiment. For further information about what are `RangedSummarizedExperiment` please take a look at the [official documentation](https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html)
+
+The resource used on this section contains a `RangedSummarizedExperiment`with the RNAseq profiling of liver cancer data from TCGA.
+
+The resource is located inside the `OMICS` project. Some summaries of the dataset are the following:
+
+|                               | TCGA Liver data |
+|-------------------------------|-----------------|
+| **Number of individuals**     |    424          |
+| **Number of genes**           | 58,037          |
+| **Number of covariate fields**|    864          |
+
+The structure used is illustrated on the following figure.
+
+```{r dgeProposal, echo=FALSE, fig.cap="Proposed infrastructure to perform DGE studies.", fig.align='center'}
+knitr::include_graphics("fig/dge_structure.png")
+```
+
+The data analyst corresponds to the “RStudio” session, which through DataSHIELD Interface (DSI) connects with the Opal server. This Opal server contains a resource that corresponds to the TCGA liver RSE.
+
+We illustrate a differential expression analysis to compare RNAseq profiling of women vs men (variable `gdc_cases.demographic.gender`). The DGE analysis is normally performed using `r Biocpkg("limma")` package. In that case, as we are analyzing RNA-seq data, `limma + voom` method will be required.
+
+The following use cases will be illustrated:
+
+- DGE analysis
+- DGE analysis adjusting for surrogate variables
+
+## Connection to the Opal server
+
+We have to create an Opal connection object to the cohort server. We do that using the following functions.
+
+```{r dge_ds_login, message=FALSE, warning=FALSE}
+require('DSI')
+require('DSOpal')
+require('dsBaseClient')
+require('dsOmicsClient')
+
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "cohort1", url = "https://opal-demo.obiba.org/",
+               user =  "dsuser", password = "P@ssw0rd",
+               driver = "OpalDriver", profile = "omics")
+logindata <- builder$build()
+conns <- DSI::datashield.login(logins = logindata)
+```
+
+## Assign the RSE resource
+
+Now that we have created a connection object to the Opal, we have started a new R session on the server, our analysis will take place in this remote session, so we have to load the data into it.
+
+In this use case we will use one resource from the OMICS project hosted on the demo Opal server. This resources correspond to RangedsummarizedExperiment dataset. The names of the resource is `tcga_liver`, we will refer to it using the string `OMICS.tcga_liver`.
+
+```{r dge_load_resource}
+DSI::datashield.assign.resource(conns, "rse_resource", "OMICS.tcga_liver")
+```
+
+Now we have assigned the resource named `OMICS.tcga_liver` into our remote R session. We have assigned it to a variable called `rse_resource`. To verify this step has been performed correctly, we could use the `ds.class` function to check for their class and that they exist on the remote sessions.
+
+```{r dge_check_resource}
+ds.class("rse_resource")
+```
+
+We can see that the object `rse_resource` exists in the server.
+
+Finally the resource is resolved to retrieve the data in the remote session.
+
+```{r dge_resolve_resource}
+DSI::datashield.assign.expr(conns = conns, symbol = "rse",
+                            expr = as.symbol("as.resource.object(rse_resource)"))
+```
+
+Now we have resolved the resource named `rse_resource` into our remote R session. The object retrieved has been assigned into the variable named `rse`. We can check the process was successful as we did before.
+
+```{r dge_check_resolved_resource}
+ds.class("rse")
+```
+
+## Inspect the RSE
+
+The number of features and samples can be inspected with:
+
+```{r dge_check_features_samples}
+ds.dim("rse")
+```
+
+And the names of the features using the same function used in the case of analyzing an `ExpressionSet`:
+
+```{r dge_names_features}
+name.features <- ds.featureNames("rse")
+lapply(name.features, head)
+```
+
+Also the covariate names can be inspected by:
+
+```{r dge_covariate_names}
+name.vars <- ds.featureData("rse")
+lapply(name.vars, head, n=15)
+```
+
+We can visualize the levels of the variable having gender information that will be our condition (i.e., we are interested in obtaining genes that are differentially expressed between males and females).
+
+```{r dge_levels}
+ds.table1D("rse$gdc_cases.demographic.gender")
+```
+
+## Pre-processing for RNAseq data
+
+We have implemented a function called `ds.RNAseqPreproc()` to perform RNAseq data pre-processing that includes:
+
+- Transforming data into log2 CPM units
+- Filtering lowly-expressed genes
+- Data normalization
+
+```{r dge_rna_preproc}
+ds.RNAseqPreproc('rse', group = 'gdc_cases.demographic.gender', 
+                 newobj.name = 'rse.pre')
+```
+
+Note that it is recommended to indicate the grouping variable (i.e., condition). Once data has been pre-processed, we can perform differential expression analysis. Notice how dimensions have changed given the fact that we have removed genes with low expression which are expected to do not be differentially expressed.
+
+```{r dge_comp}
+ds.dim('rse')
+ds.dim('rse.pre')
+```
+
+## DGE analysis
+
+The differential expression analysis in `dsOmicsClient/dsOmics` is implemented in the funcion `ds.limma()`. This functions runs a limma-pipeline for microarray data and for RNAseq data allows:
+
+- oom + limma
+- DESeq2
+- edgeR
+
+We recommend to use the `voom + limma` pipeline proposed [here](https://f1000research.com/articles/5-1438/v2) given its versatility and that `limma` is much faster than `DESeq2` and `edgeR`. By default, the function considers that data is obtained from a microarray experiment (`type.data = "microarray"`). Therefore, as we are analyzing RNAseq data, we must indicate that `type.data = "RNAse"`.
+
+```{r dge_limma}
+ans.gender <- ds.limma(model =  ~ gdc_cases.demographic.gender, 
+                       Set = "rse.pre", type.data = "RNAseq")
+```
+
+The top differentially expressed genes can be visualized by:
+
+```{r dge_results}
+ans.gender
+```
+
+We can verify whether the distribution of the observed p-values are the ones we expect in this type of analyses:
+
+```{r dge_verify_results}
+hist(ans.gender$cohort1$P.Value, xlab="Raw p-value gender effect",
+     main="", las=1, cex.lab=1.5, cex.axis=1.2, col="gray")
+```
+
+## Surrogate variable analysis
+
+We can also check whether there is inflation just executing
+
+```{r dge_inflation}
+qqplot(ans.gender$cohort1$P.Value)
+```
+
+So, in that case, the model needs to remove unwanted variability ($\lambda > 2$). If so, we can use surrogate variable analysis just changing the argument `sva=TRUE`.
+
+```{r dge_limma_sva}
+ans.gender.sva <- ds.limma(model =  ~ gdc_cases.demographic.gender, 
+                       Set = "rse.pre", type.data = "RNAseq",
+                       sva = TRUE)
+```
+
+Now the inflation has dramatically been reduced ($\lambda > 1.12$).
+
+```{r dge_new_lambda}
+qqplot(ans.gender.sva$cohort1$P.Value)
+```
+
+We can add annotation to the output that is available in our RSE object. We can have access to this information by:
+
+```{r dge_info}
+ds.fvarLabels('rse.pre')
+```
+
+So, we can run:
+
+```{r dge_new_run}
+ans.gender.sva <- ds.limma(model =  ~ gdc_cases.demographic.gender, 
+                       Set = "rse.pre", type.data = "RNAseq",
+                       sva = TRUE, annotCols = c("chromosome"))
+```
+
+The results are:
+
+```{r dge_sec_results}
+ans.gender.sva
+```
+
+The function has another arguments that can be used to fit other type of models:
+
+- `sva`: estimate surrogate variables
+- `annotCols`: to add annotation available in the
+- `method`: Linear regression (`“ls”`) or robust regression (`“robust”`) used in limma (`lmFit`)
+- `robust`: robust method used for outlier sample variances used in `limma` (`eBayes`)
+- `normalization`: normalization method used in the `voom` transformation (default `“none”`)
+- `voomQualityWeights`: should `voomQualityWeights` function be used instead of `voom`? (default `FALSE`)
+- `big`: should `SmartSVA` be used instead of `SVA` (useful for big sample size or when analyzing epigenome data. Default `FALSE`)
+
+We have also implemented two other functions `ds.DESeq2` and `ds.edgeR` that perform DGE analysis using [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and [edgeR](https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf) methods. This is the R code used to that purpose:
+
+**To be supplied**
+
+We close the DataSHIELD session by:
+
+```{r}
+datashield.logout(conns)
+```
+

@@ -1,0 +1,16 @@
+# (PART) Appendix {-}
+
+# Session info
+```{r session_info}
+sessionInfo()
+```
+
+# Contributos
+This bookdown has had the contributions by the following people.
+
+-   Juan R Gonzalez, Associate Research Professor at Barcelona Institute for Global Health (ISGlobal) and Adjunct Professor at Department of Mathematics at Autonomous University of Barcelona (UAB).
+-   Xavier Escribà-Montagut, PhD researcher at Barcelona Institute for Global Health (ISGlobal)
+
+# (PART) References {-}
+
+# References

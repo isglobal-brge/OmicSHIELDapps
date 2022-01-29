@@ -1,0 +1,38 @@
+--- 
+title: "Privacy protected federated omic data analysis in multi-center studies with DataSHIELD"
+date: "`r Sys.Date()`"
+output: bookdown::html_document2
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+---
+
+```{r, setup, include=FALSE}
+library(BiocStyle)
+library(DSI)
+library(DSOpal)
+library(dsBaseClient)
+library(DSLite)
+library(dsOmicsClient)
+# knitr::opts_chunk$set(eval = FALSE)
+# knitr::opts_chunk$set(fig.width = 6)
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
+```
+
+# Welcome {-}
+
+![](fig/ds_logo.png){width=50%}
+
+This is a website for a book that serves as official documentation for OmicSHIELD. On it you will find: introductory references to learn about DataSHIELD and "resources", explanation on the type of analysis that can be performed using OmicSHIELD and workflows (with reproducible code) of the main functionalities of OmicSHIELD.
+
+All the funcionalities described on this book have been developed at the Bioinformatic Research Group in Epidemiology (BRGE) of ISGlobal with external help from Yannick Marcon (Obiba); and are part of OmicSHIELD.
+
+![](fig/logo_omicshield.png){width=50%}
+
+The aim of this book is to be a showcase of the capabilities of the software we developed as well as being a quick reference guide for new researchers interested in this technology.
+
+This material also serves as an online companion for the manuscript "NOMBRE DEL PAPER QUE ESCRIBIREMOS".
+
+This website is free to use, and is licensed under a [MIT license](https://github.com/isglobal-brge/OmicSHIELD/blob/main/LICENSE).

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Epigenome-wide association analysis (EWAS) | Privacy protected federated omic data analysis in multi-center studies with DataSHIELD</title>
+  <meta name="description" content="6 Epigenome-wide association analysis (EWAS) | Privacy protected federated omic data analysis in multi-center studies with DataSHIELD" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Epigenome-wide association analysis (EWAS) | Privacy protected federated omic data analysis in multi-center studies with DataSHIELD" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Epigenome-wide association analysis (EWAS) | Privacy protected federated omic data analysis in multi-center studies with DataSHIELD" />
+  
+  
+  
+
+
+
+<meta name="date" content="2022-01-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="differential-gene-expression-dge-analysis.html"/>
+<link rel="next" href="gwas.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script>
+  function unrolltab(evt, divName, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementById(divName).getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementById(divName).getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("gwas_results_1").click();
+    document.getElementById("gwas_plot_1").click();
+    document.getElementById("manhattan-plots-tab").click();
+    document.getElementById("locuszoom-plots-tabs").click();
+ });
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="" target="blank">OmicSHIELD</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="part"><span><b>I Preamble</b></span></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#materials-to-read-beforehand"><i class="fa fa-check"></i><b>1.1</b> Materials to read beforehand</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-are-resources-a-very-simple-explanation-without-any-technicalities"><i class="fa fa-check"></i><b>1.2</b> What are “resources”: A very simple explanation without any technicalities</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#capabilities-of-omicshield"><i class="fa fa-check"></i><b>1.3</b> Capabilities of OmicSHIELD</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Omic.html"><a href="Omic.html"><i class="fa fa-check"></i><b>2</b> Omic data analysis: types of implemented analyses</a></li>
+<li class="part"><span><b>II Workflows</b></span></li>
+<li class="chapter" data-level="3" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html"><i class="fa fa-check"></i><b>3</b> Genome wide association study (GWAS) analysis</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#single-cohort"><i class="fa fa-check"></i><b>3.1</b> Single cohort</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#connection-to-the-opal-server"><i class="fa fa-check"></i><b>3.1.1</b> Connection to the Opal server</a></li>
+<li class="chapter" data-level="3.1.2" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#assign-the-vcf-resources"><i class="fa fa-check"></i><b>3.1.2</b> Assign the VCF resources</a></li>
+<li class="chapter" data-level="3.1.3" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#assign-the-phenotypes"><i class="fa fa-check"></i><b>3.1.3</b> Assign the phenotypes</a></li>
+<li class="chapter" data-level="3.1.4" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#vcf_merge"><i class="fa fa-check"></i><b>3.1.4</b> Merge VCF (genotype) and phenotype information</a></li>
+<li class="chapter" data-level="3.1.5" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#performing-the-gwas"><i class="fa fa-check"></i><b>3.1.5</b> Performing the GWAS</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#multi-cohorts"><i class="fa fa-check"></i><b>3.2</b> Multi cohorts</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#connection-to-the-opal-server-1"><i class="fa fa-check"></i><b>3.2.1</b> Connection to the Opal server</a></li>
+<li class="chapter" data-level="3.2.2" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#multi-vcf"><i class="fa fa-check"></i><b>3.2.2</b> Assign the VCF resources</a></li>
+<li class="chapter" data-level="3.2.3" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#assign-the-phenotypes-1"><i class="fa fa-check"></i><b>3.2.3</b> Assign the phenotypes</a></li>
+<li class="chapter" data-level="3.2.4" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#merge-vcf-genotype-and-phenotype-information"><i class="fa fa-check"></i><b>3.2.4</b> Merge VCF (genotype) and phenotype information</a></li>
+<li class="chapter" data-level="3.2.5" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#performing-the-gwas-1"><i class="fa fa-check"></i><b>3.2.5</b> Performing a meta - GWAS</a></li>
+<li class="chapter" data-level="3.2.6" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#gwas-plots"><i class="fa fa-check"></i><b>3.2.6</b> GWAS Plots</a></li>
+<li class="chapter" data-level="3.2.7" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#meta-level-quality-control"><i class="fa fa-check"></i><b>3.2.7</b> Meta-level quality control</a></li>
+<li class="chapter" data-level="3.2.8" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#meta-analysis"><i class="fa fa-check"></i><b>3.2.8</b> Meta-analysis</a></li>
+<li class="chapter" data-level="3.2.9" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#ultra-fast-gwas"><i class="fa fa-check"></i><b>3.2.9</b> Ultra fast pooled GWAS analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#post-omics"><i class="fa fa-check"></i><b>3.3</b> Post-omic analysis</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="genome-wide-association-study-gwas-analysis.html"><a href="genome-wide-association-study-gwas-analysis.html#enrichment-analysis"><i class="fa fa-check"></i><b>3.3.1</b> Enrichment analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html"><i class="fa fa-check"></i><b>4</b> Polygenic risk scores</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#definition"><i class="fa fa-check"></i><b>4.1</b> Definition</a></li>
+<li class="chapter" data-level="4.2" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#study-configuration"><i class="fa fa-check"></i><b>4.2</b> Study configuration</a></li>
+<li class="chapter" data-level="4.3" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#source-of-polygenic-scores"><i class="fa fa-check"></i><b>4.3</b> Source of polygenic scores</a></li>
+<li class="chapter" data-level="4.4" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#connection-to-the-opal-server-2"><i class="fa fa-check"></i><b>4.4</b> Connection to the Opal server</a></li>
+<li class="chapter" data-level="4.5" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#assign-the-vcf-resources-1"><i class="fa fa-check"></i><b>4.5</b> Assign the VCF resources</a></li>
+<li class="chapter" data-level="4.6" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#calculate-the-prs"><i class="fa fa-check"></i><b>4.6</b> Calculate the PRS</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#pgs-catalog-example"><i class="fa fa-check"></i><b>4.6.1</b> PGS Catalog Example</a></li>
+<li class="chapter" data-level="4.6.2" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#custom-prs_table-example"><i class="fa fa-check"></i><b>4.6.2</b> Custom <code>prs_table</code> example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="polygenic-risk-scores.html"><a href="polygenic-risk-scores.html#study-of-the-prs-results"><i class="fa fa-check"></i><b>4.7</b> Study of the PRS results</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html"><i class="fa fa-check"></i><b>5</b> Differential gene expression (DGE) analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html#connection-to-the-opal-server-3"><i class="fa fa-check"></i><b>5.1</b> Connection to the Opal server</a></li>
+<li class="chapter" data-level="5.2" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html#assign-the-rse-resource"><i class="fa fa-check"></i><b>5.2</b> Assign the RSE resource</a></li>
+<li class="chapter" data-level="5.3" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html#inspect-the-rse"><i class="fa fa-check"></i><b>5.3</b> Inspect the RSE</a></li>
+<li class="chapter" data-level="5.4" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html#pre-processing-for-rnaseq-data"><i class="fa fa-check"></i><b>5.4</b> Pre-processing for RNAseq data</a></li>
+<li class="chapter" data-level="5.5" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html#dge-analysis"><i class="fa fa-check"></i><b>5.5</b> DGE analysis</a></li>
+<li class="chapter" data-level="5.6" data-path="differential-gene-expression-dge-analysis.html"><a href="differential-gene-expression-dge-analysis.html#surrogate-variable-analysis"><i class="fa fa-check"></i><b>5.6</b> Surrogate variable analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html"><i class="fa fa-check"></i><b>6</b> Epigenome-wide association analysis (EWAS)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#initial-steps-for-all-use-cases"><i class="fa fa-check"></i><b>6.1</b> Initial steps for all use cases</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#connection-to-the-opal-server-4"><i class="fa fa-check"></i><b>6.1.1</b> Connection to the Opal server</a></li>
+<li class="chapter" data-level="6.1.2" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#assign-the-expressionset-resource"><i class="fa fa-check"></i><b>6.1.2</b> Assign the <code>ExpressionSet</code> resource</a></li>
+<li class="chapter" data-level="6.1.3" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#ewas-inspect"><i class="fa fa-check"></i><b>6.1.3</b> Inspect the <code>ExpressionSet</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#single-cpg-pooled-analysis"><i class="fa fa-check"></i><b>6.2</b> Single CpG pooled analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#multiple-cpgs-pooled-analysis"><i class="fa fa-check"></i><b>6.3</b> Multiple CpGs pooled analysis</a></li>
+<li class="chapter" data-level="6.4" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#full-genome-meta-analysis"><i class="fa fa-check"></i><b>6.4</b> Full genome meta-analysis</a></li>
+<li class="chapter" data-level="6.5" data-path="epigenome-wide-association-analysis-ewas.html"><a href="epigenome-wide-association-analysis-ewas.html#adjusting-for-surrogate-variables"><i class="fa fa-check"></i><b>6.5</b> Adjusting for surrogate variables</a></li>
+</ul></li>
+<li class="part"><span><b>III Technical details</b></span></li>
+<li class="chapter" data-level="7" data-path="gwas.html"><a href="gwas.html"><i class="fa fa-check"></i><b>7</b> GWAS</a></li>
+<li class="chapter" data-level="8" data-path="internal-structure-of-the-prs-functionality.html"><a href="internal-structure-of-the-prs-functionality.html"><i class="fa fa-check"></i><b>8</b> Internal structure of the PRS functionality</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="internal-structure-of-the-prs-functionality.html"><a href="internal-structure-of-the-prs-functionality.html#client"><i class="fa fa-check"></i><b>8.1</b> Client</a></li>
+<li class="chapter" data-level="8.2" data-path="internal-structure-of-the-prs-functionality.html"><a href="internal-structure-of-the-prs-functionality.html#server-resolver"><i class="fa fa-check"></i><b>8.2</b> Server resolver</a></li>
+<li class="chapter" data-level="8.3" data-path="internal-structure-of-the-prs-functionality.html"><a href="internal-structure-of-the-prs-functionality.html#server-analysis"><i class="fa fa-check"></i><b>8.3</b> Server analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="compression-of-gds-files-vs.-performance.html"><a href="compression-of-gds-files-vs.-performance.html"><i class="fa fa-check"></i><b>9</b> Compression of GDS files vs. performance</a></li>
+<li class="part"><span><b>IV Appendix</b></span></li>
+<li class="chapter" data-level="10" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>10</b> Session info</a></li>
+<li class="chapter" data-level="11" data-path="contributos.html"><a href="contributos.html"><i class="fa fa-check"></i><b>11</b> Contributos</a></li>
+<li class="part"><span><b>V References</b></span></li>
+<li class="chapter" data-level="12" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>12</b> References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Privacy protected federated omic data analysis in multi-center studies with DataSHIELD</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="epigenome-wide-association-analysis-ewas" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Epigenome-wide association analysis (EWAS)</h1>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">
+<p>
+⚠️ RESOURCES USED ALONG THIS SECTION
+</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">
+<p>
+From <a href="https://opal-demo.obiba.org/">https://opal-demo.obiba.org/</a> :
+</p>
+</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">
+<table>
+<thead>
+<tr class="header">
+<th>
+<p>
+STUDY
+</p>
+</th>
+<th>
+<p>
+TABLE
+</p>
+</th>
+<th>
+<p>
+PROFILE
+</p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+<p>
+cohort1
+</p>
+</td>
+<td>
+<p>
+OMICS.GSE66351_1
+</p>
+</td>
+<td>
+<p>
+omics
+</p>
+</td>
+</tr>
+<tr class="odd">
+<td>
+<p>
+cohort2
+</p>
+</td>
+<td>
+<p>
+OMICS.GSE66351_2
+</p>
+</td>
+<td>
+<p>
+omics
+</p>
+</td>
+</tr>
+<tr 
+</tbody></table></td></tr>
+</tbody>
+</table>
+<p>In this section we will illustrate how to perform an epigenome-wide association analysis (EWAS) using methylation data. EWAS requires basically the same statistical methods as those used in DGE. It should be noticed that the <strong>pooled analysis</strong> we are going to illustrate here can also be performed with transcriptomic data, however the data needs to be harmonized beforehand to ensure each study has the same range values. For EWAS where methylation is measured using beta values (e.g CpG data are in the range 0-1) this is not a problem. In any case, adopting the <strong>meta-analysis</strong> approach could be a safe option without the need of harmonization.</p>
+<p>Moreover, we encourage to perform <strong>pooled analysis</strong> only on the significant hits obtained by the <strong>meta-analysis</strong>, since it is a much slower methodology.</p>
+<p>The data used in this section has been downloaded from <a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> (accession number GSE66351) which contains DNA methylation profiling (Illumina 450K array). Data corresponds to CpGs beta values measured in the superior temporal gyrus and prefrontal cortex brain regions of patients with Alzheimer’s.</p>
+<p>This kind of data is encapsulated on a type of R object called <code>ExpressionSet</code>, this objects are part of the <a href="https://www.bioconductor.org/">BioConductor project</a> and are meant to contain different sources of genomic data, alongside the genomic data they can also contain the phenotypes and metadata associated to a study. Researchers who are not familiar with <code>ExpressionSet</code> can find further information <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf">here</a>.</p>
+<p>The data that we will be using along this section is an <code>ExpressionSet</code> objects. Notice that genomic data is encoded as beta-values that ensure data harmonization across studies.</p>
+<p>In order to illustrate how to perform data analyses using federated data, we have split the data into two synthetic cohorts (split by individuals). We have created two resources on the demo Opal server called <code>GSE66351_1</code> and <code>GSE66351_2</code> respectively. They can be found inside the <code>OMICS</code> project. Some summaries of the datasets are the following:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Cohort 1</th>
+<th align="right">Cohort 2</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Number of CpGs</td>
+<td align="right">481,868</td>
+<td align="right">481,868</td>
+<td align="right">481,868</td>
+</tr>
+<tr class="even">
+<td>Number of individuals</td>
+<td align="right">100</td>
+<td align="right">90</td>
+<td align="right">190</td>
+</tr>
+<tr class="odd">
+<td>Number of covariates</td>
+<td align="right">49</td>
+<td align="right">49</td>
+<td align="right">49</td>
+</tr>
+<tr class="even">
+<td>Number of annotation features</td>
+<td align="right">37</td>
+<td align="right">37</td>
+<td align="right">37</td>
+</tr>
+</tbody>
+</table>
+<p>The structure used is illustrated on the following figure.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ewasProposal"></span>
+<img src="fig/ewas_structure.png" alt="Proposed infrastructure to perform EWAS studies." width="730" />
+<p class="caption">
+Figure 6.1: Proposed infrastructure to perform EWAS studies.
+</p>
+</div>
+<p>The data analyst corresponds to the “RStudio” session, which through DataSHIELD Interface (DSI) connects with the Opal server. The Opal servers contain a resource that correspond to the <a href="GEO:GSE66351" class="uri">GEO:GSE66351</a> <code>ExpressionSet</code> (subseted by individuals).</p>
+<p>We will illustrate the following use cases:</p>
+<ul>
+<li>Single CpG pooled analysis</li>
+<li>Multiple CpGs pooled analysis</li>
+<li>Full genome meta-analysis</li>
+<li>Full genome meta-analysis adjusting for surrogate variables</li>
+</ul>
+<div id="initial-steps-for-all-use-cases" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Initial steps for all use cases</h2>
+<div id="connection-to-the-opal-server-4" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Connection to the Opal server</h3>
+<p>We have to create an Opal connection object to the different cohorts server. We do that using the following functions.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="epigenome-wide-association-analysis-ewas.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&#39;DSI&#39;</span>)</span>
+<span id="cb126-2"><a href="epigenome-wide-association-analysis-ewas.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&#39;DSOpal&#39;</span>)</span>
+<span id="cb126-3"><a href="epigenome-wide-association-analysis-ewas.html#cb126-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&#39;dsBaseClient&#39;</span>)</span>
+<span id="cb126-4"><a href="epigenome-wide-association-analysis-ewas.html#cb126-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&#39;dsOmicsClient&#39;</span>)</span>
+<span id="cb126-5"><a href="epigenome-wide-association-analysis-ewas.html#cb126-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-6"><a href="epigenome-wide-association-analysis-ewas.html#cb126-6" aria-hidden="true" tabindex="-1"></a>builder <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">newDSLoginBuilder</span>()</span>
+<span id="cb126-7"><a href="epigenome-wide-association-analysis-ewas.html#cb126-7" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;cohort1&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://opal-demo.obiba.org/&quot;</span>,</span>
+<span id="cb126-8"><a href="epigenome-wide-association-analysis-ewas.html#cb126-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;dsuser&quot;</span>, <span class="at">password =</span> <span class="st">&quot;P@ssw0rd&quot;</span>,</span>
+<span id="cb126-9"><a href="epigenome-wide-association-analysis-ewas.html#cb126-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">driver =</span> <span class="st">&quot;OpalDriver&quot;</span>, <span class="at">profile =</span> <span class="st">&quot;omics&quot;</span>)</span>
+<span id="cb126-10"><a href="epigenome-wide-association-analysis-ewas.html#cb126-10" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;cohort2&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://opal-demo.obiba.org/&quot;</span>,</span>
+<span id="cb126-11"><a href="epigenome-wide-association-analysis-ewas.html#cb126-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;dsuser&quot;</span>, <span class="at">password =</span> <span class="st">&quot;P@ssw0rd&quot;</span>,</span>
+<span id="cb126-12"><a href="epigenome-wide-association-analysis-ewas.html#cb126-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">driver =</span> <span class="st">&quot;OpalDriver&quot;</span>, <span class="at">profile =</span> <span class="st">&quot;omics&quot;</span>)</span>
+<span id="cb126-13"><a href="epigenome-wide-association-analysis-ewas.html#cb126-13" aria-hidden="true" tabindex="-1"></a>logindata <span class="ot">&lt;-</span> builder<span class="sc">$</span><span class="fu">build</span>()</span>
+<span id="cb126-14"><a href="epigenome-wide-association-analysis-ewas.html#cb126-14" aria-hidden="true" tabindex="-1"></a>conns <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">datashield.login</span>(<span class="at">logins =</span> logindata)</span></code></pre></div>
+<p>It is important to note that in this use case, we are only using one server (<a href="https://opal-demo.obiba.org/" class="uri">https://opal-demo.obiba.org/</a>), on this server there are all the resources that correspond to the different cohorts. On a more real scenario each one of the <code>builder$append</code> instructions would be connecting to a different server.</p>
+</div>
+<div id="assign-the-expressionset-resource" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Assign the <code>ExpressionSet</code> resource</h3>
+<p>Now that we have created a connection object to the different Opals, we have started two R sessions, our analysis will take place on those remote sessions, so we have to load the data into them.</p>
+<p>In this use case we will use 2 different resources from the <code>OMICS</code> project hosted on the demo Opal server. The names of the resources are <code>GSE66351_X</code> (where <code>X</code> is the cohort identifier <code>1</code>/<code>2</code>). Following the Opal syntax, we will refer to them using the string <code>OMICS.GSE66351_X</code>.</p>
+<p>We have to refer specifically to each different server by using <code>conns[X]</code>, this allows us to communicate with the server of interest to indicate to it the resource that it has to load.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="epigenome-wide-association-analysis-ewas.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cohort 1 resource load</span></span>
+<span id="cb127-2"><a href="epigenome-wide-association-analysis-ewas.html#cb127-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">1</span>], <span class="st">&quot;eSet_resource&quot;</span>, <span class="st">&quot;OMICS.GSE66351_1&quot;</span>)</span>
+<span id="cb127-3"><a href="epigenome-wide-association-analysis-ewas.html#cb127-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-4"><a href="epigenome-wide-association-analysis-ewas.html#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cohort 2 resource load</span></span>
+<span id="cb127-5"><a href="epigenome-wide-association-analysis-ewas.html#cb127-5" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">2</span>], <span class="st">&quot;eSet_resource&quot;</span>, <span class="st">&quot;OMICS.GSE66351_2&quot;</span>)</span></code></pre></div>
+<p>Now we have assigned all the resources named into our remote R sessions. We have assigned them to the variables called <code>eSet_resource</code>. To verify this step has been performed correctly, we can use the <code>ds.class</code> function to check for their class and that they exist on the remote sessions.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="epigenome-wide-association-analysis-ewas.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;eSet_resource&quot;</span>)</span></code></pre></div>
+<pre><code>$cohort1
+[1] &quot;RDataFileResourceClient&quot; &quot;FileResourceClient&quot;     
+[3] &quot;ResourceClient&quot;          &quot;R6&quot;                     
+
+$cohort2
+[1] &quot;RDataFileResourceClient&quot; &quot;FileResourceClient&quot;     
+[3] &quot;ResourceClient&quot;          &quot;R6&quot;                     </code></pre>
+<p>We can see that the object <code>eSet_resource</code> exists in both servers.</p>
+<p>Finally the resource is resolved to retrieve the data in the remote sessions.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="epigenome-wide-association-analysis-ewas.html#cb130-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(<span class="at">conns =</span> conns, <span class="at">symbol =</span> <span class="st">&quot;eSet&quot;</span>,</span>
+<span id="cb130-2"><a href="epigenome-wide-association-analysis-ewas.html#cb130-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">expr =</span> <span class="fu">as.symbol</span>(<span class="st">&quot;as.resource.object(eSet_resource)&quot;</span>))</span></code></pre></div>
+<p>Now we have resolved the resource named <code>eSet_resource</code> into our remote R session. The object retrieved has been assigned into the variable named <code>eSet</code>. We can check the process was successful as we did before.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="epigenome-wide-association-analysis-ewas.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;eSet&quot;</span>)</span></code></pre></div>
+<pre><code>$cohort1
+[1] &quot;ExpressionSet&quot;
+attr(,&quot;package&quot;)
+[1] &quot;Biobase&quot;
+
+$cohort2
+[1] &quot;ExpressionSet&quot;
+attr(,&quot;package&quot;)
+[1] &quot;Biobase&quot;</code></pre>
+</div>
+<div id="ewas-inspect" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Inspect the <code>ExpressionSet</code></h3>
+<p>Feature names can be returned by:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="epigenome-wide-association-analysis-ewas.html#cb133-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="fu">ds.featureNames</span>(<span class="st">&quot;eSet&quot;</span>)</span>
+<span id="cb133-2"><a href="epigenome-wide-association-analysis-ewas.html#cb133-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(fn, head)</span></code></pre></div>
+<pre><code>$cohort1
+[1] &quot;cg00000029&quot; &quot;cg00000108&quot; &quot;cg00000109&quot; &quot;cg00000165&quot; &quot;cg00000236&quot;
+[6] &quot;cg00000289&quot;
+
+$cohort2
+[1] &quot;cg00000029&quot; &quot;cg00000108&quot; &quot;cg00000109&quot; &quot;cg00000165&quot; &quot;cg00000236&quot;
+[6] &quot;cg00000289&quot;</code></pre>
+<p>Experimental phenotypes variables can be obtained by:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="epigenome-wide-association-analysis-ewas.html#cb135-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="fu">ds.varLabels</span>(<span class="st">&quot;eSet&quot;</span>)</span>
+<span id="cb135-2"><a href="epigenome-wide-association-analysis-ewas.html#cb135-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(fn, head)</span></code></pre></div>
+<pre><code>$cohort1
+[1] &quot;title&quot;            &quot;geo_accession&quot;    &quot;status&quot;           &quot;submission_date&quot; 
+[5] &quot;last_update_date&quot; &quot;type&quot;            
+
+$cohort2
+[1] &quot;title&quot;            &quot;geo_accession&quot;    &quot;status&quot;           &quot;submission_date&quot; 
+[5] &quot;last_update_date&quot; &quot;type&quot;            </code></pre>
+<p>The columns of the annotation can be obtained by:</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="epigenome-wide-association-analysis-ewas.html#cb137-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="fu">ds.fvarLabels</span>(<span class="st">&quot;eSet&quot;</span>)</span>
+<span id="cb137-2"><a href="epigenome-wide-association-analysis-ewas.html#cb137-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(fn, head)</span></code></pre></div>
+<pre><code>$cohort1
+[1] &quot;ID&quot;               &quot;Name&quot;             &quot;AddressA_ID&quot;      &quot;AlleleA_ProbeSeq&quot;
+[5] &quot;AddressB_ID&quot;      &quot;AlleleB_ProbeSeq&quot;
+
+$cohort2
+[1] &quot;ID&quot;               &quot;Name&quot;             &quot;AddressA_ID&quot;      &quot;AlleleA_ProbeSeq&quot;
+[5] &quot;AddressB_ID&quot;      &quot;AlleleB_ProbeSeq&quot;</code></pre>
+</div>
+</div>
+<div id="single-cpg-pooled-analysis" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Single CpG pooled analysis</h2>
+<p>Once the methylation data have been loaded into the opal server, we can perform different type of analyses using functions from the <code>dsOmicsClient</code> package. Let us start by illustrating how to analyze a single CpG from two cohorts by using an approach that is mathematically equivalent to placing all individual-level (pooled).</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="epigenome-wide-association-analysis-ewas.html#cb139-1" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">ds.lmFeature</span>(<span class="at">feature =</span> <span class="st">&quot;cg07363416&quot;</span>, </span>
+<span id="cb139-2"><a href="epigenome-wide-association-analysis-ewas.html#cb139-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">model =</span> <span class="sc">~</span> diagnosis <span class="sc">+</span> Sex, </span>
+<span id="cb139-3"><a href="epigenome-wide-association-analysis-ewas.html#cb139-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">Set =</span> <span class="st">&quot;eSet&quot;</span>,</span>
+<span id="cb139-4"><a href="epigenome-wide-association-analysis-ewas.html#cb139-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">datasources =</span> conns)</span>
+<span id="cb139-5"><a href="epigenome-wide-association-analysis-ewas.html#cb139-5" aria-hidden="true" tabindex="-1"></a>ans</span></code></pre></div>
+<pre><code>             Estimate Std. Error   p-value
+cg07363416 0.03459886 0.02504291 0.1670998
+attr(,&quot;class&quot;)
+[1] &quot;dsLmFeature&quot; &quot;matrix&quot;      &quot;array&quot;      </code></pre>
+</div>
+<div id="multiple-cpgs-pooled-analysis" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Multiple CpGs pooled analysis</h2>
+<p>The same analysis can be performed for multiple features. This process can be parallelized using <code>mclapply</code> function from the multicore package (only works on GNU/Linux, not on Windows).</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="epigenome-wide-association-analysis-ewas.html#cb141-1" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">ds.lmFeature</span>(<span class="at">feature =</span> <span class="fu">c</span>(<span class="st">&quot;cg00000029&quot;</span>, <span class="st">&quot;cg00000108&quot;</span>, <span class="st">&quot;cg00000109&quot;</span>, <span class="st">&quot;cg00000165&quot;</span>),</span>
+<span id="cb141-2"><a href="epigenome-wide-association-analysis-ewas.html#cb141-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">model =</span> <span class="sc">~</span> diagnosis <span class="sc">+</span> Sex, </span>
+<span id="cb141-3"><a href="epigenome-wide-association-analysis-ewas.html#cb141-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">Set =</span> <span class="st">&quot;eSet&quot;</span>,</span>
+<span id="cb141-4"><a href="epigenome-wide-association-analysis-ewas.html#cb141-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">datasources =</span> conns,</span>
+<span id="cb141-5"><a href="epigenome-wide-association-analysis-ewas.html#cb141-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">mc.cores =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>If the <code>feature</code> argument is not supplied, all the features will be analyzed, please note that this process can be extremely slow if there is a huge number of features; for example, on the case we are illustrating we have over 400K features, so this process would take too much time.</p>
+<p>If all the features are to be studied, we recommend switching to meta-analysis methods. More information on the next section.</p>
+</div>
+<div id="full-genome-meta-analysis" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Full genome meta-analysis</h2>
+<p>We can adopt another strategy that is to run a <code>glm</code> of each feature independently at each study using <code>limma</code> package (which is really fast) and then combine the results (i.e. <strong>meta-analysis</strong> approach).</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="epigenome-wide-association-analysis-ewas.html#cb142-1" aria-hidden="true" tabindex="-1"></a>ans.limma <span class="ot">&lt;-</span> <span class="fu">ds.limma</span>(<span class="at">model =</span> <span class="sc">~</span> diagnosis <span class="sc">+</span> Sex,</span>
+<span id="cb142-2"><a href="epigenome-wide-association-analysis-ewas.html#cb142-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Set =</span> <span class="st">&quot;eSet&quot;</span>, </span>
+<span id="cb142-3"><a href="epigenome-wide-association-analysis-ewas.html#cb142-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">datasources =</span> conns)</span></code></pre></div>
+<p>Then, we can visualize the top genes at each study (i.e server) by:</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="epigenome-wide-association-analysis-ewas.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(ans.limma, head)</span></code></pre></div>
+<pre><code>$cohort1
+# A tibble: 6 x 7
+  id             n    beta      SE     t       P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+1 cg13138089   100 -0.147  0.0122  -6.62 0.00000000190  0.000466
+2 cg23859635   100 -0.0569 0.00520 -6.58 0.00000000232  0.000466
+3 cg13772815   100 -0.0820 0.0135  -6.50 0.00000000327  0.000466
+4 cg12706938   100 -0.0519 0.00872 -6.45 0.00000000425  0.000466
+5 cg24724506   100 -0.0452 0.00775 -6.39 0.00000000547  0.000466
+6 cg02812891   100 -0.125  0.0163  -6.33 0.00000000731  0.000466
+
+$cohort2
+# A tibble: 6 x 7
+  id             n    beta      SE     t      P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+1 cg04046629    90 -0.101  0.0128  -5.91 0.0000000621    0.0172
+2 cg07664323    90 -0.0431 0.00390 -5.85 0.0000000822    0.0172
+3 cg27098804    90 -0.0688 0.0147  -5.79 0.000000107     0.0172
+4 cg08933615    90 -0.0461 0.00791 -5.55 0.000000298     0.0360
+5 cg18349298    90 -0.0491 0.00848 -5.42 0.000000507     0.0489
+6 cg02182795    90 -0.0199 0.0155  -5.36 0.000000670     0.0538</code></pre>
+<p>The annotation can be added by using the argument <code>annotCols</code>. It should be a vector with the columns of the annotation available in the <code>ExpressionSet</code> or <code>RangedSummarizedExperiment</code> that want to be showed. To obtain the available annotation columns revisit #ewas-inspect.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="epigenome-wide-association-analysis-ewas.html#cb145-1" aria-hidden="true" tabindex="-1"></a>ans.limma.annot <span class="ot">&lt;-</span> <span class="fu">ds.limma</span>(<span class="at">model =</span> <span class="sc">~</span> diagnosis <span class="sc">+</span> Sex,</span>
+<span id="cb145-2"><a href="epigenome-wide-association-analysis-ewas.html#cb145-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">Set =</span> <span class="st">&quot;eSet&quot;</span>, </span>
+<span id="cb145-3"><a href="epigenome-wide-association-analysis-ewas.html#cb145-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">annotCols =</span> <span class="fu">c</span>(<span class="st">&quot;CHR&quot;</span>, <span class="st">&quot;UCSC_RefGene_Name&quot;</span>),</span>
+<span id="cb145-4"><a href="epigenome-wide-association-analysis-ewas.html#cb145-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">datasources =</span> conns)</span>
+<span id="cb145-5"><a href="epigenome-wide-association-analysis-ewas.html#cb145-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(ans.limma.annot, head)</span></code></pre></div>
+<pre><code>$cohort1
+# A tibble: 6 x 9
+  id          n    beta      SE     t   P.Value adj.P.Val CHR   UCSC_RefGene_Na~
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           
+1 cg1313~   100 -0.147  0.0122  -6.62   1.90e-9  0.000466 2     &quot;ECEL1P2&quot;       
+2 cg2385~   100 -0.0569 0.00520 -6.58   2.32e-9  0.000466 2     &quot;MTA3&quot;          
+3 cg1377~   100 -0.0820 0.0135  -6.50   3.27e-9  0.000466 17    &quot;&quot;              
+4 cg1270~   100 -0.0519 0.00872 -6.45   4.25e-9  0.000466 19    &quot;MEX3D&quot;         
+5 cg2472~   100 -0.0452 0.00775 -6.39   5.47e-9  0.000466 19    &quot;ISOC2;ISOC2;IS~
+6 cg0281~   100 -0.125  0.0163  -6.33   7.31e-9  0.000466 2     &quot;ECEL1P2&quot;       
+
+$cohort2
+# A tibble: 6 x 9
+  id          n    beta      SE     t   P.Value adj.P.Val CHR   UCSC_RefGene_Na~
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           
+1 cg0404~    90 -0.101  0.0128  -5.91   6.21e-8    0.0172 11    &quot;CD6&quot;           
+2 cg0766~    90 -0.0431 0.00390 -5.85   8.22e-8    0.0172 6     &quot;MUC21&quot;         
+3 cg2709~    90 -0.0688 0.0147  -5.79   1.07e-7    0.0172 11    &quot;CD6&quot;           
+4 cg0893~    90 -0.0461 0.00791 -5.55   2.98e-7    0.0360 1     &quot;&quot;              
+5 cg1834~    90 -0.0491 0.00848 -5.42   5.07e-7    0.0489 3     &quot;RARRES1;RARRES~
+6 cg0218~    90 -0.0199 0.0155  -5.36   6.70e-7    0.0538 8     &quot;&quot;              </code></pre>
+<p>Then, the last step is to meta-analyze the results. Different methods can be used to this end. We have implemented a method that meta-analyze the p-pvalues of each study as follows:</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="epigenome-wide-association-analysis-ewas.html#cb147-1" aria-hidden="true" tabindex="-1"></a>ans.meta <span class="ot">&lt;-</span> <span class="fu">metaPvalues</span>(ans.limma)</span>
+<span id="cb147-2"><a href="epigenome-wide-association-analysis-ewas.html#cb147-2" aria-hidden="true" tabindex="-1"></a>ans.meta</span></code></pre></div>
+<pre><code># A tibble: 481,868 x 4
+   id               cohort1     cohort2   p.meta
+   &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+ 1 cg13138089 0.00000000190 0.00000763  4.78e-13
+ 2 cg25317941 0.0000000179  0.00000196  1.12e-12
+ 3 cg02812891 0.00000000731 0.00000707  1.63e-12
+ 4 cg12706938 0.00000000425 0.0000161   2.14e-12
+ 5 cg16026647 0.000000101   0.000000797 2.51e-12
+ 6 cg12695465 0.00000000985 0.0000144   4.33e-12
+ 7 cg21171625 0.000000146   0.00000225  9.78e-12
+ 8 cg13772815 0.00000000327 0.000122    1.18e-11
+ 9 cg00228891 0.000000166   0.00000283  1.38e-11
+10 cg21488617 0.0000000186  0.0000299   1.62e-11
+# ... with 481,858 more rows</code></pre>
+<p>We can verify that the results are pretty similar to those obtained using pooled analyses. Here we compute the association for the top two CpGs:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="epigenome-wide-association-analysis-ewas.html#cb149-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ds.lmFeature</span>(<span class="at">feature =</span> ans.meta<span class="sc">$</span>id[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], </span>
+<span id="cb149-2"><a href="epigenome-wide-association-analysis-ewas.html#cb149-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">model =</span> <span class="sc">~</span> diagnosis <span class="sc">+</span> Sex, </span>
+<span id="cb149-3"><a href="epigenome-wide-association-analysis-ewas.html#cb149-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Set =</span> <span class="st">&quot;eSet&quot;</span>,</span>
+<span id="cb149-4"><a href="epigenome-wide-association-analysis-ewas.html#cb149-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">datasources =</span> conns)</span>
+<span id="cb149-5"><a href="epigenome-wide-association-analysis-ewas.html#cb149-5" aria-hidden="true" tabindex="-1"></a>res</span></code></pre></div>
+<pre><code>              Estimate  Std. Error      p-value        p.adj
+cg25317941 -0.03452376 0.004303781 1.042679e-15 1.057482e-15
+cg13138089 -0.13733479 0.017124046 1.057482e-15 1.057482e-15
+attr(,&quot;class&quot;)
+[1] &quot;dsLmFeature&quot; &quot;matrix&quot;      &quot;array&quot;      </code></pre>
+<p>We can create a QQ-plot by using the function <code>qqplot</code> available in our package.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="epigenome-wide-association-analysis-ewas.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqplot</span>(ans.meta<span class="sc">$</span>p.meta)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/ewas_limma_qq-1.png" width="672" /></p>
+<p>Here In some cases inflation can be observed, so that, correction for cell-type or surrogate variables must be performed. We describe how we can do that in the next two sections.</p>
+</div>
+<div id="adjusting-for-surrogate-variables" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Adjusting for surrogate variables</h2>
+<p>The vast majority of omic studies require to control for unwanted variability. The surrogate variable analysis (SVA) can address this issue by estimating some hidden covariates that capture differences across individuals due to some artifacts such as batch effects or sample quality among others. The method is implemented in <a href="https://bioconductor.org/packages/release/bioc/html/sva.html">SVA</a> package.</p>
+<p>Performing this type of analysis using the <code>ds.lmFeature</code> function is not allowed since estimating SVA would require to implement a non-disclosive method that computes SVA from the different servers. This will be a future topic of the <code>dsOmicsClient</code>. For that reason we have to adopt a compromise solution which is to perform the SVA independently at each study. We use the <code>ds.limma</code> function to perform the analyses adjusted for SVA at each study.</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="epigenome-wide-association-analysis-ewas.html#cb152-1" aria-hidden="true" tabindex="-1"></a>ans.sva <span class="ot">&lt;-</span> <span class="fu">ds.limma</span>(<span class="at">model =</span> <span class="sc">~</span> diagnosis <span class="sc">+</span> Sex, </span>
+<span id="cb152-2"><a href="epigenome-wide-association-analysis-ewas.html#cb152-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">Set =</span> <span class="st">&quot;eSet&quot;</span>,</span>
+<span id="cb152-3"><a href="epigenome-wide-association-analysis-ewas.html#cb152-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sva =</span> <span class="cn">TRUE</span>, <span class="at">annotCols =</span> <span class="fu">c</span>(<span class="st">&quot;CHR&quot;</span>, <span class="st">&quot;UCSC_RefGene_Name&quot;</span>))</span>
+<span id="cb152-4"><a href="epigenome-wide-association-analysis-ewas.html#cb152-4" aria-hidden="true" tabindex="-1"></a>ans.sva</span></code></pre></div>
+<pre><code>$cohort1
+# A tibble: 481,868 x 9
+   id          n    beta      SE     t  P.Value adj.P.Val CHR   UCSC_RefGene_Na~
+   &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           
+ 1 cg1313~   100 -0.147  0.0122  -6.62  1.90e-9  0.000466 2     &quot;ECEL1P2&quot;       
+ 2 cg2385~   100 -0.0569 0.00520 -6.58  2.32e-9  0.000466 2     &quot;MTA3&quot;          
+ 3 cg1377~   100 -0.0820 0.0135  -6.50  3.27e-9  0.000466 17    &quot;&quot;              
+ 4 cg1270~   100 -0.0519 0.00872 -6.45  4.25e-9  0.000466 19    &quot;MEX3D&quot;         
+ 5 cg2472~   100 -0.0452 0.00775 -6.39  5.47e-9  0.000466 19    &quot;ISOC2;ISOC2;IS~
+ 6 cg0281~   100 -0.125  0.0163  -6.33  7.31e-9  0.000466 2     &quot;ECEL1P2&quot;       
+ 7 cg2766~   100 -0.0588 0.0198  -6.33  7.48e-9  0.000466 16    &quot;ANKRD11&quot;       
+ 8 cg1537~   100 -0.0709 0.0115  -6.32  7.83e-9  0.000466 2     &quot;LPIN1&quot;         
+ 9 cg1552~   100 -0.0446 0.00750 -6.29  8.69e-9  0.000466 10    &quot;&quot;              
+10 cg1269~   100 -0.0497 0.00155 -6.27  9.85e-9  0.000475 6     &quot;GCNT2;GCNT2;GC~
+# ... with 481,858 more rows
+
+$cohort2
+# A tibble: 481,868 x 9
+   id         n    beta      SE     t P.Value adj.P.Val CHR   UCSC_RefGene_Name 
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             
+ 1 cg040~    90 -0.101  0.0128  -5.91 6.21e-8    0.0172 11    &quot;CD6&quot;             
+ 2 cg076~    90 -0.0431 0.00390 -5.85 8.22e-8    0.0172 6     &quot;MUC21&quot;           
+ 3 cg270~    90 -0.0688 0.0147  -5.79 1.07e-7    0.0172 11    &quot;CD6&quot;             
+ 4 cg089~    90 -0.0461 0.00791 -5.55 2.98e-7    0.0360 1     &quot;&quot;                
+ 5 cg183~    90 -0.0491 0.00848 -5.42 5.07e-7    0.0489 3     &quot;RARRES1;RARRES1&quot; 
+ 6 cg021~    90 -0.0199 0.0155  -5.36 6.70e-7    0.0538 8     &quot;&quot;                
+ 7 cg160~    90 -0.0531 0.0196  -5.31 7.97e-7    0.0548 17    &quot;MEIS3P1&quot;         
+ 8 cg012~    90 -0.0537 0.00971 -5.18 1.39e-6    0.0582 7     &quot;HOXA2&quot;           
+ 9 cg251~    90 -0.0224 0.00736 -5.15 1.57e-6    0.0582 3     &quot;ZBTB20;ZBTB20;ZB~
+10 cg074~    90 -0.0475 0.00166 -5.13 1.67e-6    0.0582 22    &quot;C22orf27&quot;        
+# ... with 481,858 more rows
+
+attr(,&quot;class&quot;)
+[1] &quot;dsLimma&quot; &quot;list&quot;   </code></pre>
+<p>Then, data can be combined meta-anlyzed as follows:</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="epigenome-wide-association-analysis-ewas.html#cb154-1" aria-hidden="true" tabindex="-1"></a>ans.meta.sv <span class="ot">&lt;-</span> <span class="fu">metaPvalues</span>(ans.sva)</span>
+<span id="cb154-2"><a href="epigenome-wide-association-analysis-ewas.html#cb154-2" aria-hidden="true" tabindex="-1"></a>ans.meta.sv</span></code></pre></div>
+<pre><code># A tibble: 481,868 x 4
+   id               cohort1     cohort2   p.meta
+   &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+ 1 cg13138089 0.00000000190 0.00000763  4.78e-13
+ 2 cg25317941 0.0000000179  0.00000196  1.12e-12
+ 3 cg02812891 0.00000000731 0.00000707  1.63e-12
+ 4 cg12706938 0.00000000425 0.0000161   2.14e-12
+ 5 cg16026647 0.000000101   0.000000797 2.51e-12
+ 6 cg12695465 0.00000000985 0.0000144   4.33e-12
+ 7 cg21171625 0.000000146   0.00000225  9.78e-12
+ 8 cg13772815 0.00000000327 0.000122    1.18e-11
+ 9 cg00228891 0.000000166   0.00000283  1.38e-11
+10 cg21488617 0.0000000186  0.0000299   1.62e-11
+# ... with 481,858 more rows</code></pre>
+<p>And we can revisit the qqplot:</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="epigenome-wide-association-analysis-ewas.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqplot</span>(ans.meta.sv<span class="sc">$</span>p.meta)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/ewas_limma_sva_meta_qq-1.png" width="672" /></p>
+<p>The DataSHIELD session must be closed by:</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="epigenome-wide-association-analysis-ewas.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.logout</span>(conns)</span></code></pre></div>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="differential-gene-expression-dge-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="gwas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["OmicSHIELD_bookdown.pdf", "OmicSHIELD_bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
