@@ -1,0 +1,169 @@
+# Exposome data analysis in HELIX data {#Exposome_HELIX}
+
+This section illustrates how to perform exposome data analysis using (HELIX data)[]
+
+Let us start by loading the required packages:
+
+```{r load}
+library('DSI')
+library('DSOpal')
+library('dsBaseClient')
+library('dsExposomeClient')
+```
+
+
+```{r build_DS}
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "BIB", url = "https://datashield.isglobal.org/repo",
+               user =  "jrgonzalez", password = "Z2Z//B5",
+               driver = "OpalDriver", profile = "rock-inma")
+builder$append(server = "EDEN", url = "https://datashield.isglobal.org/repo",
+               user =  "jrgonzalez", password = "Z2Z//B5",
+               profile = "rock-inma")
+builder$append(server = "KANC", url = "https://datashield.isglobal.org/repo",
+               user =  "jrgonzalez", password = "Z2Z//B5",
+               profile = "rock-inma")
+builder$append(server = "MoBA", url = "https://datashield.isglobal.org/repo",
+               user =  "jrgonzalez", password = "Z2Z//B5",
+               profile = "rock-inma")
+builder$append(server = "Rhea", url = "https://datashield.isglobal.org/repo",
+               user =  "jrgonzalez", password = "Z2Z//B5",
+               profile = "rock-inma")
+builder$append(server = "INMA-SAB", url = "https://datashield.isglobal.org/repo",
+               user =  "jrgonzalez", password = "Z2Z//B5",
+               profile = "rock-inma")
+logindata <- builder$build()
+conns <- DSI::datashield.login(logins = logindata)
+``` 
+```{r assign_resources}
+DSI::datashield.assign.resource(conns[1], "resource", "HELIX.postnatal_BIB")
+DSI::datashield.assign.resource(conns[2], "resource", "HELIX.postnatal_EDE")
+DSI::datashield.assign.resource(conns[3], "resource", "HELIX.postnatal_KAN")
+DSI::datashield.assign.resource(conns[4], "resource", "HELIX.postnatal_MOB")
+DSI::datashield.assign.resource(conns[5], "resource", "HELIX.postnatal_RHE")
+DSI::datashield.assign.resource(conns[6], "resource", "HELIX.postnatal_SAB")
+```
+
+```{r resolve_resource}
+DSI::datashield.assign.expr(conns = conns, symbol = "exposome_set",
+                            expr = as.symbol("as.resource.object(resource)"))
+```
+
+
+```{r assign_tables}
+DSI::datashield.assign.table(conns[1], "pheno", "HELIX.subclinical_cardio_BIB")
+DSI::datashield.assign.table(conns[2], "pheno", "HELIX.subclinical_cardio_EDE")
+DSI::datashield.assign.table(conns[3], "pheno", "HELIX.subclinical_cardio_KAN")
+DSI::datashield.assign.table(conns[4], "pheno", "HELIX.subclinical_cardio_MOB")
+DSI::datashield.assign.table(conns[5], "pheno", "HELIX.subclinical_cardio_RHE")
+DSI::datashield.assign.table(conns[6], "pheno", "HELIX.subclinical_cardio_SAB")
+```
+
+
+```{r view_pheno}
+ds.colnames("pheno")
+```
+
+These are the available phenotypes
+
+```{r view_pheno_expo}
+pheno.expo <- ds.phenotypeNames("exposome_set")
+names(pheno.expo)
+pheno.expo$EDEN
+```
+
+
+
+Add ...
+
+```{r add }
+ds.addPhenoData2ExposomeSet("exposome_set", "pheno", 
+                            identifier_ExposomeSet = "HelixID", 
+                            identifier_new_phenotypes = "HelixID")
+```
+
+Now .. (these have been added)
+
+```{r view2}
+ds.phenotypeNames("exposome_set")$EDEN
+```
+
+
+# ExWAS
+
+Reproduce the results in: 
+
+
+
+```{r show_families}
+ds.familyNames('exposome_set')
+```
+
+Only one ....
+
+
+```{r exwas}
+res.meta <- ds.exwas('hs_bp_sys ~ 1', type = "meta", 
+                     exposures_family = "PBDEs", 
+                     Set = 'exposome_set', family = 'gaussian')
+```
+
+
+```{r exwas}
+res.pooled <- ds.exwas('hs_bp_sys ~ 1', type = "pooled", 
+                     Set = 'exposome_set', family = 'gaussian')
+
+```
+
+Adjust by cohort
+
+```{r exwas_adjusted, eval = FALSE}
+res.pooled <- ds.exwas('hs_bp_sys ~ 1', type = "pooled", 
+                     adjust.by.study = TRUE,
+                       exposures_family = "PBDEs", 
+                     Set = 'exposome_set', family = 'gaussian')
+
+```
+
+
+Adjust by cohort and other covariates
+
+```{r exwas_adjusted, eval = FALSE}
+res.pooled <- ds.exwas('hs_bp_sys ~ hs_c_bmi_None', type = "pooled", 
+                     adjust.by.study = TRUE,
+                       exposures_family = "PBDEs", 
+                     Set = 'exposome_set', family = 'gaussian')
+
+```
+
+
+
+# Feature selection with penalized methods
+
+We need data in a table as described in  ...  (tu report)
+
+```{r get_exposures_cont}
+ds.exposures_pData('exposome_set',  
+                   type = "exposures", exposures_type = "numeric",
+                   name = 'table_exposures')
+
+ds.exposures_pData('exposome_set',  
+                   type = "phenotypes", exposures_type = "numeric",
+                   name = 'table_phenotypes')
+
+ds.ls()
+```
+```{r show_variables}
+ds.colnames('table_exposures')
+ds.colnames('table_phenotypes')
+```
+
+
+
+
+
+
+
+```{r logout}
+datashield.logout(conns)
+```

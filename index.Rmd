@@ -1,5 +1,5 @@
 --- 
-title: "Privacy protected federated omic data analysis in multi-center studies with DataSHIELD"
+title: "Applications of OmicDataSHIELD in real data"
 date: "`r Sys.Date()`"
 output: bookdown::html_document2
 site: bookdown::bookdown_site
@@ -10,14 +10,6 @@ link-citations: yes
 ---
 
 ```{r, setup, include=FALSE}
-library(BiocStyle)
-library(DSI)
-library(DSOpal)
-library(dsBaseClient)
-library(DSLite)
-library(dsOmicsClient)
-# knitr::opts_chunk$set(eval = FALSE)
-# knitr::opts_chunk$set(fig.width = 6)
 knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
@@ -25,14 +17,26 @@ knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 
 ![](fig/ds_logo.png){width=50%}
 
-This is a website for a book that serves as official documentation for OmicSHIELD. On it you will find: introductory references to learn about DataSHIELD and "resources", explanation on the type of analysis that can be performed using OmicSHIELD and workflows (with reproducible code) of the main functionalities of OmicSHIELD.
+This is a website for a book that serves as official documentation for applications of OmicSHIELD. On it you will find: 
 
-All the funcionalities described on this book have been developed at the Bioinformatic Research Group in Epidemiology (BRGE) of ISGlobal with external help from Yannick Marcon (Obiba); and are part of OmicSHIELD.
+
+- GWAS of CINECA data split in 3 different cohorts stored in an Opal repository. Deliverable belonging to [VEIS project](https://veis.bsc.es/en/) that aims to value EGA for Industry and Society.
+
+
+- Omic data analyses using HELIX project (6 cohorts). It includes:
+ 
+     - Differential expression analysis 
+
+     - Epigenome data analysis 
+
+      - Exposome Data Analysis. Deliverable of [ATHLETE project](https://athleteproject.eu/).
+
+All the applications described on this book have been developed at the Bioinformatic Research Group in Epidemiology ([BRGE](https://brge.isglobal.org/)) from ISGlobal with external collaborators and are part of OmicSHIELD.
 
 ![](fig/logo_omicshield.png){width=50%}
 
-The aim of this book is to be a showcase of the capabilities of the software we developed as well as being a quick reference guide for new researchers interested in this technology.
+The aim of this book is to be a showcase of the capabilities of the software we developed in real problems where the main aim of describing how to perform omic data analyses in multi-cohort studies using a privacy-protected federated system.
 
-This material also serves as an online companion for the manuscript "NOMBRE DEL PAPER QUE ESCRIBIREMOS".
+This material also serves as an online companion for the manuscript "To be supplied".
 
-This website is free to use, and is licensed under a [MIT license](https://github.com/isglobal-brge/OmicSHIELD/blob/main/LICENSE).
+This website is licensed under an [Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://github.com/isglobal-brge/OmicSHIELDapps/blob/main/LICENSE).
