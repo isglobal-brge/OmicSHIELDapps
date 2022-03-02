@@ -25,7 +25,7 @@ Data was initially accessible from a public EGA repository (ID: [EGAD00001006673
 
 <br>
 ```{r Figure2, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap="Figure 2. Proposed infrastructure to perform single-cohort GWAS studies.", fig.align='center'}
-knitr::include_graphics("/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/OmicSHIELDapps/OmicSHIELDapps/fig/single_cohort_GWAS.png")
+knitr::include_graphics("./fig/single_cohort_GWAS.png")
 ```
 <br>
 
@@ -70,7 +70,7 @@ FALTA METER OBJETIVO EN UNA CAJA PARA QUE SE VEA RESALTADO.
 
 <br>
 ```{r Figure4, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 4. Input HELIX datasets organized by cohort in the Opal server."}
-knitr::include_graphics(here::here("/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/OmicSHIELDapps/OmicSHIELDapps/fig", "HELIX OPAL STRUCTURE.png"))
+knitr::include_graphics(here::here("./fig", "HELIX OPAL STRUCTURE.png"))
 ```
 <br>
 
@@ -92,13 +92,13 @@ Exposome data for each HELIX cohort is available in the form of resources (inclu
 
 <br>
 ```{r Figure5, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 5. Input ExposomeSet data organized by cohort in the Opal server as resources."}
-knitr::include_graphics(here::here("/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/OmicSHIELDapps/OmicSHIELDapps/fig", "HELIX_DATA_OPAL_resc_exposures.png"))
+knitr::include_graphics(here::here("./fig", "HELIX_DATA_OPAL_resc_exposures.png"))
 ```
 <br>
 
 <br>
 ```{r Figure5, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 6. Additional HELIX phenotypes organized by cohort in the Opal server as tables."}
-knitr::include_graphics(here::here("/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/OmicSHIELDapps/OmicSHIELDapps/fig", "HELIX_DATA_OPAL_tab_morephenos.png"))
+knitr::include_graphics(here::here("./fig", "HELIX_DATA_OPAL_tab_morephenos.png"))
 ```
 <br>
 

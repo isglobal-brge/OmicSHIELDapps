@@ -2,12 +2,6 @@
 knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
-```{r, echo=FALSE}
-htmltools::img(src = knitr::image_uri( "/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/dslasso/RMARKDOWN/RMARKDOWN/figs/MhKsD9CY_400x400.png"), 
-               alt = 'logo isglobal', 
-               style = 'position:absolute; top:0; right:0; padding:10px; width: 100px; height: 100px')
-```
-
 # Exposome data analysis in HELIX data. {#Exposome_HELIX_analysis}
 
 The main aim of this **chapter** is to illustrate how to perform **exposome analyses** on a **multi-centre study** in a non-disclosive way using **DataSHIELD**. Particularly, we will cover how to apply some of the most frequently employed techniques in exposome analysis such is the case of **Exposome Wide Association Analysis (ExWAS)** or **variable selection with penalized regressions**. In order to illustrate the power and possibilities emanating from **DataSHIELD** in the context of exposome analysis, for this task, we will **reproduce** some of the analyses presented in the work of [@WAREMBOURG20191317], in which the association between a wide range of **prenatal and postnatal** exposures and **blood pressure (BP)** in children is investigated.
@@ -150,7 +144,7 @@ As we said, the main aim of this **chapter** is to illustrate how to perform **e
 
 <br>
 ```{r Figure1, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 1. Environmental-Wide Association Study Between Postnatal Exposome and Systolic and Diastolic Blood Pressure in the HELIX cohort (Warembourg C et al. (2019)[@WAREMBOURG20191317]."}
-knitr::include_graphics(here::here("/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/OmicSHIELDapps/OmicSHIELDapps/fig", "charline_Bp.png"))
+knitr::include_graphics(here::here("./fig", "charline_Bp.png"))
 ```
 <br>
 
@@ -338,7 +332,7 @@ A **summary** of the **whole pipeline** that one could follow in **DataSHIELD** 
 
 <br>
 ```{r Figure2, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 2. DataSHIELD for the implementation of penalized Lasso regression in a federated framework."}
-knitr::include_graphics(here::here("/home/aanguita@isglobal.lan/Escritorio/ANALYSIS/DATAshield/OmicSHIELDapps/OmicSHIELDapps/fig", "dslasso.jpg"))
+knitr::include_graphics(here::here("./fig", "dslasso.jpg"))
 ```
 <br>
 
