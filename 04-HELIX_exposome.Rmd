@@ -253,7 +253,7 @@ res.pooled_adjusted
 
 As it can be seen, we are able to validate the main findings presented for the paper, reporting an inverse association between the serum concentration of some of these compounds and the systolic blood pressure levels of children.
 
-# Feature selection with penalized methods
+## Feature selection with penalized methods
 
 In this section, we present how to perform **variable selection** with **penalized regression methods** in an exposome context. As previously mentioned, the _"dsMTL"_ **package** allows the implementation of a **federated version** of conventional **regularized regression techniques** (such as Lasso, Ridge or Elastic-net), both in the context of continuous or binary outcomes (linear and logistic regression, respectively). Here, we show how to apply these methods to the **HELIX** data, since variable selection is other important step in any exposome study.
 
@@ -336,7 +336,7 @@ knitr::include_graphics(here::here("./fig", "dslasso.jpg"))
 ```
 <br>
 
-## _ds.LS_Lasso()_ function.
+### _ds.LS_Lasso()_ function.
 
 With the _ds.LS_Lasso()_ function, we can apply the lasso solver of regression for a **particular** value of the **lambda** penalty. **Input** arguments available in the function include:
  
@@ -375,7 +375,7 @@ plot(m1$w, xlab="index of coefficients", ylab="values")
 
 Please, note that input variables are not standardized previous to the modeling in _ds.LS_Lasso()_, while, in the local solution _glmnet()_, the default argument is _standardize=TRUE_.
 
-## _ds.Lasso_Train()_ function.
+### _ds.Lasso_Train()_ function.
 
 Instead of introducing a single value of lambda and fitting the model, a **whole lambda sequence** can be tested (either if it has been **defined by the user**, or if it has been **estimated from the data**). For that purpose, we must use the function _ds.Lasso_Train()_, which trains a whole **regularization tree** with **Lasso** for a **set** of **penalty values**.
 
@@ -456,7 +456,7 @@ Non Available | penalty.factor
 
 An **important drawback** of the current version of the _ds.Lasso_Train()_ function, is that it **does not allow to force the inclusion of covariates in models**, which in _glmnet()_ is achieved through the argument _"penalty.factor"_ by reducing to 0 the penalty to be applied to their coefficients. Other **important difference** is the type of **optimization algorithm** employed for the estimation of coefficients. In comparison to _glmnet()_, which implements the coordinate descent [@Wright2015], _ds.Lasso_Train()_ implements an optimization procedure based on the proximal algorithm framework [@OPT-003].
 
-## _ds.Lasso_CVInSite()_ function.
+### _ds.Lasso_CVInSite()_ function.
 
 As in _glmnet()_, _ds.Lasso_ also allows the selection of the **optimal lambda** by a **k-fold cross-validation procedure**. This is done in _"dsMTL"_ with the function _ds.Lasso_CVInSite()_, which has practically the same arguments than previous functions, except for the _"nfolds"_ argument, referring to the number of folds for the CV procedure. 
 

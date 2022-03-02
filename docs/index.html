@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Applications of OmicDataSHIELD in real data</title>
+  <meta name="description" content="Applications of OmicDataSHIELD in real data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Applications of OmicDataSHIELD in real data" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Applications of OmicDataSHIELD in real data" />
+  
+  
+  
+
+
+
+<meta name="date" content="2022-03-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="Datasets_Description.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script>
+  function unrolltab(evt, divName, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementById(divName).getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementById(divName).getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("gwas_results_1").click();
+    document.getElementById("gwas_plot_1").click();
+    document.getElementById("manhattan-plots-tab").click();
+    document.getElementById("locuszoom-plots-tabs").click();
+ });
+</script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="" target="blank">OmicSHIELD</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="Datasets_Description.html"><a href="Datasets_Description.html"><i class="fa fa-check"></i><b>1</b> Showcase datasets description.</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="Datasets_Description.html"><a href="Datasets_Description.html#cineca-project."><i class="fa fa-check"></i><b>1.1</b> CINECA project.</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="Datasets_Description.html"><a href="Datasets_Description.html#data-organization-in-the-opal-server."><i class="fa fa-check"></i><b>1.1.1</b> Data organization in the opal server.</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="Datasets_Description.html"><a href="Datasets_Description.html#helix-project."><i class="fa fa-check"></i><b>1.2</b> HELIX project.</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="Datasets_Description.html"><a href="Datasets_Description.html#data-organization-in-the-opal-server.-1"><i class="fa fa-check"></i><b>1.2.1</b> Data organization in the opal server.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html"><i class="fa fa-check"></i><b>2</b> Exposome data analysis in HELIX data.</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#getting-started."><i class="fa fa-check"></i><b>2.1</b> Getting started.</a></li>
+<li class="chapter" data-level="2.2" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#data-formatting-and-manipulation-in-datashield."><i class="fa fa-check"></i><b>2.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.3" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#implementation-of-exwas-in-datashield."><i class="fa fa-check"></i><b>2.3</b> Implementation of ExWAS in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.4" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#ds.ls_lasso-function."><i class="fa fa-check"></i><b>2.4</b> <em>ds.LS_Lasso()</em> function.</a></li>
+<li class="chapter" data-level="2.5" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#ds.lasso_train-function."><i class="fa fa-check"></i><b>2.5</b> <em>ds.Lasso_Train()</em> function.</a></li>
+<li class="chapter" data-level="2.6" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#ds.lasso_cvinsite-function."><i class="fa fa-check"></i><b>2.6</b> <em>ds.Lasso_CVInSite()</em> function.</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applications of OmicDataSHIELD in real data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Applications of OmicDataSHIELD in real data</h1>
+<p class="date"><em>2022-03-02</em></p>
+</div>
+<div id="welcome" class="section level1 unnumbered">
+<h1>Welcome</h1>
+<p><img src="fig/logo_omicshield.png" style="width:50.0%" /></p>
+<p>This online book serves as official documentation for the R package <a href="https://github.com/isglobal-brge/OmicSHIELDapps"><em>OmicSHIELDapps</em></a>. On it you will find examples of applications of <em>OmicSHIELDapps</em> to a range of human <strong>omics and environmental data</strong>, illustrating the possibilities and goodness of many of the available functions. For that, we will use data from two real-world research projects following <strong>multi-centric structures</strong>. This book can be seen therefore as a showcase to describe how to perform omic data analyses in a <strong>multi-cohort environment</strong> using a <strong>privacy-protected federated system</strong>. This material will also serve as an <strong>online companion</strong> for the <strong>manuscript</strong> “To be supplied.”</p>
+<p>The <strong>data</strong> to be analyzed here come from two well-known research projects:</p>
+<ul>
+<li><p><a href="https://www.cineca-project.eu/">CINECA Project</a>: The CINECA project brings together a diverse collection of human cohorts consisting of 1.4M individuals in Canada, Europe, and Africa. Here, we will employ <strong>GWAS data</strong> for a <strong>subsample of 2,504 individuals</strong> structured into <strong>3 different cohorts</strong>. Data can be accessed from an EGA repository, and is a deliverable belonging to <a href="https://veis.bsc.es/en/">VEIS project</a>, that aims to value EGA for Industry and Society. The purpose of this dataset in our book is to serve as a <strong>showcase for illustrating how to perform classic GWAS quality control procedures and analyses, and construct genetic risk scores</strong> in <strong>DataSHIELD</strong>.</p></li>
+<li><p><a href="https://www.projecthelix.eu">HELIX Project</a>: The HELIX (Human Early-Life Exposome) project gathers data from 6 longitudinal-based European birth cohorts, with the aim of evaluating how the environmental hazards that mothers and children are exposed to, affect to health, growth and development of children, also focusing in the mediating effects of molecular alterations. In this project, we will count on <strong>multi-omics and environmental data consisting of (RNAseq, EWAS and exposome data)</strong> and present examples of how to perform:</p>
+<ul>
+<li><p>Differential gene expression analysis.</p></li>
+<li><p>Differential DNA methylation analysis.</p></li>
+<li><p>Exposome Data Analysis. Deliverable of <a href="https://athleteproject.eu/">ATHLETE project</a>.</p></li>
+</ul></li>
+</ul>
+<p>All the applications described on this book have been developed at the Bioinformatic Research Group in Epidemiology (<a href="https://brge.isglobal.org/">BRGE</a>) from ISGlobal with external collaborators and are part of OmicSHIELD.</p>
+<p>This website is licensed under an <a href="https://github.com/isglobal-brge/OmicSHIELDapps/blob/main/LICENSE">Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</a>.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="Datasets_Description.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["OmicSHIELD_bookdown.pdf", "OmicSHIELD_bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

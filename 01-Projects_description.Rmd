@@ -97,7 +97,7 @@ knitr::include_graphics(here::here("./fig", "HELIX_DATA_OPAL_resc_exposures.png"
 <br>
 
 <br>
-```{r Figure5, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 6. Additional HELIX phenotypes organized by cohort in the Opal server as tables."}
+```{r Figure6, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 6. Additional HELIX phenotypes organized by cohort in the Opal server as tables."}
 knitr::include_graphics(here::here("./fig", "HELIX_DATA_OPAL_tab_morephenos.png"))
 ```
 <br>
