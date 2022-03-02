@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Showcase datasets description. | Applications of OmicDataSHIELD in real data</title>
+  <meta name="description" content="1 Showcase datasets description. | Applications of OmicDataSHIELD in real data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Showcase datasets description. | Applications of OmicDataSHIELD in real data" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Showcase datasets description. | Applications of OmicDataSHIELD in real data" />
+  
+  
+  
+
+
+
+<meta name="date" content="2022-03-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="Exposome_HELIX_analysis.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script>
+  function unrolltab(evt, divName, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementById(divName).getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementById(divName).getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("gwas_results_1").click();
+    document.getElementById("gwas_plot_1").click();
+    document.getElementById("manhattan-plots-tab").click();
+    document.getElementById("locuszoom-plots-tabs").click();
+ });
+</script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="" target="blank">OmicSHIELD</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="Datasets_Description.html"><a href="Datasets_Description.html"><i class="fa fa-check"></i><b>1</b> Showcase datasets description.</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="Datasets_Description.html"><a href="Datasets_Description.html#cineca-project."><i class="fa fa-check"></i><b>1.1</b> CINECA project.</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="Datasets_Description.html"><a href="Datasets_Description.html#data-organization-in-the-opal-server."><i class="fa fa-check"></i><b>1.1.1</b> Data organization in the opal server.</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="Datasets_Description.html"><a href="Datasets_Description.html#helix-project."><i class="fa fa-check"></i><b>1.2</b> HELIX project.</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="Datasets_Description.html"><a href="Datasets_Description.html#data-organization-in-the-opal-server.-1"><i class="fa fa-check"></i><b>1.2.1</b> Data organization in the opal server.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html"><i class="fa fa-check"></i><b>2</b> Exposome data analysis in HELIX data.</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#getting-started."><i class="fa fa-check"></i><b>2.1</b> Getting started.</a></li>
+<li class="chapter" data-level="2.2" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#data-formatting-and-manipulation-in-datashield."><i class="fa fa-check"></i><b>2.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.3" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#implementation-of-exwas-in-datashield."><i class="fa fa-check"></i><b>2.3</b> Implementation of ExWAS in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.4" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#feature-selection-with-penalized-methods"><i class="fa fa-check"></i><b>2.4</b> Feature selection with penalized methods</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#ds.ls_lasso-function."><i class="fa fa-check"></i><b>2.4.1</b> <em>ds.LS_Lasso()</em> function.</a></li>
+<li class="chapter" data-level="2.4.2" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#ds.lasso_train-function."><i class="fa fa-check"></i><b>2.4.2</b> <em>ds.Lasso_Train()</em> function.</a></li>
+<li class="chapter" data-level="2.4.3" data-path="Exposome_HELIX_analysis.html"><a href="Exposome_HELIX_analysis.html#ds.lasso_cvinsite-function."><i class="fa fa-check"></i><b>2.4.3</b> <em>ds.Lasso_CVInSite()</em> function.</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applications of OmicDataSHIELD in real data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="Datasets_Description" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Showcase datasets description.</h1>
+<p>In this section, we will describe the data employed for each tutorial analysis, giving details about <strong>experimental designs</strong>, the type of <strong>features available</strong> in each dataset, and the <strong>structure and organization</strong> of data in the <a href="https://opaldoc.obiba.org/en/latest/"><strong>Opal servers infrastructure</strong></a>. Particularly, all datasets employed in this <strong>book</strong> are hosted in the <a href="https://datashield.isglobal.org/repo">Opal site</a> hosted by the Bioinformatic Research Group in Epidemiology of ISGlobal (<a href="https://brge.isglobal.org/">BRGE</a>), simulating a <strong>single-site DataSHIELD infrastructure</strong>. Details for <strong>accessing</strong> the server can be found in its respective section, at the beginning of each data analysis pipeline.</p>
+<div id="cineca-project." class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> CINECA project.</h2>
+<p>As introduced in the welcome section, the <a href="https://www.cineca-project.eu/">CINECA Project</a> is an international initiative bringing together a diverse collection of human cohorts consisting of 1.4M individuals in Canada, Europe, and Africa. In <strong>figure 1_</strong>, an overall description of the datasets and cohorts belonging to the <strong>CINECA project</strong> is presented.</p>
+<p align="center">
+<img src = "https://images.squarespace-cdn.com/content/v1/5cc2c7b2d86cc9589d33dfcc/1573825882582-AS6SBW8PMXNGKSJWS79H/cohort_figure_updated_Nov2019.png?format=750w">
+</p>
+<p align="center">
+Figure 1. The figure depicts CINECA project cohorts representing &gt;1.4 Million individuals and spanning three continents.
+</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Figure1"></span>
+<img src="https://images.squarespace-cdn.com/content/v1/5cc2c7b2d86cc9589d33dfcc/1573825882582-AS6SBW8PMXNGKSJWS79H/cohort_figure_updated_Nov2019.png?format=750w" alt="Figure 1. The figure depicts CINECA project cohorts representing &gt;1.4 Million individuals and spanning three continents."  />
+<p class="caption">
+Figure 1.1: Figure 1. The figure depicts CINECA project cohorts representing &gt;1.4 Million individuals and spanning three continents.
+</p>
+</div>
+<p><strong>Here</strong>, among available CINECA data, we will use <strong>genome-wide single nucleotide polymorphisms (SNPs)</strong> information for a <strong>sub-sample of 2,504 individuals</strong>.</p>
+<p>The <strong>objective</strong> of this dataset will be illustrating how to perform <strong>GWAS quality control</strong>, <strong>GWAS analysis</strong>, and how to construct and test <strong>polygenetic risk scores (PRSs)</strong> in a non-disclosive way using <strong>DataSHIELD</strong>.</p>
+<p>FALTA METER OBJETIVO EN UNA CAJA PARA QUE SE VEA RESALTADO.</p>
+<p>Data was initially accessible from a public EGA repository (ID: <a href="https://ega-archive.org/studies/EGAS00001002472/">EGAD00001006673</a>), being a deliverable belonging to the <a href="https://veis.bsc.es/en/">VEIS project</a>. Previous to analysis, data has been <strong>pruned</strong>, and the individuals have been separated into <strong>three synthetic cohorts</strong>, simulating a single-site <strong>DataSHIELD architecture</strong>, as in <strong><em>Figure 2</em></strong>. In this figure, the data analyst corresponds to the “RStudio” session, which through <strong>DataSHIELD Interface (DSI)</strong> connects with the Opal server located at the cohort network.</p>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Figure2"></span>
+<img src="fig/single_cohort_GWAS.png" alt="Figure 2. Proposed infrastructure to perform single-cohort GWAS studies." width="90%" />
+<p class="caption">
+Figure 1.2: Figure 2. Proposed infrastructure to perform single-cohort GWAS studies.
+</p>
+</div>
+<p><br></p>
+<p>Information on <strong>individuals and SNP count</strong> of each cohort can be found on the <em>Table</em> <a href="Datasets_Description.html#tab:tab1">1.1</a>.</p>
+<table>
+<caption><span id="tab:tab1">Table 1.1: </span> Number of SNPs and individuals by cohort.</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Cohort 1</th>
+<th align="right">Cohort 2</th>
+<th align="right">Cohort 3</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Number of SNPs</td>
+<td align="right">865,240</td>
+<td align="right">865,240</td>
+<td align="right">865,240</td>
+<td align="right">865,240</td>
+</tr>
+<tr class="even">
+<td>Number of individuals</td>
+<td align="right">817</td>
+<td align="right">1,073</td>
+<td align="right">614</td>
+<td align="right">2,504</td>
+</tr>
+</tbody>
+</table>
+<div id="data-organization-in-the-opal-server." class="section level3" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Data organization in the opal server.</h3>
+<p>This data is available in the <a href="https://datashield.isglobal.org/repo">Opal BRGE site</a> organized as (1) an array of <strong>resource</strong> objects, corresponding to unitary VCF files with the variant information (one per chromosome and cohort), and (2) <strong>table</strong> objects corresponding to the phenotype data of the studied individuals (one per cohort). For more information about <strong>DataSHIELD data formats</strong>, please, refers to the bookdown <a href="https://isglobal-brge.github.io/resource_bookdown/index.html"><em>“Orchestrating privacy-protected non-disclosive big data analyses of data from different resources with R and DataSHIELD”</em></a>. Briefly, <strong>resources</strong> are datasets or computation units whose location is described by an URL and access is protected by credentials. When assigned to a R/DataSHIELD server session, remote big/complex datasets or high performance computers are made accessible to data analysts. The <strong>resource</strong> format is therefore the way of working in DataSHIELD with almost any type of data handled by R (in this case, genomics data stored as VCF or GDS). A resource will always have the following properties:</p>
+<ul>
+<li>The location of the data or of the computation services,</li>
+<li>The data format (if this information cannot be inferred from the location property),</li>
+<li>The access credentials (if some apply).</li>
+</ul>
+</div>
+</div>
+<div id="helix-project." class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> HELIX project.</h2>
+<p>The other real-world research problem presented in this book comes from the <a href="https://www.projecthelix.eu">HELIX Project</a>. The <strong>HELIX (Human Early-Life Exposome) project</strong> gathers data from <strong>6 longitudinal-based European birth cohorts</strong>, with the aim of evaluating the effect of <strong>environmental risk factors</strong> on <strong>mothers and children health</strong>, with a special focus in the effects on <strong>molecular health profiles (omics data)</strong>. <strong>HELIX cohorts</strong> include the <em>BIB</em> (Born in Bradford) (United Kingdom), <em>EDEN</em> (Étude des Déterminants pré et postnatals du développement et de la santé de l’ENfant) (France), <em>INMA</em> (INfancia y Medio Ambiente) (Spain), <em>KANC</em> (Kaunus Cohort) (Lithuania), <em>MoBa</em> (Norwegian Mother and Child Cohort Study) (Norway) (13), and <em>Rhea</em> (Mother-Child Cohort in Crete) (Greece). General details of the <strong>study design</strong> of HELIX can be found in the <strong><em>Figure 3</em></strong>. The whole <strong>HELIX dataset</strong> includes a total of 31,472 mother-child pairs. Among them, a <strong>subcohort of 1,301 children</strong> (approximately 200 children in each cohort) was selected here according to the following criteria of eligibility: 1) age 6 to 11 years; 2) omics data available (including gene expression and EWAS data); 3) complete address history; and 4) no serious health problems that may affect the clinical testing or the child safety.</p>
+<p align="center">
+<img src = "http://www.projecthelix.eu/images/estructura/helix_study.gif">
+</p>
+<p align="center">
+Figure 3. General overview of the HELIX research project.
+</p>
+<p>In the <strong>1,301 children</strong>, a wide range of <strong>environmental exposures</strong> were evaluated to define the early-life exposome during <strong>2 time periods</strong>: the <strong>prenatal pregnancy period</strong> and <strong>childhood</strong> (age 6 to 11 years). Collected exposures can be organized into three main parts of the <strong>exposome</strong>: <strong>outdoor exposures, chemical exposures measured through biomarkers, and lifestyle factors</strong>. All variables incorporated in the dataset have been appropriately <strong>pre-processed</strong> previous to analysis (outliers removal, normalization, and missing values imputation). Regarding <strong>phenotype data</strong>, a wide range of <strong>health outcomes</strong> are also available for the <strong>childhood</strong> period including phenotypes related to (1) obesity and cardiometabolic health, (2) respiratory health, and (3) cognition and mental health. Finally, <strong>omics data</strong> (mainly <strong>transcriptomics</strong> and <strong>genome-wide DNA methylation data</strong>) are also available in the <strong>childhood</strong> period. The <strong>objective</strong> of this dataset will be illustrating how to perform in a non-disclosive way using <strong>DataSHIELD</strong>:</p>
+<pre><code>- Differential gene expression analysis. 
+
+ - Differential DNA methylation analysis. 
+
+ - Exposome Data Analysis. Deliverable of [ATHLETE project](https://athleteproject.eu/).</code></pre>
+<p>FALTA METER OBJETIVO EN UNA CAJA PARA QUE SE VEA RESALTADO.</p>
+<div id="data-organization-in-the-opal-server.-1" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Data organization in the opal server.</h3>
+<p><strong>Exposome</strong> and <strong>omics</strong> data from the HELIX project were uploaded into to the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> simulating a single-site <strong>DataSHIELD architecture</strong>, as illustrated in <strong><em>Figure 4</em></strong>. As in the case of <strong>CINECA project</strong>, here, exposome and omics data were loaded in <strong>DataSHIELD</strong> under the form of <strong>resources</strong> (one per cohort and data type). Particularly, the <strong>exposome</strong> data were available as exposomeSet objects, a particular R format from the ______“rexposome”______ package, consisting on an object made up from three different tables (exposures, phenotypes and description). Having an <em>ExposomeSet</em> loaded in the <strong>DataSHIELD</strong> environmnet as a resource will extremely facilitate the exposome data analysis. On the other hand, omics data (EWAS and transcriptomics) were available under the form of <em>expressionSets</em>. A summary of the data organization for the HELIX project is illustrated in <strong><em>Figure 4</em></strong></p>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Figure4"></span>
+<img src="fig/HELIX%20OPAL%20STRUCTURE.png" alt="Figure 4. Input HELIX datasets organized by cohort in the Opal server." width="90%" />
+<p class="caption">
+Figure 1.3: Figure 4. Input HELIX datasets organized by cohort in the Opal server.
+</p>
+</div>
+<p><br></p>
+<div id="Exposome_HELIX_Data" class="section level4" number="1.2.1.1">
+<h4><span class="header-section-number">1.2.1.1</span> Exposome data.</h4>
+<p>Exposome data for each HELIX cohort is available in the form of resources (including phenotype and exposure data) (<strong><em>Figure 5</em></strong>) and as tables (including extra phenotypes to be added to the analysis) (<strong><em>Figure 6</em></strong>) . In total, exposome data include information for 1301 subjects, 115 exposures and 88 phenotypes <a href="Datasets_Description.html#tab:tab2">1.2</a>.</p>
+<table>
+<caption><span id="tab:tab2">Table 1.2: </span> General description for the HELIX exposome dataset.</caption>
+<thead>
+<tr class="header">
+<th>Cohort</th>
+<th>N Individuals</th>
+<th>N Predictors</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BIB_cohort</td>
+<td>202</td>
+<td>115</td>
+</tr>
+<tr class="even">
+<td>EDEN_cohort</td>
+<td>198</td>
+<td>115</td>
+</tr>
+<tr class="odd">
+<td>INMA-SAB_cohort</td>
+<td>224</td>
+<td>115</td>
+</tr>
+<tr class="even">
+<td>KANC_cohort</td>
+<td>207</td>
+<td>115</td>
+</tr>
+<tr class="odd">
+<td>MoBA_cohort</td>
+<td>272</td>
+<td>115</td>
+</tr>
+<tr class="even">
+<td>Rhea_cohort</td>
+<td>198</td>
+<td>115</td>
+</tr>
+<tr class="odd">
+<td>Combined Studies</td>
+<td>1301</td>
+<td>115</td>
+</tr>
+</tbody>
+</table>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Figure5"></span>
+<img src="fig/HELIX_DATA_OPAL_resc_exposures.png" alt="Figure 5. Input ExposomeSet data organized by cohort in the Opal server as resources." width="90%" />
+<p class="caption">
+Figure 1.4: Figure 5. Input ExposomeSet data organized by cohort in the Opal server as resources.
+</p>
+</div>
+<p><br></p>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Figure6"></span>
+<img src="fig/HELIX_DATA_OPAL_tab_morephenos.png" alt="Figure 6. Additional HELIX phenotypes organized by cohort in the Opal server as tables." width="90%" />
+<p class="caption">
+Figure 1.5: Figure 6. Additional HELIX phenotypes organized by cohort in the Opal server as tables.
+</p>
+</div>
+<p><br></p>
+<p>These data must be loaded properly into the DataSHIELD environment when performing analysis.</p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Exposome_HELIX_analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["OmicSHIELD_bookdown.pdf", "OmicSHIELD_bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
