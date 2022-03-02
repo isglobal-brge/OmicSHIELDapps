@@ -15,28 +15,22 @@ knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
 
 # Welcome {-}
 
-![](fig/ds_logo.png){width=50%}
-
-This is a website for a book that serves as official documentation for applications of OmicSHIELD. On it you will find: 
-
-
-- GWAS of CINECA data split in 3 different cohorts stored in an Opal repository. Deliverable belonging to [VEIS project](https://veis.bsc.es/en/) that aims to value EGA for Industry and Society.
-
-
-- Omic data analyses using HELIX project (6 cohorts). It includes:
- 
-     - Differential expression analysis 
-
-     - Epigenome data analysis 
-
-      - Exposome Data Analysis. Deliverable of [ATHLETE project](https://athleteproject.eu/).
-
-All the applications described on this book have been developed at the Bioinformatic Research Group in Epidemiology ([BRGE](https://brge.isglobal.org/)) from ISGlobal with external collaborators and are part of OmicSHIELD.
-
 ![](fig/logo_omicshield.png){width=50%}
 
-The aim of this book is to be a showcase of the capabilities of the software we developed in real problems where the main aim of describing how to perform omic data analyses in multi-cohort studies using a privacy-protected federated system.
+This online book serves as official documentation for the R package [*OmicSHIELDapps*](https://github.com/isglobal-brge/OmicSHIELDapps). On it you will find examples of applications of *OmicSHIELDapps* to a range of human **omics and environmental data**, illustrating the possibilities and goodness of many of the available functions. For that, we will use data from two real-world  research projects following **multi-centric structures**. This book can be seen therefore as a showcase to describe how to perform omic data analyses in a **multi-cohort environment** using a **privacy-protected federated system**. This material will also serve as an **online companion** for the **manuscript** "To be supplied". 
 
-This material also serves as an online companion for the manuscript "To be supplied".
+The **data** to be analyzed here come from two well-known research projects: 
+
+* [CINECA Project](https://www.cineca-project.eu/): The CINECA project brings together a diverse collection of human cohorts consisting of 1.4M individuals in Canada, Europe, and Africa. Here, we will employ **GWAS data** for a **subsample of 2,504 individuals** structured into **3 different cohorts**. Data can be accessed from an EGA repository, and is a deliverable belonging to [VEIS project](https://veis.bsc.es/en/), that aims to value EGA for Industry and Society. The purpose of this dataset in our book is to serve as a **showcase for illustrating how to perform classic GWAS quality control procedures and analyses, and construct genetic risk scores** in **DataSHIELD**.
+
+* [HELIX Project](https://www.projecthelix.eu): The HELIX (Human Early-Life Exposome) project gathers data from 6 longitudinal-based European birth cohorts, with the aim of evaluating how the environmental hazards that mothers and children are exposed to, affect to health, growth and development of children, also focusing in the mediating effects of molecular alterations. In this project, we will count on **multi-omics and environmental data consisting of (RNAseq, EWAS and exposome data)** and present examples of how to perform:
+ 
+     - Differential gene expression analysis. 
+
+     - Differential DNA methylation analysis. 
+
+     - Exposome Data Analysis. Deliverable of [ATHLETE project](https://athleteproject.eu/).
+
+All the applications described on this book have been developed at the Bioinformatic Research Group in Epidemiology ([BRGE](https://brge.isglobal.org/)) from ISGlobal with external collaborators and are part of OmicSHIELD. 
 
 This website is licensed under an [Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://github.com/isglobal-brge/OmicSHIELDapps/blob/main/LICENSE).
