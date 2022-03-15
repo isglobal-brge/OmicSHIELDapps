@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Dataset description. | Applications of OmicDataSHIELD in real data</title>
+  <meta name="description" content="1 Dataset description. | Applications of OmicDataSHIELD in real data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Dataset description. | Applications of OmicDataSHIELD in real data" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Dataset description. | Applications of OmicDataSHIELD in real data" />
+  
+  
+  
+
+
+
+<meta name="date" content="2022-03-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="ExposomeHELIXanalysis.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script>
+  function unrolltab(evt, divName, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementById(divName).getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementById(divName).getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("gwas_results_1").click();
+    document.getElementById("gwas_plot_1").click();
+    document.getElementById("manhattan-plots-tab").click();
+    document.getElementById("locuszoom-plots-tabs").click();
+ });
+</script>
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="" target="blank">OmicSHIELD</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="DatasetDescription.html"><a href="DatasetDescription.html"><i class="fa fa-check"></i><b>1</b> Dataset description.</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="DatasetDescription.html"><a href="DatasetDescription.html#HELIXdescription"><i class="fa fa-check"></i><b>1.1</b> HELIX project.</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="DatasetDescription.html"><a href="DatasetDescription.html#HELIXopal"><i class="fa fa-check"></i><b>1.1.1</b> Data organization in the Opal server.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html"><i class="fa fa-check"></i><b>2</b> Exposome data analysis in the HELIX project.</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisOne"><i class="fa fa-check"></i><b>2.1</b> Getting started.</a></li>
+<li class="chapter" data-level="2.2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisTwo"><i class="fa fa-check"></i><b>2.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.3" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisThree"><i class="fa fa-check"></i><b>2.3</b> Implementation of ExWAS in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.4" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFour"><i class="fa fa-check"></i><b>2.4</b> Feature selection with penalized methods.</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFoura"><i class="fa fa-check"></i><b>2.4.1</b> Lasso regression for a given lambda value.</a></li>
+<li class="chapter" data-level="2.4.2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFourb"><i class="fa fa-check"></i><b>2.4.2</b> <em>ds.Lasso_Train()</em> function.</a></li>
+<li class="chapter" data-level="2.4.3" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFourc"><i class="fa fa-check"></i><b>2.4.3</b> <em>ds.Lasso_CVInSite()</em> function.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html"><i class="fa fa-check"></i><b>3</b> Transcriptomic analysis in the HELIX cohort.</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXone"><i class="fa fa-check"></i><b>3.1</b> Getting started.</a></li>
+<li class="chapter" data-level="3.2" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXdatamanip"><i class="fa fa-check"></i><b>3.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="3.3" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXDGE"><i class="fa fa-check"></i><b>3.3</b> Differential gene expression analysis.</a></li>
+<li class="chapter" data-level="3.4" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXsurrogateAnnot"><i class="fa fa-check"></i><b>3.4</b> Surrogate variable analysis.</a></li>
+<li class="chapter" data-level="3.5" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXenrichment"><i class="fa fa-check"></i><b>3.5</b> Enrichment analysis of functional annotations.</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html"><i class="fa fa-check"></i><b>4</b> Epigenetic analysis in the HELIX cohort.</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_gettingstarted"><i class="fa fa-check"></i><b>4.1</b> Getting started.</a></li>
+<li class="chapter" data-level="4.2" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_load"><i class="fa fa-check"></i><b>4.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="4.3" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis1"><i class="fa fa-check"></i><b>4.3</b> Single CpG pooled analysis.</a></li>
+<li class="chapter" data-level="4.4" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis2"><i class="fa fa-check"></i><b>4.4</b> Multiple CpGs pooled analysis.</a></li>
+<li class="chapter" data-level="4.5" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis3"><i class="fa fa-check"></i><b>4.5</b> Full genome meta-analysis.</a></li>
+<li class="chapter" data-level="4.6" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis4"><i class="fa fa-check"></i><b>4.6</b> Adjusting for surrogate variables.</a></li>
+<li class="chapter" data-level="4.7" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIXenrichment"><i class="fa fa-check"></i><b>4.7</b> Enrichment analysis of functional annotations.</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applications of OmicDataSHIELD in real data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="DatasetDescription" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Dataset description.</h1>
+<p>In this section, we will <strong>describe the data employed for each showcase</strong>, giving details about <strong>experimental design</strong>, the type of <strong>features available</strong> in each data layer, and the <strong>structure and organization</strong> of data in the <a href="https://opaldoc.obiba.org/en/latest/"><strong>Opal infrastructure</strong></a>. Particularly, all datasets employed in this <strong>book</strong> are uploaded to the <a href="https://datashield.isglobal.org/repo">Opal BRGE site</a> hosted by the <a href="https://brge.isglobal.org/">Bioinformatic Research Group in Epidemiology</a> of ISGlobal, simulating a <strong>single-site DataSHIELD infrastructure</strong>. Details for <strong>accessing</strong> the server will be found in each section, at the beginning of each pipeline.</p>
+<div id="HELIXdescription" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> HELIX project.</h2>
+<p>The real-world research problem presented in this book comes from the <a href="https://www.projecthelix.eu">HELIX Project</a>. The <strong>HELIX (Human Early-Life Exposome) project</strong> gathers data from <strong>6 longitudinal-based European birth cohorts</strong>, with the aim of evaluating the effect of <strong>environmental risk factors</strong> on <strong>mothers and children health</strong>, with a special focus in the effects on <strong>molecular health profiles (omic data)</strong>. <strong>HELIX cohorts</strong> include the <em>BIB</em> (Born in Bradford) (United Kingdom), <em>EDEN</em> (Étude des Déterminants pré et postnatals du développement et de la santé de l’ENfant) (France), <em>INMA</em> (INfancia y Medio Ambiente) (Spain), <em>KANC</em> (Kaunus Cohort) (Lithuania), <em>MoBa</em> (Norwegian Mother and Child Cohort Study) (Norway), and <em>Rhea</em> (Mother-Child Cohort in Crete) (Greece). General details of the <strong>study design</strong> of <strong>HELIX</strong> can be found in the <strong>Figure <a href="DatasetDescription.html#fig:FigHELIX">1.1</a></strong>. The whole <strong>HELIX dataset</strong> includes a total of 31,472 mother-child pairs. Among them, a <strong>subcohort of 1,301 children</strong> (approximately 200 children in each cohort) was selected <strong>here</strong> according to the following criteria of eligibility: 1) age 6 to 11 years; 2) omic data available (including gene expression and EWAS data); 3) complete address history; and 4) no serious health problems that may affect the clinical testing or the child safety.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigHELIX"></span>
+<img src="http://www.projecthelix.eu/images/estructura/helix_study.gif" alt="General overview of the HELIX research project." width="90%" />
+<p class="caption">
+Figure 1.1: General overview of the HELIX research project.
+</p>
+</div>
+<p>In the <strong>1,301 children</strong>, a wide range of <strong>environmental exposures</strong> were evaluated to define the early-life exposome during <strong>two time periods</strong>: the <strong>prenatal pregnancy period</strong> and <strong>childhood</strong> (age 6 to 11 years). Collected exposures can be organized into three main parts of the <strong>exposome</strong>: <strong>outdoor exposures, chemical exposures measured through biomarkers, and lifestyle factors</strong>. All variables incorporated in the dataset have been appropriately <strong>pre-processed</strong> previous to analysis (outliers removal, normalization, and missing values imputation). Regarding <strong>phenotype data</strong>, a wide range of <strong>health outcomes</strong> are also available for the <strong>childhood</strong> period including phenotypes related to (1) obesity and cardiometabolic health, (2) respiratory health, and (3) cognition and mental health. Finally, <strong>omic data</strong> (mainly <strong>transcriptomic</strong> and <strong>genome-wide DNA methylation data</strong>) are also available in the <strong>childhood</strong> period. The <strong>objective</strong> of this dataset will be illustrating how to perform, using <strong>DataSHIELD</strong>:</p>
+<ul>
+<li><strong>Exposome</strong> Data Analysis. Deliverable of <a href="https://athleteproject.eu/">ATHLETE project</a>.</li>
+<li>Differential <strong>gene expression</strong> analysis.</li>
+<li>Differential <strong>DNA methylation</strong> analysis.</li>
+</ul>
+<div id="HELIXopal" class="section level3" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Data organization in the Opal server.</h3>
+<p><strong>Exposome</strong> and <strong>omic</strong> data from the <strong>HELIX project</strong> were uploaded into to the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> simulating a <strong>single-site DataSHIELD architecture</strong>, as illustrated in <strong>Figure <a href="DatasetDescription.html#fig:FigHELIXopal">1.2</a></strong>. Data were stored under the form of <strong>resources</strong> (one per cohort and data type). On the one hand, the <strong>exposome</strong> data were stored as <strong>exposomeSet</strong> objects, a particular R format deriving from the <a href="https://github.com/isglobal-brge/rexposome"><strong>rexposome package</strong></a> <span class="citation">(<a href="#ref-rexposome2021" role="doc-biblioref">Hernandez-Ferrer, Gonzalez, and Escribà-Montagut 2021</a>)</span>. The <strong>exposomeSet</strong> type is an R object made up of three different tables (exposures, phenotype data and description). Having an <strong>exposomeSet</strong> loaded in the <strong>DataSHIELD</strong> environment as a <strong>resource</strong> will extremely facilitate the exposome data analysis. On the other hand, <strong>omic data</strong> (mainly EWAS and transcriptomic data) were stored under the form of <em>expressionSets</em>. A summary of the structure and organization of this data in the <strong>Opal</strong> for the <strong>HELIX project</strong> is illustrated in <strong>Figure <a href="DatasetDescription.html#fig:FigHELIXopal">1.2</a></strong>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigHELIXopal"></span>
+<img src="fig/HELIX%20OPAL%20STRUCTURE.png" alt="Input HELIX datasets organized by cohort in the Opal server." width="90%" />
+<p class="caption">
+Figure 1.2: Input HELIX datasets organized by cohort in the Opal server.
+</p>
+</div>
+<p>The data analyst corresponds to the “RStudio” session, which through DataSHIELD Interface (DSI) connects with the Opal server. In the next subsection, we present <strong>extra details</strong> for each of these datasets.</p>
+<div id="ExposomeHELIXDatadescript" class="section level4" number="1.1.1.1">
+<h4><span class="header-section-number">1.1.1.1</span> Exposome data.</h4>
+<p><strong>Exposome data</strong> for each of the <strong>HELIX cohorts</strong> was available in the form of <strong>resources</strong> (including phenotype and exposure data). A screenshot of these files stored in the <strong>Opal server</strong> can be viewed in the <strong>Figure <a href="DatasetDescription.html#fig:FigHELIXresourcesOpal">1.3</a></strong>. As it can be seen, data are stored in the Opal server within a <strong>project</strong> called HELIX.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigHELIXresourcesOpal"></span>
+<img src="fig/HELIX_DATA_OPAL_resc_exposures.png" alt="Input ExposomeSet data organized by cohort in the Opal server as resources." width="100%" />
+<p class="caption">
+Figure 1.3: Input ExposomeSet data organized by cohort in the Opal server as resources.
+</p>
+</div>
+<p>Additional phenotype data for the <strong>HELIX cohorts</strong> was available in the form of separate tables <strong>Figure <a href="DatasetDescription.html#fig:FigHELIXtablesOpal">1.4</a></strong>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigHELIXtablesOpal"></span>
+<img src="fig/HELIX_DATA_OPAL_tab_morephenos.png" alt="Additional HELIX phenotype data organized by cohort in the Opal server as tables." width="100%" />
+<p class="caption">
+Figure 1.4: Additional HELIX phenotype data organized by cohort in the Opal server as tables.
+</p>
+</div>
+<p>In total, <strong>exposome data</strong> include information for <strong>1,301 subjects</strong>, <strong>115 exposures</strong> and <strong>88 phenotypes</strong> <strong>Table <a href="DatasetDescription.html#tab:tabexpHELIX">1.1</a></strong>.</p>
+<table>
+<caption><span id="tab:tabexpHELIX">Table 1.1: </span> General description for the HELIX exposome dataset.</caption>
+<thead>
+<tr class="header">
+<th>Cohort</th>
+<th>N Individuals</th>
+<th>N Predictors</th>
+<th>N Phenotypes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BIB_cohort</td>
+<td>202</td>
+<td>115</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>EDEN_cohort</td>
+<td>198</td>
+<td>115</td>
+<td>88</td>
+</tr>
+<tr class="odd">
+<td>INMA-SAB_cohort</td>
+<td>224</td>
+<td>115</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>KANC_cohort</td>
+<td>207</td>
+<td>115</td>
+<td>88</td>
+</tr>
+<tr class="odd">
+<td>MoBA_cohort</td>
+<td>272</td>
+<td>115</td>
+<td>88</td>
+</tr>
+<tr class="even">
+<td>Rhea_cohort</td>
+<td>198</td>
+<td>115</td>
+<td>88</td>
+</tr>
+<tr class="odd">
+<td>Combined Studies</td>
+<td>1301</td>
+<td>115</td>
+<td>88</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="TranscriptomicsHELIXDatadescript" class="section level4" number="1.1.1.2">
+<h4><span class="header-section-number">1.1.1.2</span> Gene expression data.</h4>
+<p>The <strong>gene expression</strong> data available for the <strong>HELIX cohorts</strong> correspond to <strong>microarray data</strong> deriving from the <em>Human Transcriptome Array 2.0</em> platform of Affymetrix. These are hosted in the the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> as <em>ExpressionSet</em> objects. <strong>ExpressionSets</strong> files is a file-format of the <a href="https://www.bioconductor.org/">BioConductor project</a> that may contain different sources of <strong>genomic data</strong>. Alongside the <strong>genomic data</strong>, these data may also contain some <strong>phenotypes</strong> and <strong>metadata</strong> associated to the population. Researchers who are not familiar with <strong>ExpressionSet</strong> can find further information <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf">here</a>.</p>
+<p>Particularly, one <em>ExpressionSet</em> file per cohort is hosted in the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> in the form of a <strong>resource</strong>, as presented in the <strong>Figure @ref(fig:FigHELIXresourcesOpal_transcrip)</strong>. As it can be seen, data are organized within the Opal server in a <strong>project</strong> called <strong>HELIX_omics</strong>.</p>
+<div class="figure" style="text-align: center">
+<img src="fig/geneexpression_HELIX.png" alt="Input ExposomeSet data organized by cohort in the Opal server as resources." width="3000px" height="500px" />
+<p class="caption">
+(#fig:FigHELIXresourcesOpal_transcrip)Input ExposomeSet data organized by cohort in the Opal server as resources.
+</p>
+</div>
+</div>
+<div id="EWASHELIXDatadescript" class="section level4" number="1.1.1.3">
+<h4><span class="header-section-number">1.1.1.3</span> Epigenetic data.</h4>
+<p>The <strong>epigenetic</strong> data available for the <strong>HELIX cohorts</strong> correspond to genome-wide <strong>DNA methylation data</strong> obtained by microarray experiments using the <em>Infinium HumanMethylation450k</em> platform from Illumina. The data format in which these data are hosted in the Opal is the type <strong>GenomicRatioSet</strong>. <strong>GenomicRatioSet</strong> is a extend of the class <strong>SummarizedExperiment</strong> especially designed for DNA methylation data obtained with the <em>Infinium HumanMethylation450k</em> platform, that will be analysed with the associated R package <a href="http://bioconductor.org/packages/release/bioc/html/minfi.html">minfi</a>. This type of data usually contain <strong>pre-processed DNA methylation values</strong> at a genome-wide level, in the form of <strong>M or/and Beta values</strong>, together with the associated <strong>genomic coordinates</strong>. As in the case of <strong>ExpressionSet</strong> types, <strong>GenomicRatioSet</strong> can also incorporate <strong>phenotype</strong> and <strong>metadata</strong> information.</p>
+<p>Particularly, one <strong>GenomicRatioSet</strong> file per cohort is hosted in the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> in the form of a <strong>resource</strong>, as presented in the <strong>Figure @ref(fig:FigHELIXresourcesOpal_DNAm)</strong>. As it can be seen, data are organized within the Opal server in a <strong>project</strong> called <strong>HELIX_omics</strong>.</p>
+<div class="figure" style="text-align: center">
+<img src="fig/geneexpression_HELIX.png" alt="Input ExposomeSet data organized by cohort in the Opal server as resources." width="3000px" height="500px" />
+<p class="caption">
+(#fig:FigHELIXresourcesOpal_DNAm)Input ExposomeSet data organized by cohort in the Opal server as resources.
+</p>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-rexposome2021" class="csl-entry">
+Hernandez-Ferrer, Carles, Juan R. Gonzalez, and Xavier Escribà-Montagut. 2021. <em>Rexposome: Exposome Exploration and Outcome Data Analysis</em>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ExposomeHELIXanalysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["OmicSHIELD_bookdown.pdf", "OmicSHIELD_bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Epigenetic analysis in the HELIX cohort. | Applications of OmicDataSHIELD in real data</title>
+  <meta name="description" content="4 Epigenetic analysis in the HELIX cohort. | Applications of OmicDataSHIELD in real data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Epigenetic analysis in the HELIX cohort. | Applications of OmicDataSHIELD in real data" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Epigenetic analysis in the HELIX cohort. | Applications of OmicDataSHIELD in real data" />
+  
+  
+  
+
+
+
+<meta name="date" content="2022-03-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="TranscriptHELIX.html"/>
+<link rel="next" href="references..html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script>
+  function unrolltab(evt, divName, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementById(divName).getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementById(divName).getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("gwas_results_1").click();
+    document.getElementById("gwas_plot_1").click();
+    document.getElementById("manhattan-plots-tab").click();
+    document.getElementById("locuszoom-plots-tabs").click();
+ });
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="" target="blank">OmicSHIELD</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="DatasetDescription.html"><a href="DatasetDescription.html"><i class="fa fa-check"></i><b>1</b> Dataset description.</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="DatasetDescription.html"><a href="DatasetDescription.html#HELIXdescription"><i class="fa fa-check"></i><b>1.1</b> HELIX project.</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="DatasetDescription.html"><a href="DatasetDescription.html#HELIXopal"><i class="fa fa-check"></i><b>1.1.1</b> Data organization in the Opal server.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html"><i class="fa fa-check"></i><b>2</b> Exposome data analysis in the HELIX project.</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisOne"><i class="fa fa-check"></i><b>2.1</b> Getting started.</a></li>
+<li class="chapter" data-level="2.2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisTwo"><i class="fa fa-check"></i><b>2.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.3" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisThree"><i class="fa fa-check"></i><b>2.3</b> Implementation of ExWAS in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.4" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFour"><i class="fa fa-check"></i><b>2.4</b> Feature selection with penalized methods.</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFoura"><i class="fa fa-check"></i><b>2.4.1</b> Lasso regression for a given lambda value.</a></li>
+<li class="chapter" data-level="2.4.2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFourb"><i class="fa fa-check"></i><b>2.4.2</b> <em>ds.Lasso_Train()</em> function.</a></li>
+<li class="chapter" data-level="2.4.3" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFourc"><i class="fa fa-check"></i><b>2.4.3</b> <em>ds.Lasso_CVInSite()</em> function.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html"><i class="fa fa-check"></i><b>3</b> Transcriptomic analysis in the HELIX cohort.</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXone"><i class="fa fa-check"></i><b>3.1</b> Getting started.</a></li>
+<li class="chapter" data-level="3.2" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXdatamanip"><i class="fa fa-check"></i><b>3.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="3.3" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXDGE"><i class="fa fa-check"></i><b>3.3</b> Differential gene expression analysis.</a></li>
+<li class="chapter" data-level="3.4" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXsurrogateAnnot"><i class="fa fa-check"></i><b>3.4</b> Surrogate variable analysis.</a></li>
+<li class="chapter" data-level="3.5" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXenrichment"><i class="fa fa-check"></i><b>3.5</b> Enrichment analysis of functional annotations.</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html"><i class="fa fa-check"></i><b>4</b> Epigenetic analysis in the HELIX cohort.</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_gettingstarted"><i class="fa fa-check"></i><b>4.1</b> Getting started.</a></li>
+<li class="chapter" data-level="4.2" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_load"><i class="fa fa-check"></i><b>4.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="4.3" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis1"><i class="fa fa-check"></i><b>4.3</b> Single CpG pooled analysis.</a></li>
+<li class="chapter" data-level="4.4" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis2"><i class="fa fa-check"></i><b>4.4</b> Multiple CpGs pooled analysis.</a></li>
+<li class="chapter" data-level="4.5" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis3"><i class="fa fa-check"></i><b>4.5</b> Full genome meta-analysis.</a></li>
+<li class="chapter" data-level="4.6" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis4"><i class="fa fa-check"></i><b>4.6</b> Adjusting for surrogate variables.</a></li>
+<li class="chapter" data-level="4.7" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIXenrichment"><i class="fa fa-check"></i><b>4.7</b> Enrichment analysis of functional annotations.</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="references..html"><a href="references..html"><i class="fa fa-check"></i><b>5</b> References.</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applications of OmicDataSHIELD in real data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="DNAmHELIX" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Epigenetic analysis in the HELIX cohort.</h1>
+<p>In this section, we will illustrate how to perform <strong>DNA methylation differential analysis</strong> using data from the <strong>HELIX project</strong>. Particularly, we will analyse <strong>microarray data</strong> deriving from the <em>Infinium HumanMethylation450k</em> platform of Illumina. On these data, we will show how to perform a <strong>epigenome-wide association analysis (EWAS)</strong> to compare the <strong>DNA methylation profiles</strong> differing between <strong>boys</strong> and <strong>girls</strong> in the <strong>HELIX cohorts</strong>. We will illustrate the following use cases:</p>
+<ul>
+<li>Single CpG pooled analysis.</li>
+<li>Multiple CpGs pooled analysis.</li>
+<li>Full genome meta-analysis.</li>
+<li>Full genome meta-analysis adjusting for surrogate variables.</li>
+</ul>
+<p>In comparison to <strong>gene expression data</strong>, where data are not always normalized in the same way (especially in the case of <strong>RNAseq data</strong>), when analyzing <strong>EWAS data</strong> one count on normalized Beta or M-Values. This favors the harmonization of the dataset between cohorts, thereby making possible to perform a <strong>pooled analysis</strong> instead of a <strong>meta-analysis</strong> approach.</p>
+<div id="DNAmHELIX_gettingstarted" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Getting started.</h2>
+<p>In this section, we will describe how to <strong>configure R and DataSHIELD</strong> with the <strong>needed packages</strong> to carry out proposed analyses in remote. We start by <strong>installing</strong> the <em>client-side</em> version of the following <strong>DataSHIELD/Opal</strong> integration packages.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="DNAmHELIX.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DSOpal&quot;</span>, <span class="at">dependencies=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="DNAmHELIX.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DSI&quot;</span>, <span class="at">dependencies=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Make sure you also install the <strong>DataSHIELD</strong> <em>client-side</em> version of the package <strong>dsBaseClient</strong>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="DNAmHELIX.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dsBaseClient&quot;</span>, </span>
+<span id="cb2-2"><a href="DNAmHELIX.html#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;http://cran.datashield.org&quot;</span>,<span class="st">&quot;https://cloud.r-project.org/&quot;</span>),</span>
+<span id="cb2-3"><a href="DNAmHELIX.html#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Then, install the <em>client-side</em> version of the <strong>dsOmicsClient</strong> package directly from <em>GitHub</em>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="DNAmHELIX.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb3-2"><a href="DNAmHELIX.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb3-3"><a href="DNAmHELIX.html#cb3-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;isglobal-brge/dsOmicsClient&quot;</span>,<span class="at">ref=</span><span class="st">&quot;master&quot;</span>,</span>
+<span id="cb3-4"><a href="DNAmHELIX.html#cb3-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">auth_token =</span> <span class="st">&quot;INSERT_YOUR_GITHUB_TOKEN_HERE&quot;</span>)</span></code></pre></div>
+<p>Once installations are completed, all the packages are <strong>loaded</strong> as usual.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="DNAmHELIX.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(DSOpal)</span>
+<span id="cb4-2"><a href="DNAmHELIX.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(DSI)</span>
+<span id="cb4-3"><a href="DNAmHELIX.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dsBaseClient)</span>
+<span id="cb4-4"><a href="DNAmHELIX.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dsOmicsClient)</span>
+<span id="cb4-5"><a href="DNAmHELIX.html#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="DNAmHELIX.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading additional required packages (if not installed, you can easly install them using the BiocManager::install() function)</span></span>
+<span id="cb4-7"><a href="DNAmHELIX.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(clusterProfiler)</span>
+<span id="cb4-8"><a href="DNAmHELIX.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(org.Hs.eg.db)</span></code></pre></div>
+</div>
+<div id="DNAmHELIX_load" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Data formatting and manipulation in DataSHIELD.</h2>
+<p>In this section, we will cover how to <strong>load</strong> and <strong>inspect</strong> input <strong>microarray data</strong> with <strong>DataSHIELD</strong>. We start by <strong>creating the connection to the opal server</strong> using an user who have <strong>DataSHIELD permissions</strong>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="DNAmHELIX.html#cb5-1" aria-hidden="true" tabindex="-1"></a> builder <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">newDSLoginBuilder</span>()</span>
+<span id="cb5-2"><a href="DNAmHELIX.html#cb5-2" aria-hidden="true" tabindex="-1"></a> builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;BIB&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-3"><a href="DNAmHELIX.html#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span></span>
+<span id="cb5-4"><a href="DNAmHELIX.html#cb5-4" aria-hidden="true" tabindex="-1"></a>                , <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-5"><a href="DNAmHELIX.html#cb5-5" aria-hidden="true" tabindex="-1"></a> builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;EDEN&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-6"><a href="DNAmHELIX.html#cb5-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-7"><a href="DNAmHELIX.html#cb5-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-8"><a href="DNAmHELIX.html#cb5-8" aria-hidden="true" tabindex="-1"></a> builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;KANC&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-9"><a href="DNAmHELIX.html#cb5-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-10"><a href="DNAmHELIX.html#cb5-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-11"><a href="DNAmHELIX.html#cb5-11" aria-hidden="true" tabindex="-1"></a> builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;MoBA&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-12"><a href="DNAmHELIX.html#cb5-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-13"><a href="DNAmHELIX.html#cb5-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-14"><a href="DNAmHELIX.html#cb5-14" aria-hidden="true" tabindex="-1"></a> builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;Rhea&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-15"><a href="DNAmHELIX.html#cb5-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-16"><a href="DNAmHELIX.html#cb5-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-17"><a href="DNAmHELIX.html#cb5-17" aria-hidden="true" tabindex="-1"></a> builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;INMASAB&quot;</span>, <span class="at">url =</span><span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-18"><a href="DNAmHELIX.html#cb5-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-19"><a href="DNAmHELIX.html#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-20"><a href="DNAmHELIX.html#cb5-20" aria-hidden="true" tabindex="-1"></a> logindata <span class="ot">&lt;-</span> builder<span class="sc">$</span><span class="fu">build</span>()</span>
+<span id="cb5-21"><a href="DNAmHELIX.html#cb5-21" aria-hidden="true" tabindex="-1"></a> conns <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">datashield.login</span>(<span class="at">logins =</span> logindata)</span></code></pre></div>
+<p>Now that we have created a connection object to the Opal, we have started a new R session on the server, and our analysis will take place in this remote session, so we have to <strong>load the data</strong> into it. In this use case, available data are in the form <strong>GenomicRatioSet</strong>, a extend of the class <strong>SummarizedExperiment</strong> especially designed for DNA methylation data obtained with the <em>Infinium HumanMethylation450k</em> platform and usually analysed with the associated R package <a href="http://bioconductor.org/packages/release/bioc/html/minfi.html">minfi</a>. This type of data usually contain <strong>pre-processed DNA methylation values</strong> at a genome-wide level, in the form of <strong>M or/and Beta values</strong>, together with the associated <strong>genomic coordinates</strong>. As in the case of <strong>ExpressionSet</strong> types, <strong>GenomicRatioSet</strong> can also incorporate <strong>phenotype</strong> and <strong>metadata</strong> information.</p>
+<p>For our showcase, one <strong>GenomicRatioSet</strong> file per cohort is hosted in the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> in the form of a <strong>resource</strong>, all organized within the Opal server in a <strong>project</strong> called <strong>HELIX_omics</strong>.</p>
+<p>For loading these data into the remote <strong>DataSHIELD</strong> session we will use the <em>DSI::datashield.assign.resource()</em> function. This function takes the connections to the server created in the previous code chunk to assign all available <strong>resource objects</strong> from a project in the <strong>Opal</strong> to an <strong>R object</strong> in the <strong>DataSHIELD remote session</strong>. As it can be seen in the code, <strong>resources</strong> in <strong>DataSHIELD</strong> are called in the function following the next structure <em>“NameOfOpalProject.NameOfResource”</em>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="DNAmHELIX.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We assign post-natal data from all cohorts to an object called resource_pos</span></span>
+<span id="cb6-2"><a href="DNAmHELIX.html#cb6-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">1</span>], <span class="st">&quot;assinged_resource_DNAm&quot;</span>, </span>
+<span id="cb6-3"><a href="DNAmHELIX.html#cb6-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;HELIX_omics.methy_BIB&quot;</span>)</span>
+<span id="cb6-4"><a href="DNAmHELIX.html#cb6-4" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">2</span>], <span class="st">&quot;assinged_resource_DNAm&quot;</span>, </span>
+<span id="cb6-5"><a href="DNAmHELIX.html#cb6-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;HELIX_omics.methy_EDE&quot;</span>)</span>
+<span id="cb6-6"><a href="DNAmHELIX.html#cb6-6" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">3</span>], <span class="st">&quot;assinged_resource_DNAm&quot;</span>, </span>
+<span id="cb6-7"><a href="DNAmHELIX.html#cb6-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;HELIX_omics.methy_KAN&quot;</span>)</span>
+<span id="cb6-8"><a href="DNAmHELIX.html#cb6-8" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">4</span>], <span class="st">&quot;assinged_resource_DNAm&quot;</span>, </span>
+<span id="cb6-9"><a href="DNAmHELIX.html#cb6-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;HELIX_omics.methy_MOB&quot;</span>)</span>
+<span id="cb6-10"><a href="DNAmHELIX.html#cb6-10" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">5</span>], <span class="st">&quot;assinged_resource_DNAm&quot;</span>, </span>
+<span id="cb6-11"><a href="DNAmHELIX.html#cb6-11" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;HELIX_omics.methy_RHE&quot;</span>)</span>
+<span id="cb6-12"><a href="DNAmHELIX.html#cb6-12" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">6</span>], <span class="st">&quot;assinged_resource_DNAm&quot;</span>, </span>
+<span id="cb6-13"><a href="DNAmHELIX.html#cb6-13" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;HELIX_omics.methy_SAB&quot;</span>)</span></code></pre></div>
+<p>Then, we have to <strong>resolve the resources</strong> and <strong>retrieve the data in the remote session (server-side)</strong>. For that, we will use the <em>DSI::datashield.assign.expr()</em> function. As a result, we will get an <strong>R object</strong> (here named <strong>“resource_DNAm”</strong>) containing the available <strong>GenomicRatioSet</strong> files for cohorts. For created objects, we can extract some useful information including the <strong>dimension</strong>, <strong>class</strong>, and the <strong>name of the CpGs analysed in the microarray</strong> and additional <strong>phenotype</strong> data available.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="DNAmHELIX.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We resolve the resource</span></span>
+<span id="cb7-2"><a href="DNAmHELIX.html#cb7-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(<span class="at">conns =</span> conns, <span class="at">symbol =</span> <span class="st">&quot;resource_DNAm&quot;</span>,</span>
+<span id="cb7-3"><a href="DNAmHELIX.html#cb7-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">expr =</span> <span class="fu">as.symbol</span>(<span class="st">&quot;as.resource.object(assinged_resource_DNAm)&quot;</span>))</span>
+<span id="cb7-4"><a href="DNAmHELIX.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">&quot;resource_DNAm&quot;</span>)</span>
+<span id="cb7-5"><a href="DNAmHELIX.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;resource_DNAm&quot;</span>)</span>
+<span id="cb7-6"><a href="DNAmHELIX.html#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="DNAmHELIX.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#The names of the CpGs included in the array can be extracted using</span></span>
+<span id="cb7-8"><a href="DNAmHELIX.html#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># the same function used for extracting probe names in the case of analyzing </span></span>
+<span id="cb7-9"><a href="DNAmHELIX.html#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># an ExpressionSet:</span></span>
+<span id="cb7-10"><a href="DNAmHELIX.html#cb7-10" aria-hidden="true" tabindex="-1"></a>name.features <span class="ot">&lt;-</span> <span class="fu">ds.featureNames</span>(<span class="st">&quot;resource_DNAm&quot;</span>)</span>
+<span id="cb7-11"><a href="DNAmHELIX.html#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(name.features, head)[[<span class="dv">1</span>]]</span>
+<span id="cb7-12"><a href="DNAmHELIX.html#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="DNAmHELIX.html#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Experimental phenotypes variables can be obtained by:</span></span>
+<span id="cb7-14"><a href="DNAmHELIX.html#cb7-14" aria-hidden="true" tabindex="-1"></a>name.phenotypes <span class="ot">&lt;-</span> <span class="fu">ds.varLabels</span>(<span class="st">&quot;resource_DNAm&quot;</span>)</span>
+<span id="cb7-15"><a href="DNAmHELIX.html#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(name.phenotypes, head)[[<span class="dv">1</span>]]</span>
+<span id="cb7-16"><a href="DNAmHELIX.html#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="DNAmHELIX.html#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Also the annotation information can be obtained by:</span></span>
+<span id="cb7-18"><a href="DNAmHELIX.html#cb7-18" aria-hidden="true" tabindex="-1"></a>name.annot <span class="ot">&lt;-</span> <span class="fu">ds.fvarLabels</span>(<span class="st">&quot;resource_DNAm&quot;</span>)</span>
+<span id="cb7-19"><a href="DNAmHELIX.html#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(name.annot, head)[[<span class="dv">1</span>]]</span></code></pre></div>
+</div>
+<div id="DNAmHELIX_analysis1" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Single CpG pooled analysis.</h2>
+<p>Once the methylation data have been loaded into the opal server, we can perform different type of analyses using functions from the <strong>dsOmicsClient</strong> package. Let us start by illustrating how to analyse a <strong>single CpG</strong> from all cohorts by using an approach that is mathematically equivalent to placing all individual together (<strong>pooled analysis</strong>).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="DNAmHELIX.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Does not work with GenomicRatioSet</span></span>
+<span id="cb8-2"><a href="DNAmHELIX.html#cb8-2" aria-hidden="true" tabindex="-1"></a>pooled.model.sex.single <span class="ot">&lt;-</span> <span class="fu">ds.lmFeature</span>(<span class="at">feature =</span> <span class="st">&quot;cg16736630&quot;</span>, </span>
+<span id="cb8-3"><a href="DNAmHELIX.html#cb8-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">model =</span> <span class="sc">~</span> e3_sex <span class="sc">+</span>  age_sample_years <span class="sc">+</span> h_ethnicity_cauc, </span>
+<span id="cb8-4"><a href="DNAmHELIX.html#cb8-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">Set =</span> <span class="st">&quot;resource_DNAm&quot;</span>,</span>
+<span id="cb8-5"><a href="DNAmHELIX.html#cb8-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">datasources =</span> conns)</span>
+<span id="cb8-6"><a href="DNAmHELIX.html#cb8-6" aria-hidden="true" tabindex="-1"></a>pooled.model.sex.single </span></code></pre></div>
+</div>
+<div id="DNAmHELIX_analysis2" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Multiple CpGs pooled analysis.</h2>
+<p>The same analysis can be performed for <strong>multiple CpGs</strong>. This process can be parallelized using <em>mclapply</em> function from the <strong>multicore</strong> package (only works on GNU/Linux, not on Windows).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="DNAmHELIX.html#cb9-1" aria-hidden="true" tabindex="-1"></a>pooled.model.sex.selection <span class="ot">&lt;-</span> </span>
+<span id="cb9-2"><a href="DNAmHELIX.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ds.lmFeature</span>(<span class="at">feature =</span> <span class="fu">c</span>(<span class="st">&quot;cg00000029&quot;</span>, <span class="st">&quot;cg00000108&quot;</span>, </span>
+<span id="cb9-3"><a href="DNAmHELIX.html#cb9-3" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&quot;cg00000109&quot;</span>, <span class="st">&quot;cg00000165&quot;</span>),</span>
+<span id="cb9-4"><a href="DNAmHELIX.html#cb9-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="sc">~</span> e3_sex <span class="sc">+</span>  age_sample_years <span class="sc">+</span> h_ethnicity_cauc, </span>
+<span id="cb9-5"><a href="DNAmHELIX.html#cb9-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">Set =</span> <span class="st">&quot;resource_DNAm&quot;</span>,</span>
+<span id="cb9-6"><a href="DNAmHELIX.html#cb9-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">datasources =</span> conns,</span>
+<span id="cb9-7"><a href="DNAmHELIX.html#cb9-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">mc.cores =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>If the <strong>feature</strong> argument is not supplied, <strong>all the CpGs</strong> available in the array will be analysed, please note that this process can be extremely slow if there is a huge number of features; for example, on the case we are illustrating we have over 200K features, so this process would take too much time. If all the features are to be studied, we recommend switching to the <strong>meta-analysis method</strong>. More information on the next section.</p>
+</div>
+<div id="DNAmHELIX_analysis3" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Full genome meta-analysis.</h2>
+<p>The quick alternative to perfom a <strong>full EWAS</strong> analysis in <strong>DataSHIELD</strong> is to run a <strong>meta-analysis</strong> approach (analyzing each cohort separately). For that, we can use the same function than in the showcase of <strong>transcriptomic</strong> analysis (<em>ds.limma()</em>).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="DNAmHELIX.html#cb10-1" aria-hidden="true" tabindex="-1"></a>meta.model.sex <span class="ot">&lt;-</span> <span class="fu">ds.limma</span>(<span class="at">model =</span> <span class="sc">~</span> e3_sex,</span>
+<span id="cb10-2"><a href="DNAmHELIX.html#cb10-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Set =</span> <span class="st">&quot;resource_DNAm&quot;</span>, </span>
+<span id="cb10-3"><a href="DNAmHELIX.html#cb10-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">datasources =</span> conns)</span></code></pre></div>
+<p>Then, we can visualize the <strong>top significant CpGs</strong> at each study (i.e server) by:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="DNAmHELIX.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(meta.model.sex, head)</span></code></pre></div>
+<pre><code>$BIB
+# A tibble: 6 × 7
+  id             n    beta      SE     t    P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 cg15035382   162  0.0482 0.0117   4.72 0.00000502     0.936
+2 cg08308934   162  0.0239 0.00324  4.67 0.00000626     0.936
+3 cg06166863   162 -0.0239 0.00860 -4.48 0.0000138      1.00 
+4 cg19617080   162  0.0158 0.00466  4.20 0.0000437      1.00 
+5 cg26328510   162 -0.0181 0.0113  -4.17 0.0000500      1.00 
+6 cg20041381   162  0.0184 0.00445  4.12 0.0000593      1.00 
+
+$EDEN
+# A tibble: 6 × 7
+  id             n    beta      SE     t   P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 cg22339219    82 -0.0239 0.0157  -4.58 0.0000156     0.999
+2 cg26256793    82  0.0217 0.00932  4.40 0.0000308     0.999
+3 cg22672067    82 -0.0256 0.0103  -4.39 0.0000321     0.999
+4 cg04920428    82 -0.0303 0.00518 -4.38 0.0000336     0.999
+5 cg24052148    82 -0.0249 0.0139  -4.34 0.0000390     0.999
+6 cg11822659    82 -0.0299 0.00676 -4.34 0.0000394     0.999
+
+$KANC
+# A tibble: 6 × 7
+  id             n    beta      SE     t    P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 cg12052203   146  0.107  0.0131   4.93 0.00000218     0.473
+2 cg22266749   146  0.0650 0.00323  4.84 0.00000316     0.473
+3 cg21411366   146  0.0368 0.00901  4.22 0.0000429      1.00 
+4 cg16216407   146  0.0329 0.00425  4.12 0.0000638      1.00 
+5 cg08093323   146  0.0220 0.0124   4.08 0.0000730      1.00 
+6 cg23108580   146 -0.0321 0.00414 -4.04 0.0000853      1.00 
+
+$MoBA
+# A tibble: 6 × 7
+  id             n    beta      SE     t   P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 cg12205554   196 -0.0138 0.0102  -4.26 0.0000320      1.00
+2 cg06998765   196 -0.0238 0.00267 -4.19 0.0000418      1.00
+3 cg25240363   196  0.0112 0.00806  4.17 0.0000462      1.00
+4 cg11643285   196 -0.0282 0.00343 -4.15 0.0000500      1.00
+5 cg27191131   196 -0.0126 0.00998 -4.06 0.0000714      1.00
+6 cg27150870   196  0.0220 0.00384  4.05 0.0000725      1.00
+
+$Rhea
+# A tibble: 6 × 7
+  id             n   beta      SE     t    P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 cg15777472   156 0.0328 0.0136   4.73 0.00000485      1.00
+2 cg19249678   156 0.0126 0.00334  4.55 0.0000106       1.00
+3 cg21377936   156 0.0223 0.00939  4.54 0.0000111       1.00
+4 cg12052203   156 0.0800 0.00385  4.41 0.0000193       1.00
+5 cg12613618   156 0.0373 0.0110   4.32 0.0000272       1.00
+6 cg06544141   156 0.0142 0.00454  4.31 0.0000280       1.00
+
+$INMASAB
+# A tibble: 6 × 7
+  id             n    beta      SE     t    P.Value adj.P.Val
+  &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 cg05293407   176  0.0189 0.0114   4.70 0.00000511      1.00
+2 cg02802904   176  0.0125 0.00500  4.35 0.0000232       1.00
+3 cg22810281   176 -0.0178 0.00893 -4.30 0.0000281       1.00
+4 cg18126027   176 -0.0134 0.00421 -4.17 0.0000479       1.00
+5 cg03368690   176 -0.0146 0.0108  -4.12 0.0000576       1.00
+6 cg03691818   176 -0.0331 0.00368 -4.11 0.0000597       1.00</code></pre>
+<p>As in the case of <strong>gene expression analysis</strong>, annotation columns can be added to the output by using the argument <strong>annotCols</strong>. It should be a vector with the columns of the annotation available in the <strong>GenomeRatioSet</strong> that want to be showed. To obtain the available annotation columns use the function <em>ds.fvarLabels()</em>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="DNAmHELIX.html#cb13-1" aria-hidden="true" tabindex="-1"></a>meta.model.sex.annot <span class="ot">&lt;-</span> <span class="fu">ds.limma</span>(<span class="at">model =</span> <span class="sc">~</span> e3_sex,</span>
+<span id="cb13-2"><a href="DNAmHELIX.html#cb13-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">Set =</span> <span class="st">&quot;resource_DNAm&quot;</span>, </span>
+<span id="cb13-3"><a href="DNAmHELIX.html#cb13-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">annotCols =</span> <span class="fu">c</span>(<span class="st">&quot;chromosome&quot;</span>,<span class="st">&quot;start&quot;</span>,<span class="st">&quot;end&quot;</span>,<span class="st">&quot;UCSC_RefGene_Name&quot;</span>),</span>
+<span id="cb13-4"><a href="DNAmHELIX.html#cb13-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">datasources =</span> conns)</span>
+<span id="cb13-5"><a href="DNAmHELIX.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(meta.model.sex.annot, head)</span></code></pre></div>
+<pre><code>$BIB
+# A tibble: 6 × 11
+  id          n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+1 cg1503…   162  0.0482 0.0117   4.72 5.02e-6     0.936 chr19      4.07e7 4.07e7
+2 cg0830…   162  0.0239 0.00324  4.67 6.26e-6     0.936 chr14      9.20e7 9.20e7
+3 cg0616…   162 -0.0239 0.00860 -4.48 1.38e-5     1.00  chr14      3.96e7 3.96e7
+4 cg1961…   162  0.0158 0.00466  4.20 4.37e-5     1.00  chr3       1.83e8 1.83e8
+5 cg2632…   162 -0.0181 0.0113  -4.17 5.00e-5     1.00  chr10      1.11e7 1.11e7
+6 cg2004…   162  0.0184 0.00445  4.12 5.93e-5     1.00  chr1       1.86e8 1.86e8
+# … with 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$EDEN
+# A tibble: 6 × 11
+  id          n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+1 cg2233…    82 -0.0239 0.0157  -4.58 1.56e-5     0.999 chr7       1.05e8 1.05e8
+2 cg2625…    82  0.0217 0.00932  4.40 3.08e-5     0.999 chr1       1.04e8 1.04e8
+3 cg2267…    82 -0.0256 0.0103  -4.39 3.21e-5     0.999 chr15      7.45e7 7.45e7
+4 cg0492…    82 -0.0303 0.00518 -4.38 3.36e-5     0.999 chr17      5.77e7 5.77e7
+5 cg2405…    82 -0.0249 0.0139  -4.34 3.90e-5     0.999 chr19      4.07e6 4.07e6
+6 cg1182…    82 -0.0299 0.00676 -4.34 3.94e-5     0.999 chr20      5.31e7 5.31e7
+# … with 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$KANC
+# A tibble: 6 × 11
+  id          n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+1 cg1205…   146  0.107  0.0131   4.93 2.18e-6     0.473 chr11      6.61e7 6.61e7
+2 cg2226…   146  0.0650 0.00323  4.84 3.16e-6     0.473 chr4       1.10e8 1.10e8
+3 cg2141…   146  0.0368 0.00901  4.22 4.29e-5     1.00  chr4       2.48e7 2.48e7
+4 cg1621…   146  0.0329 0.00425  4.12 6.38e-5     1.00  chr4       2.48e7 2.48e7
+5 cg0809…   146  0.0220 0.0124   4.08 7.30e-5     1.00  chr11      3.24e6 3.24e6
+6 cg2310…   146 -0.0321 0.00414 -4.04 8.53e-5     1.00  chr12      3.98e7 3.98e7
+# … with 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$MoBA
+# A tibble: 6 × 11
+  id          n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+1 cg1220…   196 -0.0138 0.0102  -4.26 3.20e-5      1.00 chr10      1.57e6 1.57e6
+2 cg0699…   196 -0.0238 0.00267 -4.19 4.18e-5      1.00 chr14      7.54e7 7.54e7
+3 cg2524…   196  0.0112 0.00806  4.17 4.62e-5      1.00 chr17      2.80e7 2.80e7
+4 cg1164…   196 -0.0282 0.00343 -4.15 5.00e-5      1.00 chr3       1.64e7 1.64e7
+5 cg2719…   196 -0.0126 0.00998 -4.06 7.14e-5      1.00 chr3       1.34e8 1.34e8
+6 cg2715…   196  0.0220 0.00384  4.05 7.25e-5      1.00 chr16      8.94e7 8.94e7
+# … with 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$Rhea
+# A tibble: 6 × 11
+  id           n   beta      SE     t P.Value adj.P.Val chromosome  start    end
+  &lt;chr&gt;    &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+1 cg15777…   156 0.0328 0.0136   4.73 4.85e-6      1.00 chr11      6.57e7 6.57e7
+2 cg19249…   156 0.0126 0.00334  4.55 1.06e-5      1.00 chr7       1.57e8 1.57e8
+3 cg21377…   156 0.0223 0.00939  4.54 1.11e-5      1.00 chr7       4.77e6 4.77e6
+4 cg12052…   156 0.0800 0.00385  4.41 1.93e-5      1.00 chr11      6.61e7 6.61e7
+5 cg12613…   156 0.0373 0.0110   4.32 2.72e-5      1.00 chr11      6.37e7 6.37e7
+6 cg06544…   156 0.0142 0.00454  4.31 2.80e-5      1.00 chr1       2.73e7 2.73e7
+# … with 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$INMASAB
+# A tibble: 6 × 11
+  id          n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+  &lt;chr&gt;   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+1 cg0529…   176  0.0189 0.0114   4.70 5.11e-6      1.00 chr6       2.89e7 2.89e7
+2 cg0280…   176  0.0125 0.00500  4.35 2.32e-5      1.00 chr10      1.31e8 1.31e8
+3 cg2281…   176 -0.0178 0.00893 -4.30 2.81e-5      1.00 chr6       3.19e7 3.19e7
+4 cg1812…   176 -0.0134 0.00421 -4.17 4.79e-5      1.00 chr6       1.61e8 1.61e8
+5 cg0336…   176 -0.0146 0.0108  -4.12 5.76e-5      1.00 chr16      2.73e7 2.73e7
+6 cg0369…   176 -0.0331 0.00368 -4.11 5.97e-5      1.00 chr12      5.31e7 5.31e7
+# … with 1 more variable: UCSC_RefGene_Name &lt;chr&gt;</code></pre>
+<p>Up to this point, we have obtained association results for each cohort on the study. The next step is to <strong>combine</strong> this information using <strong>meta-analysis</strong> methods to derive a <strong>pooled</strong> estimate closest to the common truth. Each researcher might have an already built pipeline to do so, or a preferred method; nevertheless, we included a couple methods inside <strong>dsOmicsClient</strong>. They are the following:</p>
+<ul>
+<li>Meta-analysis of p-values: Using the sum of logs method (<strong>Fisher’s method</strong>).</li>
+<li>Meta-analysis of beta values: Using a fixed-effects model. Methodology extracted and adapted from <span class="citation">(<a href="#ref-betameta" role="doc-biblioref">Pirinen 2020</a>)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="DNAmHELIX.html#cb15-1" aria-hidden="true" tabindex="-1"></a>metaP.model.sex.annot <span class="ot">&lt;-</span> <span class="fu">metaPvalues</span>(meta.model.sex.annot)</span>
+<span id="cb15-2"><a href="DNAmHELIX.html#cb15-2" aria-hidden="true" tabindex="-1"></a>metaP.model.sex.annot</span></code></pre></div>
+<pre><code># A tibble: 299,221 × 8
+   id             BIB    EDEN       KANC      MoBA      Rhea   INMASAB   p.meta
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 cg12052203 0.423   0.0522  0.00000218 0.0257    0.0000193 0.0129    1.72e-10
+ 2 cg22266749 0.571   0.0193  0.00000316 0.0668    0.000117  0.0399    3.67e- 9
+ 3 cg11643285 0.00267 0.909   0.0322     0.0000500 0.000136  0.0345    5.71e- 9
+ 4 cg03691818 0.0115  0.674   0.0291     0.00979   0.0207    0.0000597 3.71e- 7
+ 5 cg07210061 0.351   0.00238 0.358      0.00365   0.0331    0.00414   9.33e- 6
+ 6 cg25698541 0.00102 0.129   0.807      0.00271   0.107     0.0133    2.06e- 5
+ 7 cg15422033 0.317   0.0496  0.00381    0.887     0.000845  0.0108    2.35e- 5
+ 8 cg23108580 0.578   0.00227 0.0000853  0.0495    0.115     0.852     2.57e- 5
+ 9 cg12613618 0.158   0.0988  0.00425    0.472     0.0000272 0.689     2.73e- 5
+10 cg24537724 0.165   0.754   0.000380   0.0265    0.0297    0.0171    2.90e- 5
+# … with 299,211 more rows</code></pre>
+<p>We can <strong>verify</strong> that the results are pretty <strong>similar</strong> to those obtained using <strong>pooled analysis</strong>. Here we compute the association for the <strong>top two CpGs</strong>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="DNAmHELIX.html#cb17-1" aria-hidden="true" tabindex="-1"></a>pooled.model.sex.selection <span class="ot">&lt;-</span> </span>
+<span id="cb17-2"><a href="DNAmHELIX.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ds.lmFeature</span>(<span class="at">feature =</span> metaP.model.sex.annot<span class="sc">$</span>id[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], </span>
+<span id="cb17-3"><a href="DNAmHELIX.html#cb17-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="sc">~</span> e3_sex, </span>
+<span id="cb17-4"><a href="DNAmHELIX.html#cb17-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">Set =</span> <span class="st">&quot;resource_DNAm&quot;</span>,</span>
+<span id="cb17-5"><a href="DNAmHELIX.html#cb17-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">datasources =</span> conns)</span>
+<span id="cb17-6"><a href="DNAmHELIX.html#cb17-6" aria-hidden="true" tabindex="-1"></a>pooled.model.sex.selection </span></code></pre></div>
+<p>We can create a <strong>QQ-plot</strong> by using the function <em>qqplot()</em> available in our package.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="DNAmHELIX.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqplot</span>(metaP.model.sex.annot<span class="sc">$</span>p.meta)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/DNAm_ewas_limma_qq-1.png" width="672" /></p>
+<p>Here, as can be observed, there is no need to remove unwanted variability (λ&lt;2). Nevertheless, we will illustrate how to proceed in case of observing <strong>inflation</strong>.</p>
+</div>
+<div id="DNAmHELIX_analysis4" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Adjusting for surrogate variables.</h2>
+<p>The vast majority of omic studies require to control for unwanted variability. The <strong>surrogate variable analysis</strong> can address this issue by estimating some hidden covariates that capture differences across individuals due to some artifacts such as batch effects or sample quality among others. The method is implemented in <a href="https://bioconductor.org/packages/release/bioc/html/sva.html">SVA</a> package.</p>
+<p>Performing this type of analysis using the <strong>ds.lmFeature</strong> function is not allowed since estimating SVA would require to implement a non-disclosive method that computes SVA from the different servers. This will be a future topic of the <strong>dsOmicsClient</strong>. For that reason we have to adopt a compromise solution which is to perform the SVA independently at each study. We use the <strong>ds.limma</strong> function to perform the analyses adjusted for SVA at each study. Especially for the case of <strong>EWAS data</strong> this kind of analysis is important since it usual to find be important sources of unwanted variability affecting the global levels of methylation (e.g., the existence of different white-cell proportions when the sample type under analysis is whole-blood)</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="DNAmHELIX.html#cb19-1" aria-hidden="true" tabindex="-1"></a>meta.model.sex.annot.sva <span class="ot">&lt;-</span> <span class="fu">ds.limma</span>(<span class="at">model =</span> <span class="sc">~</span> e3_sex,</span>
+<span id="cb19-2"><a href="DNAmHELIX.html#cb19-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">Set =</span> <span class="st">&quot;resource_DNAm&quot;</span>,</span>
+<span id="cb19-3"><a href="DNAmHELIX.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">sva =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb19-4"><a href="DNAmHELIX.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">annotCols =</span> <span class="fu">c</span>(<span class="st">&quot;chromosome&quot;</span>,<span class="st">&quot;start&quot;</span>,<span class="st">&quot;end&quot;</span>,<span class="st">&quot;UCSC_RefGene_Name&quot;</span>))</span>
+<span id="cb19-5"><a href="DNAmHELIX.html#cb19-5" aria-hidden="true" tabindex="-1"></a>meta.model.sex.annot.sva</span></code></pre></div>
+<pre><code>$BIB
+# A tibble: 299,221 × 11
+   id         n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+ 1 cg150…   162  0.0482 0.0117   4.72 5.02e-6     0.936 chr19      4.07e7 4.07e7
+ 2 cg083…   162  0.0239 0.00324  4.67 6.26e-6     0.936 chr14      9.20e7 9.20e7
+ 3 cg061…   162 -0.0239 0.00860 -4.48 1.38e-5     1.00  chr14      3.96e7 3.96e7
+ 4 cg196…   162  0.0158 0.00466  4.20 4.37e-5     1.00  chr3       1.83e8 1.83e8
+ 5 cg263…   162 -0.0181 0.0113  -4.17 5.00e-5     1.00  chr10      1.11e7 1.11e7
+ 6 cg200…   162  0.0184 0.00445  4.12 5.93e-5     1.00  chr1       1.86e8 1.86e8
+ 7 cg276…   162 -0.0143 0.00425 -4.06 7.64e-5     1.00  chr20      2.45e6 2.45e6
+ 8 cg049…   162 -0.0134 0.00354 -4.05 7.83e-5     1.00  chr1       2.34e8 2.34e8
+ 9 cg090…   162 -0.0141 0.00471 -4.01 9.15e-5     1.00  chr16      8.10e7 8.10e7
+10 cg257…   162 -0.0414 0.00373 -4.01 9.21e-5     1.00  chr18      2.86e7 2.86e7
+# … with 299,211 more rows, and 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$EDEN
+# A tibble: 299,221 × 11
+   id         n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+ 1 cg223…    82 -0.0239 0.0157  -4.58 1.56e-5     0.999 chr7       1.05e8 1.05e8
+ 2 cg262…    82  0.0217 0.00932  4.40 3.08e-5     0.999 chr1       1.04e8 1.04e8
+ 3 cg226…    82 -0.0256 0.0103  -4.39 3.21e-5     0.999 chr15      7.45e7 7.45e7
+ 4 cg049…    82 -0.0303 0.00518 -4.38 3.36e-5     0.999 chr17      5.77e7 5.77e7
+ 5 cg240…    82 -0.0249 0.0139  -4.34 3.90e-5     0.999 chr19      4.07e6 4.07e6
+ 6 cg118…    82 -0.0299 0.00676 -4.34 3.94e-5     0.999 chr20      5.31e7 5.31e7
+ 7 cg231…    82  0.0283 0.00631  4.30 4.47e-5     0.999 chr5       1.77e8 1.77e8
+ 8 cg042…    82  0.0246 0.00559  4.20 6.58e-5     0.999 chr12      1.09e7 1.09e7
+ 9 cg005…    82 -0.0274 0.00624 -4.20 6.60e-5     0.999 chr19      5.00e7 5.00e7
+10 cg223…    82  0.0306 0.00985  4.19 6.69e-5     0.999 chr19      6.21e6 6.21e6
+# … with 299,211 more rows, and 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$KANC
+# A tibble: 299,221 × 11
+   id         n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+ 1 cg120…   146  0.107  0.0131   4.93 2.18e-6     0.473 chr11      6.61e7 6.61e7
+ 2 cg222…   146  0.0650 0.00323  4.84 3.16e-6     0.473 chr4       1.10e8 1.10e8
+ 3 cg214…   146  0.0368 0.00901  4.22 4.29e-5     1.00  chr4       2.48e7 2.48e7
+ 4 cg162…   146  0.0329 0.00425  4.12 6.38e-5     1.00  chr4       2.48e7 2.48e7
+ 5 cg080…   146  0.0220 0.0124   4.08 7.30e-5     1.00  chr11      3.24e6 3.24e6
+ 6 cg231…   146 -0.0321 0.00414 -4.04 8.53e-5     1.00  chr12      3.98e7 3.98e7
+ 7 cg099…   146  0.0169 0.00407  4.00 1.01e-4     1.00  chr2       2.19e8 2.19e8
+ 8 cg135…   146 -0.0163 0.00439 -3.98 1.07e-4     1.00  chr3       5.23e7 5.23e7
+ 9 cg275…   146 -0.0132 0.00451 -3.97 1.10e-4     1.00  chr17      1.89e7 1.89e7
+10 cg008…   146  0.0195 0.00400  3.97 1.12e-4     1.00  chr3       5.22e7 5.22e7
+# … with 299,211 more rows, and 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$MoBA
+# A tibble: 299,221 × 11
+   id         n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+ 1 cg122…   196 -0.0138 0.0102  -4.26 3.20e-5      1.00 chr10      1.57e6 1.57e6
+ 2 cg069…   196 -0.0238 0.00267 -4.19 4.18e-5      1.00 chr14      7.54e7 7.54e7
+ 3 cg252…   196  0.0112 0.00806  4.17 4.62e-5      1.00 chr17      2.80e7 2.80e7
+ 4 cg116…   196 -0.0282 0.00343 -4.15 5.00e-5      1.00 chr3       1.64e7 1.64e7
+ 5 cg271…   196 -0.0126 0.00998 -4.06 7.14e-5      1.00 chr3       1.34e8 1.34e8
+ 6 cg271…   196  0.0220 0.00384  4.05 7.25e-5      1.00 chr16      8.94e7 8.94e7
+ 7 cg263…   196  0.0115 0.00380  4.04 7.66e-5      1.00 chr11      1.02e8 1.02e8
+ 8 cg171…   196 -0.0157 0.00351 -4.03 7.95e-5      1.00 chr7       9.92e7 9.92e7
+ 9 cg158…   196 -0.0106 0.00447 -4.02 8.16e-5      1.00 chr14      1.03e8 1.03e8
+10 cg068…   196  0.0129 0.00355  3.97 9.94e-5      1.00 chr5       4.07e7 4.07e7
+# … with 299,211 more rows, and 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$Rhea
+# A tibble: 299,221 × 11
+   id         n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+ 1 cg157…   156  0.0328 0.0136   4.73 4.85e-6      1.00 chr11      6.57e7 6.57e7
+ 2 cg192…   156  0.0126 0.00334  4.55 1.06e-5      1.00 chr7       1.57e8 1.57e8
+ 3 cg213…   156  0.0223 0.00939  4.54 1.11e-5      1.00 chr7       4.77e6 4.77e6
+ 4 cg120…   156  0.0800 0.00385  4.41 1.93e-5      1.00 chr11      6.61e7 6.61e7
+ 5 cg126…   156  0.0373 0.0110   4.32 2.72e-5      1.00 chr11      6.37e7 6.37e7
+ 6 cg065…   156  0.0142 0.00454  4.31 2.80e-5      1.00 chr1       2.73e7 2.73e7
+ 7 cg231…   156 -0.0572 0.00457 -4.30 2.95e-5      1.00 chr6       1.68e8 1.68e8
+ 8 cg254…   156 -0.0170 0.00357 -4.28 3.19e-5      1.00 chr6       5.63e7 5.63e7
+ 9 cg189…   156 -0.0201 0.00521 -4.23 3.99e-5      1.00 chr15      4.41e7 4.41e7
+10 cg181…   156  0.0160 0.00396  4.16 5.13e-5      1.00 chr1       1.19e7 1.19e7
+# … with 299,211 more rows, and 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+$INMASAB
+# A tibble: 299,221 × 11
+   id         n    beta      SE     t P.Value adj.P.Val chromosome  start    end
+   &lt;chr&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;
+ 1 cg052…   176  0.0189 0.0114   4.70 5.11e-6      1.00 chr6       2.89e7 2.89e7
+ 2 cg028…   176  0.0125 0.00500  4.35 2.32e-5      1.00 chr10      1.31e8 1.31e8
+ 3 cg228…   176 -0.0178 0.00893 -4.30 2.81e-5      1.00 chr6       3.19e7 3.19e7
+ 4 cg181…   176 -0.0134 0.00421 -4.17 4.79e-5      1.00 chr6       1.61e8 1.61e8
+ 5 cg033…   176 -0.0146 0.0108  -4.12 5.76e-5      1.00 chr16      2.73e7 2.73e7
+ 6 cg036…   176 -0.0331 0.00368 -4.11 5.97e-5      1.00 chr12      5.31e7 5.31e7
+ 7 cg131…   176  0.0160 0.00384  3.96 1.09e-4      1.00 chr12      5.00e7 5.00e7
+ 8 cg185…   176 -0.0107 0.00356 -3.96 1.09e-4      1.00 chr5       1.73e8 1.73e8
+ 9 cg227…   176 -0.0145 0.00416 -3.91 1.33e-4      1.00 chr15      4.41e7 4.41e7
+10 cg062…   176  0.0132 0.00341  3.89 1.39e-4      1.00 chr17      1.98e7 1.98e7
+# … with 299,211 more rows, and 1 more variable: UCSC_RefGene_Name &lt;chr&gt;
+
+attr(,&quot;class&quot;)
+[1] &quot;dsLimma&quot; &quot;list&quot;   </code></pre>
+<p>Then, data can be combined meta-analysed as follows:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="DNAmHELIX.html#cb21-1" aria-hidden="true" tabindex="-1"></a>metaP.model.sex.annot <span class="ot">&lt;-</span> <span class="fu">metaPvalues</span>(meta.model.sex.annot.sva)</span>
+<span id="cb21-2"><a href="DNAmHELIX.html#cb21-2" aria-hidden="true" tabindex="-1"></a>metaP.model.sex.annot</span></code></pre></div>
+<pre><code># A tibble: 299,221 × 8
+   id             BIB    EDEN       KANC      MoBA      Rhea   INMASAB   p.meta
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 cg12052203 0.423   0.0522  0.00000218 0.0257    0.0000193 0.0129    1.72e-10
+ 2 cg22266749 0.571   0.0193  0.00000316 0.0668    0.000117  0.0399    3.67e- 9
+ 3 cg11643285 0.00267 0.909   0.0322     0.0000500 0.000136  0.0345    5.71e- 9
+ 4 cg03691818 0.0115  0.674   0.0291     0.00979   0.0207    0.0000597 3.71e- 7
+ 5 cg07210061 0.351   0.00238 0.358      0.00365   0.0331    0.00414   9.33e- 6
+ 6 cg25698541 0.00102 0.129   0.807      0.00271   0.107     0.0133    2.06e- 5
+ 7 cg15422033 0.317   0.0496  0.00381    0.887     0.000845  0.0108    2.35e- 5
+ 8 cg23108580 0.578   0.00227 0.0000853  0.0495    0.115     0.852     2.57e- 5
+ 9 cg12613618 0.158   0.0988  0.00425    0.472     0.0000272 0.689     2.73e- 5
+10 cg24537724 0.165   0.754   0.000380   0.0265    0.0297    0.0171    2.90e- 5
+# … with 299,211 more rows</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="DNAmHELIX.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of differentially methylated probes in the meta approach</span></span>
+<span id="cb23-2"><a href="DNAmHELIX.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(metaP.model.sex.annot[metaP.model.sex.annot<span class="sc">$</span>p.meta<span class="sc">&lt;</span><span class="fl">0.05</span>,])</span></code></pre></div>
+<pre><code>[1] 10417     8</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="DNAmHELIX.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of differentially expressed genes in the meta approach</span></span>
+<span id="cb25-2"><a href="DNAmHELIX.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (multiple-testing correction)</span></span>
+<span id="cb25-3"><a href="DNAmHELIX.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(metaP.model.sex.annot[metaP.model.sex.annot<span class="sc">$</span>p.meta<span class="sc">&lt;</span><span class="fl">0.05</span><span class="sc">/</span><span class="fu">nrow</span>(metaP.model.sex.annot),])</span></code></pre></div>
+<pre><code>[1] 3 8</code></pre>
+<p>As a result, from the initial list of almost 300k CpGs, we identify a list of 10,417 DMPs between boys and girls of the HELIX cohort, from which only 3 passed the strict bonferroni multiple-testing correction. Of these 3, the cg12052203 and 25650246 the (mapping the B3GNT1 and RFTN1 respectively) have been previously associated with sex methylation differences (<a href="http://www.ewascatalog.org" class="uri">http://www.ewascatalog.org</a>).</p>
+<p>And we can revisit the qqplot:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="DNAmHELIX.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqplot</span>(metaP.model.sex.annot<span class="sc">$</span>p.meta)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/DNAm_ewas_limma_sva_meta_qq-1.png" width="672" /></p>
+<p>Finally, we could compare the list of <strong>differentially methylated genes</strong> obtained here with the list of <strong>differentially expressed genes</strong> obtained in the section <a href="TranscriptHELIX.html#TranscriptHELIXDGE">3.3</a>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="DNAmHELIX.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ELIMINAR PUES NO SOLAPA NINGUNA.</span></span>
+<span id="cb28-2"><a href="DNAmHELIX.html#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="DNAmHELIX.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We can save the list of top differentially expressed genes for its comparison</span></span>
+<span id="cb28-4"><a href="DNAmHELIX.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># with the results to be obtained in the section of epigenetic analysis.</span></span>
+<span id="cb28-5"><a href="DNAmHELIX.html#cb28-5" aria-hidden="true" tabindex="-1"></a>getgene_symbols <span class="ot">&lt;-</span> <span class="cf">function</span>(x){ x[<span class="fu">which</span>(x<span class="sc">$</span>P.Value <span class="sc">&lt;</span> <span class="fl">0.001</span>),</span>
+<span id="cb28-6"><a href="DNAmHELIX.html#cb28-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">&quot;UCSC_RefGene_Name&quot;</span>] }</span>
+<span id="cb28-7"><a href="DNAmHELIX.html#cb28-7" aria-hidden="true" tabindex="-1"></a>symbols_topgenes_by_cohort <span class="ot">&lt;-</span> <span class="fu">lapply</span>(meta.model.sex.annot.sva,getgene_symbols)</span>
+<span id="cb28-8"><a href="DNAmHELIX.html#cb28-8" aria-hidden="true" tabindex="-1"></a>gene_ewas <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">unlist</span>(symbols_topgenes_by_cohort))</span>
+<span id="cb28-9"><a href="DNAmHELIX.html#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="DNAmHELIX.html#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load top differentially expressed genes.</span></span>
+<span id="cb28-11"><a href="DNAmHELIX.html#cb28-11" aria-hidden="true" tabindex="-1"></a>genes_transcriptomics <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;./fig/topgenes_transcriptomics.csv&quot;</span>)</span>
+<span id="cb28-12"><a href="DNAmHELIX.html#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="DNAmHELIX.html#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Get intersection.</span></span>
+<span id="cb28-14"><a href="DNAmHELIX.html#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(genes_transcriptomics[,<span class="dv">1</span>] <span class="sc">%in%</span> gene_ewas[,<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>
+FALSE 
+  287 </code></pre>
+</div>
+<div id="DNAmHELIXenrichment" class="section level2" number="4.7">
+<h2><span class="header-section-number">4.7</span> Enrichment analysis of functional annotations.</h2>
+<p>Once we have obtained the top <strong>differentially methylated genes</strong> per cohort, we could extract their <strong>gene symbols</strong> or <strong>gene entrez ids</strong> directly from each output dataframe and continue with the <strong>functional annotation analysis (FEA)</strong> in our local session as usual. As presented in the showcase of <strong>gene expression analysis</strong>, we will conduct an <strong>enrichment analysis</strong> with <strong>KEGG</strong>:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="DNAmHELIX.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get list of significant CpGs (checking the number).</span></span>
+<span id="cb30-2"><a href="DNAmHELIX.html#cb30-2" aria-hidden="true" tabindex="-1"></a>sigCpGs <span class="ot">&lt;-</span> <span class="fu">as.character</span>(metaP.model.sex.annot[<span class="fu">which</span>(</span>
+<span id="cb30-3"><a href="DNAmHELIX.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  metaP.model.sex.annot<span class="sc">$</span>p.meta <span class="sc">&lt;</span> <span class="fl">0.01</span>),<span class="st">&quot;id&quot;</span>][[<span class="dv">1</span>]])</span>
+<span id="cb30-4"><a href="DNAmHELIX.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(sigCpGs)</span></code></pre></div>
+<pre><code>[1] 1896</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="DNAmHELIX.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required packages for enrichment analysis with CpGs.</span></span>
+<span id="cb32-2"><a href="DNAmHELIX.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(IlluminaHumanMethylation450kanno.ilmn12.hg19)</span>
+<span id="cb32-3"><a href="DNAmHELIX.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(missMethyl)</span>
+<span id="cb32-4"><a href="DNAmHELIX.html#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="DNAmHELIX.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get whole list of CpGs in the 450K array.</span></span>
+<span id="cb32-6"><a href="DNAmHELIX.html#cb32-6" aria-hidden="true" tabindex="-1"></a>ann450k <span class="ot">=</span> <span class="fu">getAnnotation</span>(IlluminaHumanMethylation450kanno.ilmn12.hg19)</span>
+<span id="cb32-7"><a href="DNAmHELIX.html#cb32-7" aria-hidden="true" tabindex="-1"></a>all <span class="ot">&lt;-</span> ann450k<span class="sc">@</span>listData<span class="sc">$</span>Name</span>
+<span id="cb32-8"><a href="DNAmHELIX.html#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="DNAmHELIX.html#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform enrichment analysis for GO terms.</span></span>
+<span id="cb32-10"><a href="DNAmHELIX.html#cb32-10" aria-hidden="true" tabindex="-1"></a>goenrichmnet_cpgs <span class="ot">&lt;-</span> <span class="fu">gometh</span>(<span class="at">sig.cpg=</span>sigCpGs, <span class="at">all.cpg=</span>all, </span>
+<span id="cb32-11"><a href="DNAmHELIX.html#cb32-11" aria-hidden="true" tabindex="-1"></a>                            <span class="at">plot.bias=</span><span class="cn">FALSE</span>,<span class="at">array.type=</span><span class="st">&quot;450K&quot;</span>,<span class="at">collection=</span><span class="st">&quot;GO&quot;</span>) </span>
+<span id="cb32-12"><a href="DNAmHELIX.html#cb32-12" aria-hidden="true" tabindex="-1"></a>goenrichmnet_cpgs <span class="ot">&lt;-</span> goenrichmnet_cpgs[<span class="fu">order</span>(goenrichmnet_cpgs<span class="sc">$</span>P.DE),]</span>
+<span id="cb32-13"><a href="DNAmHELIX.html#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(goenrichmnet_cpgs)</span></code></pre></div>
+<pre><code>           ONTOLOGY                                       TERM  N DE
+GO:0035721       BP          intraciliary retrograde transport 14  6
+GO:0019400       BP                  alditol metabolic process 23  7
+GO:0031223       BP                          auditory behavior 11  6
+GO:0032290       BP peripheral nervous system myelin formation  3  3
+GO:0035082       BP                           axoneme assembly 75 16
+GO:0007638       BP                    mechanosensory behavior 12  6
+                  P.DE FDR
+GO:0035721 0.001597323   1
+GO:0019400 0.001683605   1
+GO:0031223 0.002288092   1
+GO:0032290 0.002621180   1
+GO:0035082 0.002967025   1
+GO:0007638 0.003050086   1</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="DNAmHELIX.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform enrichment analysis for KEGG terms.</span></span>
+<span id="cb34-2"><a href="DNAmHELIX.html#cb34-2" aria-hidden="true" tabindex="-1"></a>KEGGenrichmnet_cpgs <span class="ot">&lt;-</span> <span class="fu">gometh</span>(<span class="at">sig.cpg=</span>sigCpGs, <span class="at">all.cpg=</span>all,</span>
+<span id="cb34-3"><a href="DNAmHELIX.html#cb34-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">plot.bias=</span><span class="cn">FALSE</span>,<span class="at">array.type=</span><span class="st">&quot;450K&quot;</span>,</span>
+<span id="cb34-4"><a href="DNAmHELIX.html#cb34-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">collection=</span><span class="st">&quot;KEGG&quot;</span>) </span>
+<span id="cb34-5"><a href="DNAmHELIX.html#cb34-5" aria-hidden="true" tabindex="-1"></a>KEGGenrichmnet_cpgs <span class="ot">&lt;-</span> KEGGenrichmnet_cpgs[<span class="fu">order</span>(KEGGenrichmnet_cpgs<span class="sc">$</span>P.DE),]</span>
+<span id="cb34-6"><a href="DNAmHELIX.html#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(KEGGenrichmnet_cpgs)</span></code></pre></div>
+<pre><code>                                                            Description   N
+path:hsa04961 Endocrine and other factor-regulated calcium reabsorption  53
+path:hsa05146                                                Amoebiasis 100
+path:hsa00561                                   Glycerolipid metabolism  60
+path:hsa04975                              Fat digestion and absorption  43
+path:hsa05031                                     Amphetamine addiction  69
+path:hsa04974                          Protein digestion and absorption 102
+                DE        P.DE FDR
+path:hsa04961 13.0 0.008665353   1
+path:hsa05146 18.0 0.015521806   1
+path:hsa00561 11.0 0.044933179   1
+path:hsa04975  7.5 0.064399406   1
+path:hsa05031 13.0 0.070891437   1
+path:hsa04974 16.0 0.073884668   1</code></pre>
+<p>The FEA show that these CpGs map genes participating in processes with strong sex differences such is the case of bone formation (“Endocrine and other factor-regulated calcium reabsorption,” hsa04961).</p>
+<p>As always, the <strong>DataSHIELD</strong> session must be closed by:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="DNAmHELIX.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.logout</span>(conns)</span></code></pre></div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-betameta" class="csl-entry">
+Pirinen, Matti. 2020. <span>“GWAS 9: Meta-Analysis and Summary Statistics.”</span> <a href="https://www.mv.helsinki.fi/home/mjxpirin/GWAS_course/material/GWAS9.html">https://www.mv.helsinki.fi/home/mjxpirin/GWAS_course/material/GWAS9.html</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="TranscriptHELIX.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references..html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["OmicSHIELD_bookdown.pdf", "OmicSHIELD_bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
