@@ -1,0 +1,303 @@
+```{r , TranscriptHELIXsetup_0, include=FALSE}
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
+```
+
+# Transcriptomic analysis in the HELIX cohort. {#TranscriptHELIX}
+
+In this section, we will illustrate how to perform **gene expression analysis** using data from the **HELIX project**. Particularly, we will analyse **microarray data** deriving from the _Human Transcriptome Array 2.0_ Affymetrix platform. On these data, we will show how to perform a **differential gene expression analysis** comparing the **transcriptomic profiles** of **boys** and **girls** in the **HELIX cohorts**. 
+
+The **microarray data** to be analysed has been previously **pre-processed** (e.g., normalized, low expression or cross-reactive probes removed, etc.), so, this showcase will be restricted to the analysis part. For that, we will employ the **dsOmicsClient** functions that adapt some of the most important **"limma"** methods for their use in **dataSHIELD**. Please, note that **pre-processing of gene expression data** is also included in **dsOmicsClient** as indicated in our [bookdown](https://github.com/isglobal-brge/OmicSHIELD). For this tutorial, data are hosted in the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) simulating a **single-site DataSHIELD architecture**, as previously described in the section \@ref(TranscriptomicsHELIXDatadescript).
+
+## Getting started. {#TranscriptHELIXone}
+
+In this section, we will describe how to **configure R and DataSHIELD** with the **needed packages** to carry out proposed analyses in remote. We start by **installing** the *client-side* version of the following **DataSHIELD/Opal** integration packages.
+
+```{r TranscriptHELIXsetup1, eval=FALSE}
+
+install.packages("DSOpal", dependencies=TRUE)
+install.packages("DSI", dependencies=TRUE)
+
+```
+
+Make sure you also install the **DataSHIELD** *client-side* version of the package **dsBaseClient**.
+
+```{r TranscriptHELIXsetup2, eval=FALSE}
+
+install.packages("dsBaseClient", 
+                 repos = c("http://cran.datashield.org","https://cloud.r-project.org/"),
+                 dependencies = TRUE)
+
+```
+
+Then, install the *client-side* version of the **dsOmicsClient** package directly from *GitHub*.
+
+```{r TranscriptHELIXsetup3, eval=FALSE}
+
+install.packages("devtools")
+require("devtools")
+devtools::install_github("isglobal-brge/dsOmicsClient",ref="master",
+                         auth_token = "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",force=TRUE)
+
+```
+
+Once installations are completed, all the packages are **loaded** as usual.
+
+```{r TranscriptHELIXsetup4, echo=TRUE, results="hide", message=FALSE}
+
+require(DSOpal)
+require(DSI)
+require(dsBaseClient)
+require(dsOmicsClient)
+
+# Loading additional required packages (if not installed, you can easly install them using the BiocManager::install() function)
+require(clusterProfiler)
+require(org.Hs.eg.db)
+require(ggplot2)
+require(biomaRt)
+
+```
+
+## Data formatting and manipulation in DataSHIELD. {#TranscriptHELIXdatamanip}
+
+In this section, we will cover how to **load** and **inspect** input **microarray data** with **DataSHIELD**. We start by **creating the connection to the opal server** using an user who have **DataSHIELD permissions**.
+
+```{r TranscriptHELIXcreating_conns_login_1, echo=TRUE, results="hide", message=FALSE}
+
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "BIB", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "EDEN", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "KANC", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "MoBA", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "Rhea", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "INMASAB", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+logindata <- builder$build()
+conns <- DSI::datashield.login(logins = logindata)
+
+``` 
+
+Now that we have created a connection object to the Opal, we have started a new R session on the server, and our analysis will take place in this remote session, so we have to **load the data** into it. In this use case, available data are in the form **ExpressionSet** files. **ExpressionSet** is a file-format of the [BioConductor project](https://www.bioconductor.org/) that may contain different sources of **genomic data**. Alongside the **genomic data**, **ExpressionSet** may also contain some **phenotypes** and **metadata** associated to the population. Researchers who are not familiar with **ExpressionSet** can find further information [here](https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf).
+
+For our showcase, one **ExpressionSet** file per cohort is hosted in the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) in the form of a **resource**, all organized within the Opal server in a **project** called **"HELIX_omics"**.
+
+For loading these data into the remote **DataSHIELD** session we will use the _DSI::datashield.assign.resource()_ function. This function takes the connections to the server created in the previous code chunk to assign all available **resource objects** from a project in the **Opal** to an **R object** in the **DataSHIELD remote session**. As it can be seen in the code, **resources** in **DataSHIELD** are called in the function following the next structure *"NameOfOpalProject.NameOfResource"*. 
+
+```{r TranscriptHELIXassign_resources_login_2, echo=TRUE, results="hide", message=FALSE}
+
+# We assign microarray data from all cohorts to an object called resource_pos
+DSI::datashield.assign.resource(conns[1], "resource_expr", 
+                                "HELIX_omics.genexpr_BIB")
+DSI::datashield.assign.resource(conns[2], "resource_expr", 
+                                "HELIX_omics.genexpr_EDE")
+DSI::datashield.assign.resource(conns[3], "resource_expr", 
+                                "HELIX_omics.genexpr_KAN")
+DSI::datashield.assign.resource(conns[4], "resource_expr", 
+                                "HELIX_omics.genexpr_MOB")
+DSI::datashield.assign.resource(conns[5], "resource_expr", 
+                                "HELIX_omics.genexpr_RHE")
+DSI::datashield.assign.resource(conns[6], "resource_expr", 
+                                "HELIX_omics.genexpr_SAB")
+
+```
+
+With these instructions, we have assigned the resources into our **remote R** session to a variable called **"resource_expr"**. To verify this step has been performed correctly, we could use the _ds.class()_ function to check for their class and that they exist on the remote session. Then, we have to **resolve the resource** and **retrieve the data in the remote session**. For that, we will use the _DSI::datashield.assign.expr()_ function. 
+
+```{r TranscriptHELIXresolve_resources_login_3, echo=TRUE, results="hide", message=FALSE}
+
+# We resolve the resource
+DSI::datashield.assign.expr(conns = conns, symbol = "resource_expr_HELIX",
+                       expr = as.symbol("as.resource.object(resource_expr)"))
+```
+
+As a result, we will get an **R object** (here named **"resource_expr_HELIX"**) containing the available **"ExpressionSets"** files for cohorts. For created objects, we can extract some useful information including the **class**, and the **name of the genes included in the microarray** and additional **phenotype** data available.
+
+```{r TranscriptHELIX_descriptive_login_4, echo=TRUE, results="hide", message=FALSE}
+
+# Retrieve the class of loaded files:
+ds.class("resource_expr_HELIX")
+
+# Get the names of the first features (probes) available for the first cohort:
+name.features <- ds.featureNames("resource_expr_HELIX")
+lapply(name.features, head)[[1]]
+
+# Get the names of the phenotype data available for the first cohort:
+name.phenotypes <- ds.varLabels("resource_expr_HELIX")
+lapply(name.phenotypes, head)[[1]]
+
+# Also the annotation information can be inspected by:
+name.annot <- ds.fvarLabels("resource_expr_HELIX")
+lapply(name.annot, head)[[1]]
+# Annotation information refers to additional data available at the feature
+# level and that could be added to the summary statistics for a better 
+# identification of significant genes.
+
+```
+
+## Differential gene expression analysis. {#TranscriptHELIXDGE}
+
+The **differential expression analysis** in **dsOmicsClient** is implemented in the funcion _ds.limma()_. Although, by default, the function considers that data is obtained from a **microarray experiment** (type.data = "microarray"), it could also be applied to **RNAseq data**.
+
+In this case, since we are interested in evaluating the **gene expression differences** between **boys and girls**, we will run the next model (adjusted by possible confounders such as **age** and **ethnicity**):
+
+```{r TranscriptHELIX_limma_m1, echo=TRUE, message=FALSE}
+
+model.sex <- ds.limma(model =  ~ e3_sex +  age_sample_years + h_ethnicity_cauc, 
+                       Set = "resource_expr_HELIX")
+
+```
+
+The top **differentially expressed genes** by cohort can then be visualized by:
+
+```{r exwas_analysis_1, echo=TRUE, message=FALSE}
+
+model.sex
+
+```
+
+We can verify whether the **distribution of the observed p-values** are the ones we would expect in this type of analyses:
+  
+```{r TranscriptHELIX_limma_m1plot_effects, fig.width=10, fig.height=12}
+
+ggplot(model.sex$BIB, aes(x=P.Value))+
+  geom_histogram(color="darkblue", fill="lightblue")+labs(
+    title="P-Value histogram plot",x="Raw p-value gender effect", y = "Count")
+
+```
+Another functionality of **dsOmicsClient** is that we can add **annotation information** at the probe-level to the output that is obtained with _ds.limma()_. Annotation information will be available as part of the expression set file **"resource_expr_HELIX"** and can be inspected by:
+
+```{r TranscriptHELIX_limma_annot, warning=FALSE, message=FALSE}
+
+# Get annotation information for the first cohort
+ds.fvarLabels("resource_expr_HELIX")[[1]]
+
+```
+
+In case we were interested in adding **gene symbol**, **entrezID** and **chromosome number** mapping probes from each output, we can run:
+
+```{r TranscriptHELIX_limma_m2, warning=FALSE, message=FALSE}
+
+model.sex_annot <- ds.limma(model = ~ e3_sex +  age_sample_years + h_ethnicity_cauc, 
+                       Set = "resource_expr_HELIX",
+                       annotCols = c("GeneSymbol_Affy","seqname",
+                                     "EntrezeGeneID_Affy"))
+
+```
+
+The **results** for each of the cohort (ordered by level of significance) can be accessed by:
+
+```{r TranscriptHELIX_limma_m2_results, warning=FALSE, message=FALSE}
+
+model.sex_annot
+
+```
+
+## Surrogate variable analysis.  {#TranscriptHELIXsurrogateAnnot}
+
+We can also check whether there is **inflation** just executing:
+
+```{r TranscriptHELIX_limma_m1qqplot, warning=FALSE, message=FALSE}
+
+qqplot(model.sex$BIB$P.Value)
+
+```
+
+So, in that case, the model does not need to remove unwanted variability (λ<2). If that was not the case, we could use **surrogate variable analysis** just changing the argument _sva=TRUE._. 
+
+The _ds.limma_ function has another arguments that can be used to fit other type of models:
+
+* method: Linear regression (“ls”) or robust regression (“robust”) used in limma (lmFit).
+* robust: Logical. Robust method used for outlier sample variances used in limma (eBayes).
+* normalization: normalization method used in the voom transformation (default “none”).
+* voomQualityWeights: Logical. Should voomQualityWeights function be used instead of voom? (default FALSE)
+* big: Logical. If sva was set to TRUE, should SmartSVA be implemented?
+
+
+Then, data can be combined meta-analysed as follows:
+
+```{r DNAm_ewas_limma_sva_meta, echo=TRUE, message=FALSE}
+
+metaP.model.sex.annot <- metaPvalues(model.sex_annot)
+metaP.model.sex.annot
+
+# Get the number of differentially expressed genes in the meta approach
+dim(metaP.model.sex.annot[metaP.model.sex.annot$p.meta<0.05,])
+
+```
+
+## Enrichment analysis of functional annotations. {#TranscriptHELIXenrichment}
+
+Once we have obtained the top **differentially expressed genes** per cohort, we could extract their **gene symbols** or **gene entrez ids** directly from each output dataframe and continue with the **functional annotation analysis** in our local session as usual. To this end, one of the classic approaches is to evaluate whether any information (in the form of annotations) is **over-represented** in the gene list compared to the rest of the genes in the genome. This type of **enrichment** analysis is based on annotating genes with information available in different databases such as [**Gene Ontology**](http://geneontology.org/) or the [**Kyoto Encyclopedia of Genes and Genomes**](https://www.genome.jp/kegg/), and establishing the frequencies of each term in the gene list and the rest of the genome. This allows a statistical test to be applied to determine which functional annotations are significantly enriched in the list.
+
+To extract the list of **top differentially expressed genes** by cohort and perform **enrichment analysis** with **KEGG** we can run the next code lines:
+
+```{r TranscriptHELIX_annot1, warning=FALSE, message=FALSE}
+
+# Get the entrez id for the top differentially expressed genes in each cohort.
+get_entrezid <- function(x){ x[which(x$adj.P.Val < 0.05),c("id","EntrezeGeneID_Affy")] }
+topgenes_by_cohort <- lapply(model.sex_annot,get_entrezid)
+length(unlist(lapply(topgenes_by_cohort,function(x) x[,2])))
+
+# Get the entrez id for the top differentially expressed genes in the meta-analysis
+# approach
+ensembl <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+filters <- listFilters(ensembl)
+attributes <- listAttributes(ensembl)
+affy_id <- gsub(x = as.character(metaP.model.sex.annot[metaP.model.sex.annot$p.meta<
+                                                         0.05/nrow(metaP.model.sex.annot),1]$id), pattern = "hg.1", "hg")
+# Number of probes passing multiple-testing correction in the meta-analysis.
+length(affy_id)
+# Get the entrez id of the genes mapped by the probes from the previous list.
+topgenes_metaP <- getBM(attributes = c("entrezgene_id"),
+               filters = "affy_hta_2_0",
+               values = affy_id,
+               mart = ensembl)
+length(topgenes_metaP[,1])
+
+
+# Functional enrichment analysis with KEGG.
+
+# We will use as reference a list of genes loaded fromt he DOSE package.
+data(geneList, package="DOSE")
+# Top genes from each cohort
+enrichKEGG <- enrichKEGG(gene = unlist(lapply(topgenes_by_cohort,function(x) x[,2])),
+                 organism     = 'hsa',
+                 pvalueCutoff = 0.1)
+head(enrichKEGG)
+# Top genes from the meta-analysis
+enrichKEGG_meta <- enrichKEGG(gene = as.character(topgenes_metaP[,1]),
+                 organism     = 'hsa',
+                 pvalueCutoff = 0.1)
+head(enrichKEGG_meta)
+
+#The pathways can be visualized alongside the genes associated with them:
+browseKEGG(enrichKEGG, 'hsa04211')
+
+# We can save the list of top differentially expressed gene symbols for comparison
+# with the results to be obtained in the section of epigenetic analysis.
+topgenes_metaP_sym <- getBM(attributes = c("hgnc_symbol"),
+               filters = "affy_hta_2_0",
+               values = affy_id,
+               mart = ensembl)
+length(topgenes_metaP_sym[,1])
+write.csv2(as.data.frame(topgenes_metaP_sym),
+           "./fig/topgenes_transcriptomics.csv")
+
+```
+As a result, we identify a list of 325 probes (mapping 287 genes) differentially expressed between boys and girls of the HELIX cohort, passing multiple-testing correction filter (P-value threshold=1.74e-06). As a proof of the ability of OmicSHIELD to be integrated with other R functionalities and bioconductor utilties, we continue the showcase presenting a functional enrichment analysis (FEA) of results, showing that significant DE genes participate in processes with evident and previously-described sexual dimorphism such is the case of “Longevity regulating pathways” (hsa04211).
+
+Once analyses are completed, we proceed to close the **DataSHIELD** session by:
+
+```{r logout}
+datashield.logout(conns)
+```

@@ -1,0 +1,345 @@
+```{r , DNAmsetup_0, include=FALSE}
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
+```
+
+# Epigenetic analysis in the HELIX cohort. {#DNAmHELIX}
+
+In this section, we will illustrate how to perform **DNA methylation differential analysis** using data from the **HELIX project**. Particularly, we will analyse **microarray data** deriving from the _Infinium HumanMethylation450k_ platform of Illumina. On these data, we will show how to perform a **epigenome-wide association analysis (EWAS)** to compare the **DNA methylation profiles** differing between **boys** and **girls** in the **HELIX cohorts**. We will illustrate the following use cases:
+
+* Single CpG pooled analysis.
+* Multiple CpGs pooled analysis.
+* Full genome meta-analysis.
+* Full genome meta-analysis adjusting for surrogate variables.
+
+In comparison to **gene expression data**, where data are not always normalized in the same way (especially in the case of **RNAseq data**), when analyzing **EWAS data** one count on normalized Beta or M-Values. This favors the harmonization of the dataset between cohorts, thereby making possible to perform a **pooled analysis** instead of a **meta-analysis** approach.
+
+## Getting started. {#DNAmHELIX_gettingstarted}
+
+In this section, we will describe how to **configure R and DataSHIELD** with the **needed packages** to carry out proposed analyses in remote. We start by **installing** the *client-side* version of the following **DataSHIELD/Opal** integration packages.
+
+```{r TranscriptHELIXsetup1, eval=FALSE}
+
+install.packages("DSOpal", dependencies=TRUE)
+install.packages("DSI", dependencies=TRUE)
+
+```
+
+Make sure you also install the **DataSHIELD** *client-side* version of the package **dsBaseClient**.
+
+```{r DNAmsetup2, eval=FALSE}
+
+install.packages("dsBaseClient", 
+        repos = c("http://cran.datashield.org","https://cloud.r-project.org/"),
+        dependencies = TRUE)
+
+```
+
+Then, install the *client-side* version of the **dsOmicsClient** package directly from *GitHub*.
+
+```{r DNAmsetup3, eval=FALSE}
+
+install.packages("devtools")
+require("devtools")
+devtools::install_github("isglobal-brge/dsOmicsClient",ref="master",
+                         auth_token = "INSERT_YOUR_GITHUB_TOKEN_HERE")
+
+```
+
+Once installations are completed, all the packages are **loaded** as usual.
+
+```{r DNAmsetup4, echo=TRUE, results="hide", message=FALSE}
+
+require(DSOpal)
+require(DSI)
+require(dsBaseClient)
+require(dsOmicsClient)
+
+# Loading additional required packages (if not installed, you can easly install them using the BiocManager::install() function)
+require(clusterProfiler)
+require(org.Hs.eg.db)
+
+```
+
+## Data formatting and manipulation in DataSHIELD. {#DNAmHELIX_load}
+
+In this section, we will cover how to **load** and **inspect** input **microarray data** with **DataSHIELD**. We start by **creating the connection to the opal server** using an user who have **DataSHIELD permissions**.
+
+```{r DNAm_login_1, echo=TRUE, results="hide", message=FALSE}
+
+ builder <- DSI::newDSLoginBuilder()
+ builder$append(server = "BIB", url = "https://datashield.isglobal.org/repo",
+                user =  "invited", password = "12345678"
+                , profile = "rock-inma")
+ builder$append(server = "EDEN", url = "https://datashield.isglobal.org/repo",
+                user =  "invited", password = "12345678",
+                profile = "rock-inma")
+ builder$append(server = "KANC", url = "https://datashield.isglobal.org/repo",
+                user =  "invited", password = "12345678",
+                profile = "rock-inma")
+ builder$append(server = "MoBA", url = "https://datashield.isglobal.org/repo",
+                user =  "invited", password = "12345678",
+                profile = "rock-inma")
+ builder$append(server = "Rhea", url = "https://datashield.isglobal.org/repo",
+                user =  "invited", password = "12345678",
+                profile = "rock-inma")
+ builder$append(server = "INMASAB", url ="https://datashield.isglobal.org/repo",
+                user =  "invited", password = "12345678",
+                profile = "rock-inma")
+ logindata <- builder$build()
+ conns <- DSI::datashield.login(logins = logindata)
+
+``` 
+Now that we have created a connection object to the Opal, we have started a new R session on the server, and our analysis will take place in this remote session, so we have to **load the data** into it. In this use case, available data are in the form **GenomicRatioSet**, a extend of the class **SummarizedExperiment** especially designed for DNA methylation data obtained with the _Infinium HumanMethylation450k_ platform and usually analysed with the associated R package [minfi](http://bioconductor.org/packages/release/bioc/html/minfi.html). This type of data usually contain **pre-processed DNA methylation values** at a genome-wide level, in the form of **M or/and Beta values**, together with the associated **genomic coordinates**. As in the case of **ExpressionSet** types, **GenomicRatioSet** can also incorporate **phenotype** and **metadata** information.
+
+For our showcase, one **GenomicRatioSet** file per cohort is hosted in the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) in the form of a **resource**, all organized within the Opal server in a **project** called **HELIX_omics**.
+
+For loading these data into the remote **DataSHIELD** session we will use the _DSI::datashield.assign.resource()_ function. This function takes the connections to the server created in the previous code chunk to assign all available **resource objects** from a project in the **Opal** to an **R object** in the **DataSHIELD remote session**. As it can be seen in the code, **resources** in **DataSHIELD** are called in the function following the next structure *"NameOfOpalProject.NameOfResource"*. 
+
+```{r DNAmassign_resources_login_2, echo=TRUE, results="hide", message=FALSE}
+
+# We assign post-natal data from all cohorts to an object called resource_pos
+DSI::datashield.assign.resource(conns[1], "assinged_resource_DNAm", 
+                                "HELIX_omics.methy_BIB")
+DSI::datashield.assign.resource(conns[2], "assinged_resource_DNAm", 
+                                "HELIX_omics.methy_EDE")
+DSI::datashield.assign.resource(conns[3], "assinged_resource_DNAm", 
+                                "HELIX_omics.methy_KAN")
+DSI::datashield.assign.resource(conns[4], "assinged_resource_DNAm", 
+                                "HELIX_omics.methy_MOB")
+DSI::datashield.assign.resource(conns[5], "assinged_resource_DNAm", 
+                                "HELIX_omics.methy_RHE")
+DSI::datashield.assign.resource(conns[6], "assinged_resource_DNAm", 
+                                "HELIX_omics.methy_SAB")
+
+```
+
+Then, we have to **resolve the resources** and **retrieve the data in the remote session (server-side)**. For that, we will use the _DSI::datashield.assign.expr()_ function. As a result, we will get an **R object** (here named **"resource_DNAm"**) containing the available **GenomicRatioSet** files for cohorts. For created objects, we can extract some useful information including the **dimension**, **class**, and the **name of the CpGs analysed in the microarray** and additional **phenotype** data available.
+
+```{r DNAmresolve_resources_login_3, echo=TRUE, results="hide", message=FALSE}
+
+# We resolve the resource
+DSI::datashield.assign.expr(conns = conns, symbol = "resource_DNAm",
+              expr = as.symbol("as.resource.object(assinged_resource_DNAm)"))
+ds.dim("resource_DNAm")
+ds.class("resource_DNAm")
+
+#The names of the CpGs included in the array can be extracted using
+# the same function used for extracting probe names in the case of analyzing 
+# an ExpressionSet:
+name.features <- ds.featureNames("resource_DNAm")
+lapply(name.features, head)[[1]]
+
+#Experimental phenotypes variables can be obtained by:
+name.phenotypes <- ds.varLabels("resource_DNAm")
+lapply(name.phenotypes, head)[[1]]
+
+#Also the annotation information can be obtained by:
+name.annot <- ds.fvarLabels("resource_DNAm")
+lapply(name.annot, head)[[1]]
+
+```
+
+## Single CpG pooled analysis. {#DNAmHELIX_analysis1}
+
+Once the methylation data have been loaded into the opal server, we can perform different type of analyses using functions from the **dsOmicsClient** package. Let us start by illustrating how to analyse a **single CpG** from all cohorts by using an approach that is mathematically equivalent to placing all individual together (**pooled analysis**). 
+
+```{r DNAm_ewas_single_pooled, eval=FALSE, message=FALSE}
+
+#Does not work with GenomicRatioSet
+pooled.model.sex.single <- ds.lmFeature(feature = "cg16736630", 
+                    model = ~ e3_sex +  age_sample_years + h_ethnicity_cauc, 
+                    Set = "resource_DNAm",
+                    datasources = conns)
+pooled.model.sex.single 
+
+```
+
+## Multiple CpGs pooled analysis. {#DNAmHELIX_analysis2}
+
+The same analysis can be performed for **multiple CpGs**. This process can be parallelized using _mclapply_ function from the **multicore** package (only works on GNU/Linux, not on Windows).
+
+```{r DNAm_ewas_multiple, eval=FALSE}
+
+pooled.model.sex.selection <- 
+  ds.lmFeature(feature = c("cg00000029", "cg00000108", 
+                           "cg00000109", "cg00000165"),
+              model = ~ e3_sex +  age_sample_years + h_ethnicity_cauc, 
+              Set = "resource_DNAm",
+              datasources = conns,
+              mc.cores = 20)
+
+```
+
+If the **feature** argument is not supplied, **all the CpGs** available in the array will be analysed, please note that this process can be extremely slow if there is a huge number of features; for example, on the case we are illustrating we have over 200K features, so this process would take too much time. If all the features are to be studied, we recommend switching to the **meta-analysis method**. More information on the next section.
+
+## Full genome meta-analysis. {#DNAmHELIX_analysis3}
+
+The quick alternative to perfom a **full EWAS** analysis in **DataSHIELD** is to run a **meta-analysis** approach (analyzing each cohort separately). For that, we can use the same function than in the showcase of **transcriptomic** analysis (*ds.limma()*).
+
+```{r DNAm_ewas_limma, echo=TRUE, message=FALSE}
+
+meta.model.sex <- ds.limma(model = ~ e3_sex,
+                      Set = "resource_DNAm", 
+                      datasources = conns)
+
+```
+
+Then, we can visualize the **top significant CpGs** at each study (i.e server) by:
+
+```{r DNAm_ewas_limma_top, echo=TRUE, message=FALSE}
+
+lapply(meta.model.sex, head)
+
+```
+
+As in the case of **gene expression analysis**, annotation columns can be added to the output by using the argument **annotCols**. It should be a vector with the columns of the annotation available in the **GenomeRatioSet** that want to be showed. To obtain the available annotation columns use the function _ds.fvarLabels()_.
+
+```{r DNAm_ewas_limma_annotated, echo=TRUE, message=FALSE}
+
+meta.model.sex.annot <- ds.limma(model = ~ e3_sex,
+                Set = "resource_DNAm", 
+                annotCols = c("chromosome","start","end","UCSC_RefGene_Name"),
+                datasources = conns)
+lapply(meta.model.sex.annot, head)
+
+
+```
+
+Up to this point, we have obtained association results for each cohort on the study. The next step is to **combine** this information using **meta-analysis** methods to derive a **pooled** estimate closest to the common truth. Each researcher might have an already built pipeline to do so, or a preferred method; nevertheless, we included a couple methods inside **dsOmicsClient**. They are the following:
+
+* Meta-analysis of p-values: Using the sum of logs method (**Fisher’s method**). 
+* Meta-analysis of beta values: Using a fixed-effects model. Methodology extracted and adapted from [@betameta].
+
+```{r DNAm_ewas_limma_meta, echo=TRUE, message=FALSE}
+
+metaP.model.sex.annot <- metaPvalues(meta.model.sex.annot)
+metaP.model.sex.annot
+
+```
+
+We can **verify** that the results are pretty **similar** to those obtained using **pooled analysis**. Here we compute the association for the **top two CpGs**:
+
+```{r DNAm_ewas_limma_meta_top_pooled, eval=FALSE, message=FALSE}
+
+pooled.model.sex.selection <- 
+  ds.lmFeature(feature = metaP.model.sex.annot$id[1:2], 
+              model = ~ e3_sex, 
+              Set = "resource_DNAm",
+              datasources = conns)
+pooled.model.sex.selection 
+
+```
+
+We can create a **QQ-plot** by using the function *qqplot()* available in our package.
+
+```{r DNAm_ewas_limma_qq, echo=TRUE, message=FALSE}
+
+qqplot(metaP.model.sex.annot$p.meta)
+
+```
+
+Here, as can be observed, there is no need to remove unwanted variability (λ<2). Nevertheless, we will illustrate how to proceed in case of observing **inflation**.
+
+## Adjusting for surrogate variables. {#DNAmHELIX_analysis4}
+
+The vast majority of omic studies require to control for unwanted variability. The **surrogate variable analysis** can address this issue by estimating some hidden covariates that capture differences across individuals due to some artifacts such as batch effects or sample quality among others. The method is implemented in [SVA](https://bioconductor.org/packages/release/bioc/html/sva.html) package.
+
+Performing this type of analysis using the **ds.lmFeature** function is not allowed since estimating SVA would require to implement a non-disclosive method that computes SVA from the different servers. This will be a future topic of the **dsOmicsClient**. For that reason we have to adopt a compromise solution which is to perform the SVA independently at each study. We use the **ds.limma** function to perform the analyses adjusted for SVA at each study. Especially for the case of **EWAS data** this kind of analysis is important since it usual to find be important sources of unwanted variability affecting the global levels of methylation (e.g., the existence of different white-cell proportions when the sample type under analysis is whole-blood)
+
+```{r DNAm_ewas_limma_sva, echo=TRUE, message=FALSE}
+
+meta.model.sex.annot.sva <- ds.limma(model = ~ e3_sex,
+                Set = "resource_DNAm",
+                sva = TRUE, 
+                annotCols = c("chromosome","start","end","UCSC_RefGene_Name"))
+meta.model.sex.annot.sva
+
+```
+
+Then, data can be combined meta-analysed as follows:
+
+```{r DNAm_ewas_limma_sva_meta, echo=TRUE, message=FALSE}
+
+metaP.model.sex.annot <- metaPvalues(meta.model.sex.annot.sva)
+metaP.model.sex.annot
+
+# Get the number of differentially methylated probes in the meta approach
+dim(metaP.model.sex.annot[metaP.model.sex.annot$p.meta<0.05,])
+
+# Get the number of differentially expressed genes in the meta approach
+# (multiple-testing correction)
+dim(metaP.model.sex.annot[metaP.model.sex.annot$p.meta<0.05/nrow(metaP.model.sex.annot),])
+
+```
+As a result, from the initial list of almost 300k CpGs, we identify a list of 10,417 DMPs between boys and girls of the HELIX cohort, from which only 3 passed the strict bonferroni multiple-testing correction. Of these 3, the cg12052203 and 25650246 the  (mapping the B3GNT1 and RFTN1 respectively) have been previously associated with sex methylation differences (http://www.ewascatalog.org).
+
+And we can revisit the qqplot:
+
+```{r DNAm_ewas_limma_sva_meta_qq, echo=TRUE, message=FALSE}
+
+qqplot(metaP.model.sex.annot$p.meta)
+
+```
+
+Finally, we could compare the list of **differentially methylated genes** obtained here with the list of **differentially expressed genes** obtained in the section \@ref(TranscriptHELIXDGE).
+
+```{r DNAm_Transcript_comparison, warning=FALSE, message=FALSE}
+#ELIMINAR PUES NO SOLAPA NINGUNA.
+
+# We can save the list of top differentially expressed genes for its comparison
+# with the results to be obtained in the section of epigenetic analysis.
+getgene_symbols <- function(x){ x[which(x$P.Value < 0.001),
+                                  "UCSC_RefGene_Name"] }
+symbols_topgenes_by_cohort <- lapply(meta.model.sex.annot.sva,getgene_symbols)
+gene_ewas <- as.data.frame(unlist(symbols_topgenes_by_cohort))
+
+# Load top differentially expressed genes.
+genes_transcriptomics <- read.csv2("./fig/topgenes_transcriptomics.csv")
+
+# Get intersection.
+table(genes_transcriptomics[,1] %in% gene_ewas[,1])
+
+```
+
+## Enrichment analysis of functional annotations. {#DNAmHELIXenrichment}
+
+Once we have obtained the top **differentially methylated genes** per cohort, we could extract their **gene symbols** or **gene entrez ids** directly from each output dataframe and continue with the **functional annotation analysis (FEA)** in our local session as usual. As presented in the showcase of **gene expression analysis**, we will conduct an **enrichment analysis** with **KEGG**:
+
+```{r DNAm_annot1, warning=FALSE, message=FALSE}
+
+# Get list of significant CpGs (checking the number).
+sigCpGs <- as.character(metaP.model.sex.annot[which(
+  metaP.model.sex.annot$p.meta < 0.01),"id"][[1]])
+length(sigCpGs)
+
+# Load required packages for enrichment analysis with CpGs.
+require(IlluminaHumanMethylation450kanno.ilmn12.hg19)
+require(missMethyl)
+
+# Get whole list of CpGs in the 450K array.
+ann450k = getAnnotation(IlluminaHumanMethylation450kanno.ilmn12.hg19)
+all <- ann450k@listData$Name
+
+# Perform enrichment analysis for GO terms.
+goenrichmnet_cpgs <- gometh(sig.cpg=sigCpGs, all.cpg=all, 
+                            plot.bias=FALSE,array.type="450K",collection="GO") 
+goenrichmnet_cpgs <- goenrichmnet_cpgs[order(goenrichmnet_cpgs$P.DE),]
+head(goenrichmnet_cpgs)
+
+# Perform enrichment analysis for KEGG terms.
+KEGGenrichmnet_cpgs <- gometh(sig.cpg=sigCpGs, all.cpg=all,
+                              plot.bias=FALSE,array.type="450K",
+                              collection="KEGG") 
+KEGGenrichmnet_cpgs <- KEGGenrichmnet_cpgs[order(KEGGenrichmnet_cpgs$P.DE),]
+head(KEGGenrichmnet_cpgs)
+
+```
+The FEA show that these CpGs map genes participating in processes with strong sex differences such is the case of bone formation (“Endocrine and other factor-regulated calcium reabsorption”, hsa04961).
+
+As always, the **DataSHIELD** session must be closed by:
+
+```{r}
+datashield.logout(conns)
+```
+
+# References.

@@ -1,89 +1,82 @@
 
-# Datasets description. {#Datasets_Description}
+# Dataset description. {#DatasetDescription}
 
-In this section, we will **describe the data employed for each showcase**, giving details about **experimental designs**, the type of **features available**, and the **structure and organization** of data in the [**Opal servers infrastructure**](https://opaldoc.obiba.org/en/latest/). Particularly, all datasets employed in this **book** are hosted in the [Opal BRGE site](https://datashield.isglobal.org/repo) hosted by the [Bioinformatic Research Group in Epidemiology](https://brge.isglobal.org/) of ISGlobal, simulating a **single-site DataSHIELD infrastructure**. Details for **accessing** the server will be found in each section, at the beginning of each data analysis pipeline.
+In this section, we will **describe the data employed for each showcase**, giving details about **experimental design**, the type of **features available** in each data layer, and the **structure and organization** of data in the [**Opal infrastructure**](https://opaldoc.obiba.org/en/latest/). Particularly, all datasets employed in this **book** are uploaded to the [Opal BRGE site](https://datashield.isglobal.org/repo) hosted by the [Bioinformatic Research Group in Epidemiology](https://brge.isglobal.org/) of ISGlobal, simulating a **single-site DataSHIELD infrastructure**. Details for **accessing** the server will be found in each section, at the beginning of each pipeline.
 
-## CINECA project.
+## HELIX project. {#HELIXdescription}
 
-As introduced in the welcome section, the [CINECA Project](https://www.cineca-project.eu/) is an international initiative bringing together a diverse collection of human cohorts consisting of 1.4M individuals in Canada, Europe, and Africa. In **_Figure 1_**, an overall description of the datasets and cohorts belonging to the **CINECA project** is presented.
+The real-world research problem presented in this book comes from the [HELIX Project](https://www.projecthelix.eu). The **HELIX (Human Early-Life Exposome) project** gathers data from **6 longitudinal-based European birth cohorts**, with the aim of evaluating the effect of **environmental risk factors** on **mothers and children health**, with a special focus in the effects on **molecular health profiles (omic data)**. **HELIX cohorts** include the _BIB_ (Born in Bradford) (United Kingdom), _EDEN_ (Étude des Déterminants pré et postnatals du développement et de la santé de l’ENfant) (France), _INMA_ (INfancia y Medio Ambiente) (Spain), _KANC_ (Kaunus Cohort) (Lithuania), _MoBa_ (Norwegian Mother and Child Cohort Study) (Norway), and _Rhea_ (Mother-Child Cohort in Crete) (Greece). General details of the **study design** of **HELIX** can be found in the **Figure \@ref(fig:FigHELIX)**. The whole **HELIX dataset** includes a total of 31,472 mother-child pairs. Among them, a **subcohort of 1,301 children** (approximately 200 children in each cohort) was selected **here** according to the following criteria of eligibility: 1) age 6 to 11 years; 2) omic data available (including gene expression and EWAS data); 3) complete address history; and 4) no serious health problems that may affect the clinical testing or the child safety. 
 
-```{r Figure1, echo=FALSE, fig.cap="Figure 1. The figure depicts CINECA project cohorts representing >1.4 Million individuals and spanning three continents.", fig.align='center'}
-knitr::include_graphics("https://images.squarespace-cdn.com/content/v1/5cc2c7b2d86cc9589d33dfcc/1573825882582-AS6SBW8PMXNGKSJWS79H/cohort_figure_updated_Nov2019.png?format=750w")
+```{r FigHELIX, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap="General overview of the HELIX research project.", fig.align='center'}
+knitr::include_graphics("http://www.projecthelix.eu/images/estructura/helix_study.gif")
 ```
 
-**Here**, we will use **genome-wide single nucleotide polymorphism (SNP)** data for a **sub-sample of 2,504 individuals**. The **objective** of this dataset will be illustrating how to perform **GWAS quality control**, **GWAS analysis**, and how to construct and test **polygenetic risk scores (PRSs)** in a non-disclosive way using **DataSHIELD**. Information on **individuals and SNP count** of each cohort can be found on the _Table_ \@ref(tab:tab1).
+In the **1,301 children**, a wide range of **environmental exposures** were evaluated to define the early-life exposome during **two time periods**: the **prenatal pregnancy period** and **childhood** (age 6 to 11 years). Collected exposures can be organized into three main parts of the **exposome**: **outdoor exposures, chemical exposures measured through biomarkers, and lifestyle factors**. All variables incorporated in the dataset have been appropriately **pre-processed** previous to analysis (outliers removal, normalization, and missing values imputation). Regarding **phenotype data**, a wide range of **health outcomes** are also available for the **childhood** period including phenotypes related to (1) obesity and cardiometabolic health, (2) respiratory health, and (3) cognition and mental health. Finally, **omic data** (mainly **transcriptomic** and **genome-wide DNA methylation data**) are also available in the **childhood** period. The **objective** of this dataset will be illustrating how to perform, using **DataSHIELD**:
 
-|                       | Cohort 1 | Cohort 2 | Cohort 3 |   Total |
-|-----------------------|---------:|---------:|---------:|--------:|
-| Number of SNPs        |  865,240 |  865,240 |  865,240 | 865,240 |
-| Number of individuals |      817 |    1,073 |      614 |   2,504 |
+* **Exposome** Data Analysis. Deliverable of [ATHLETE project](https://athleteproject.eu/).
+* Differential **gene expression** analysis. 
+* Differential **DNA methylation** analysis. 
 
-: (\#tab:tab1) Number of SNPs and individuals by cohort.
 
-### Data organization in the opal server.
+### Data organization in the Opal server. {#HELIXopal}
 
-Data was initially accessible from a public EGA repository (ID: [EGAD00001006673](https://ega-archive.org/studies/EGAS00001002472/)), being a deliverable belonging to the [VEIS project](https://veis.bsc.es/en/). Previous to analysis, data has been **pruned**, and the individuals have been separated into **three synthetic cohorts**. The three datasets were uploaded to the [Opal BRGE site](https://datashield.isglobal.org/repo) organized as (1) an array of **resource** objects, corresponding to unitary VCF files with the variant information (one per chromosome and cohort), and (2) **table** objects corresponding to the phenotype data of the studied individuals (one per cohort). Data are in Opal simulating a single-site **DataSHIELD architecture**, as in **_Figure 2_**. In this figure, the data analyst corresponds to the "RStudio" session, which through **DataSHIELD Interface (DSI)** connects with the Opal server located at the cohort network. 
+**Exposome** and **omic** data from the **HELIX project** were uploaded into to the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) simulating a **single-site DataSHIELD architecture**, as illustrated in **Figure \@ref(fig:FigHELIXopal)**. Data were stored under the form of **resources** (one per cohort and data type). On the one hand, the **exposome** data were stored as **exposomeSet** objects, a particular R format deriving from the [**rexposome package**](https://github.com/isglobal-brge/rexposome) [@rexposome2021]. The **exposomeSet** type is an R object made up of three different tables (exposures, phenotype data and description). Having an **exposomeSet** loaded in the **DataSHIELD** environment as a **resource** will extremely facilitate the exposome data analysis. On the other hand, **omic data** (mainly EWAS and transcriptomic data) were stored under the form of _expressionSets_. A summary of the structure and organization of this data in the **Opal** for the **HELIX project** is illustrated in **Figure \@ref(fig:FigHELIXopal)**.
 
-<br>
-```{r Figure2, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap="Figure 2. Proposed infrastructure to perform single-cohort GWAS studies.", fig.align='center'}
-knitr::include_graphics("./fig/single_cohort_GWAS.png")
-```
-<br>
-
-For more information about **DataSHIELD data formats**, please, refers to the bookdown [*"Orchestrating privacy-protected non-disclosive big data analyses of data from different resources with R and DataSHIELD"*](https://isglobal-brge.github.io/resource_bookdown/index.html). Briefly, **resources** are datasets or computation units whose location is described by an URL and access is protected by credentials. When assigned to a R/DataSHIELD server session, remote big/complex datasets or high performance computers are made accessible to data analysts. The **resource** format is therefore the way of working in **DataSHIELD** with almost any type of data handled by R (in this case, genomics data stored as VCF or GDS). A resource will always have the following properties; (1) the location of the data or of the computation services, (2) the data format (if this information cannot be inferred from the location property), and (3) the access credentials (if some apply).
-
-## HELIX project.
-
-The other real-world research problem presented in this book comes from the [HELIX Project](https://www.projecthelix.eu). The **HELIX (Human Early-Life Exposome) project** gathers data from **6 longitudinal-based European birth cohorts**, with the aim of evaluating the effect of **environmental risk factors** on **mothers and children health**, with a special focus in the effects on **molecular health profiles (omics data)**. **HELIX cohorts** include the _BIB_ (Born in Bradford) (United Kingdom), _EDEN_ (Étude des Déterminants pré et postnatals du développement et de la santé de l’ENfant) (France), _INMA_ (INfancia y Medio Ambiente) (Spain), _KANC_ (Kaunus Cohort) (Lithuania), _MoBa_ (Norwegian Mother and Child Cohort Study) (Norway), and _Rhea_ (Mother-Child Cohort in Crete) (Greece). General details of the **study design** of **HELIX** can be found in the **_Figure 3_**. The whole **HELIX dataset** includes a total of 31,472 mother-child pairs. Among them, a **subcohort of 1,301 children** (approximately 200 children in each cohort) was selected **here** according to the following criteria of eligibility: 1) age 6 to 11 years; 2) omics data available (including gene expression and EWAS data); 3) complete address history; and 4) no serious health problems that may affect the clinical testing or the child safety. 
-
-<p align = "center"><img src = "http://www.projecthelix.eu/images/estructura/helix_study.gif"></p><p align = "center">
-Figure 3. General overview of the HELIX research project.
-</p>
-
-In the **1,301 children**, a wide range of **environmental exposures** were evaluated to define the early-life exposome during **two time periods**: the **prenatal pregnancy period** and **childhood** (age 6 to 11 years). Collected exposures can be organized into three main parts of the **exposome**: **outdoor exposures, chemical exposures measured through biomarkers, and lifestyle factors**. All variables incorporated in the dataset have been appropriately **pre-processed** previous to analysis (outliers removal, normalization, and missing values imputation). Regarding **phenotype data**, a wide range of **health outcomes** are also available for the **childhood** period including phenotypes related to (1) obesity and cardiometabolic health, (2) respiratory health, and (3) cognition and mental health. Finally, **omics data** (mainly **transcriptomics** and **genome-wide DNA methylation data**) are also available in the **childhood** period. The **objective** of this dataset will be illustrating how to perform, using **DataSHIELD**, next analyses:
-
-    * Differential gene expression analysis. 
-
-    * Differential DNA methylation analysis. 
-
-    * Exposome Data Analysis. Deliverable of [ATHLETE project](https://athleteproject.eu/).
-
-### Data organization in the opal server.
-
-**Exposome** and **omics** data from the **HELIX project** were uploaded into to the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) simulating a **single-site DataSHIELD architecture**, as illustrated in **_Figure 4_**. As in the case of **CINECA project**, here, exposome and omics data were loaded in **DataSHIELD** under the form of **resources** (one per cohort and data type). Particularly, the **exposome** data were available as _exposomeSet_ objects, a particular R format from the ______"rexposome"______ package, consisting on an object made up from three different tables (exposures, phenotypes and description). Having an _exposomeSet_ loaded in the **DataSHIELD** environment as a **resource** will extremely facilitate the exposome data analysis. Otherwise, **omics data** (EWAS and transcriptomics) were available under the form of _expressionSets_. A summary of the data organization in the **Opal** for the **HELIX project** is illustrated in **_Figure 4_**
-
-<br>
-```{r Figure4, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 4. Input HELIX datasets organized by cohort in the Opal server."}
+```{r FigHELIXopal, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Input HELIX datasets organized by cohort in the Opal server."}
 knitr::include_graphics(here::here("./fig", "HELIX OPAL STRUCTURE.png"))
 ```
-<br>
 
-#### Exposome data. {#Exposome_HELIX_Data}
 
-**Exposome data** for each **HELIX cohort** is available in the form of **resources** (including phenotype and exposure data) (**_Figure 5_**), and as tables (including extra phenotypes to be added to the analysis) (**_Figure 6_**). In total, **exposome data** include information for **1,301 subjects**, **115 exposures** and **88 phenotypes** \@ref(tab:tab2).
+The data analyst corresponds to the “RStudio” session, which through DataSHIELD Interface (DSI) connects with the Opal server. In the next subsection, we present **extra details** for each of these datasets.
 
-|Cohort         | N Individuals  | N Predictors
-|---------------|-----------------|---------------
-|BIB_cohort        |      202        |   115
-|EDEN_cohort       |       198        |   115
-|INMA-SAB_cohort   |       224        |   115
-|KANC_cohort       |       207        |   115
-|MoBA_cohort       |      272        |   115
-|Rhea_cohort       |      198        |   115
-|Combined Studies  |     1301       |   115
+#### Exposome data. {#ExposomeHELIXDatadescript}
 
-: (\#tab:tab2) General description for the HELIX exposome dataset.
+**Exposome data** for each of the **HELIX cohorts** was available in the form of **resources** (including phenotype and exposure data). A screenshot of these files stored in the **Opal server** can be viewed in the **Figure \@ref(fig:FigHELIXresourcesOpal)**. As it can be seen, data are stored in the Opal server within a **project** called HELIX.
 
-<br>
-```{r Figure5, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 5. Input ExposomeSet data organized by cohort in the Opal server as resources."}
+```{r FigHELIXresourcesOpal, echo=FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Input ExposomeSet data organized by cohort in the Opal server as resources."}
 knitr::include_graphics(here::here("./fig", "HELIX_DATA_OPAL_resc_exposures.png"))
 ```
-<br>
 
-<br>
-```{r Figure6, echo=FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Figure 6. Additional HELIX phenotypes organized by cohort in the Opal server as tables."}
+Additional phenotype data for the **HELIX cohorts** was available in the form of separate tables **Figure \@ref(fig:FigHELIXtablesOpal)**. 
+
+```{r FigHELIXtablesOpal, echo=FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Additional HELIX phenotype data organized by cohort in the Opal server as tables."}
 knitr::include_graphics(here::here("./fig", "HELIX_DATA_OPAL_tab_morephenos.png"))
 ```
-<br>
+
+In total, **exposome data** include information for **1,301 subjects**, **115 exposures** and **88 phenotypes**  **Table \@ref(tab:tabexpHELIX)**. 
+
+|Cohort            | N Individuals   | N Predictors  | N Phenotypes  |
+|------------------|-----------------|---------------|---------------|
+|BIB_cohort        |      202        |   115         |   88          |
+|EDEN_cohort       |       198       |   115         |   88          |
+|INMA-SAB_cohort   |       224       |   115         |   88          |
+|KANC_cohort       |       207       |   115         |   88          |
+|MoBA_cohort       |      272        |   115         |   88          |
+|Rhea_cohort       |      198        |   115         |   88          |
+|Combined Studies  |     1301        |   115         |   88          |
+
+: (\#tab:tabexpHELIX) General description for the HELIX exposome dataset.
+
+
+#### Gene expression data. {#TranscriptomicsHELIXDatadescript}
+
+The **gene expression** data available for the **HELIX cohorts** correspond to **microarray data** deriving from the _Human Transcriptome Array 2.0_ platform of Affymetrix. These are hosted in the the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) as _ExpressionSet_ objects. **ExpressionSets** files is a file-format of the [BioConductor project](https://www.bioconductor.org/) that may contain different sources of **genomic data**. Alongside the **genomic data**, these data may also contain some **phenotypes** and **metadata** associated to the population. Researchers who are not familiar with **ExpressionSet** can find further information [here](https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf).
+
+Particularly, one _ExpressionSet_ file per cohort is hosted in the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) in the form of a **resource**, as presented in the **Figure \@ref(fig:FigHELIXresourcesOpal_transcrip)**. As it can be seen, data are organized within the Opal server in a **project** called **HELIX_omics**.
+
+```{r FigHELIXresourcesOpal_transcrip, echo=FALSE, fig.align = 'center', out.height = "500px", out.width = "3000px", fig.cap = "Input ExposomeSet data organized by cohort in the Opal server as resources."}
+knitr::include_graphics(here::here("./fig", "geneexpression_HELIX.png"))
+```
+
+#### Epigenetic data. {#EWASHELIXDatadescript}
+
+The **epigenetic** data available for the **HELIX cohorts** correspond to genome-wide **DNA methylation data** obtained by microarray experiments using the _Infinium HumanMethylation450k_ platform from Illumina. The data format in which these data are hosted in the Opal is the type **GenomicRatioSet**. **GenomicRatioSet** is a extend of the class **SummarizedExperiment** especially designed for DNA methylation data obtained with the _Infinium HumanMethylation450k_ platform, that will be analysed with the associated R package [minfi](http://bioconductor.org/packages/release/bioc/html/minfi.html). This type of data usually contain **pre-processed DNA methylation values** at a genome-wide level, in the form of **M or/and Beta values**, together with the associated **genomic coordinates**. As in the case of **ExpressionSet** types, **GenomicRatioSet** can also incorporate **phenotype** and **metadata** information.
+
+Particularly, one  **GenomicRatioSet** file per cohort is hosted in the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) in the form of a **resource**, as presented in the **Figure \@ref(fig:FigHELIXresourcesOpal_DNAm)**. As it can be seen, data are organized within the Opal server in a **project** called **HELIX_omics**.
+
+```{r FigHELIXresourcesOpal_DNAm, echo=FALSE, fig.align = 'center', out.height = "500px", out.width = "3000px", fig.cap = "Input ExposomeSet data organized by cohort in the Opal server as resources."}
+knitr::include_graphics(here::here("./fig", "geneexpression_HELIX.png"))
+```
+
 
 

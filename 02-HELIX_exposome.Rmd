@@ -1,0 +1,650 @@
+```{r , setup_0, include=FALSE}
+knitr::opts_chunk$set(comment="", warning=FALSE, message=FALSE, cache=TRUE)
+```
+
+# Exposome data analysis in the HELIX project. {#ExposomeHELIXanalysis}
+
+The main aim of this **chapter** is to illustrate how to perform an **exposome analysis** on a **multi-centre study** framework using **DataSHIELD**. Particularly, we will cover how to apply **Exposome Wide Association Analysis (ExWAS)** and **variable selection with penalized regressions**. To illustrate the power and possibilities emanating from **DataSHIELD** in this context, we will **replicate** some of the analyses conducted in [@WAREMBOURG20191317], in which the association between a wide range of **prenatal and postnatal exposures** and **blood pressure** in children is investigated. 
+
+For that purpose, we will use the **exposome data** from the **HELIX project** previously described (section \@ref(HELIXdescription)), and two **DataSHIELD packages**; (1) the [**dsExposomeClient**](https://github.com/isglobal-brge/dsExposomeClient) developed by the [BRGE research group](https://brge.isglobal.org/), and (2) the [**dsMTLClient**](https://github.com/transbioZI/dsMTLBase) by [@Cao2021.08.26.457778]. Some **topics** covered in this **tutorial** include: 1) Setting up the **R environment** for working with these packages in **DataSHIELD**, 2) **Loading** the **HELIX data** from an **Opal** server to the **DataSHIELD** environment, and 3) Application of **ExWAS** and **Lasso regression** for **association analysis** and **variable-selection**.
+
+## Getting started. {#ExposomeHELIXanalysisOne}
+
+In this section, we will describe how to **configure R and DataSHIELD** with the **needed packages** to carry out proposed analyses in remote. 
+
+We start by **installing** the *client-side* version of the following **DataSHIELD/Opal** integration packages.
+
+```{r setup1, eval=FALSE}
+
+install.packages("DSOpal", dependencies=TRUE)
+install.packages("DSI", dependencies=TRUE)
+
+```
+
+Make sure you also install the **DataSHIELD** *client-side* version of the package **dsBaseClient**.
+
+```{r setup2, eval=FALSE}
+
+install.packages("dsBaseClient", 
+                 repos = c("http://cran.datashield.org","https://cloud.r-project.org/"),
+                 dependencies = TRUE)
+
+```
+
+Then, install the *client-side* version of the **dsExposomeClient** and **dsMTLClient** packages directly from *GitHub*.
+
+```{r setup3, eval=FALSE}
+
+install.packages("devtools")
+require("devtools")
+devtools::install_github("isglobal-brge/dsExposomeClient")
+devtools::install_github("transbioZI/dsMTLClient")
+
+```
+
+Once installations are completed, all the packages are **loaded** as usual.
+
+```{r setup4, echo=TRUE, results="hide", message=FALSE}
+
+require(DSOpal)
+require(DSI)
+require(dsBaseClient)
+require(dsExposomeClient)
+require(dsMTLClient)
+
+# Loading additional required packages
+require(dplyr)
+require(ggplot2)
+require(ggrepel)
+require(EnhancedVolcano)
+require(tidyverse)
+require(ggrepel)
+require(reshape2)
+require(RColorBrewer)
+
+```
+
+In this **tutorial**, we will use the [Opal BRGE site](https://datashield.isglobal.org/brge/ui/index.html) to illustrate how to perform mentioned analyses in **DataSHIELD**. Details for **accessing** the server can be found below. Before starting analysis, it is always advisable to check that the *server-side* version of the functions of these packages are available in the **Opal server**. For that purpose, once you are logged into the Opal, you can use the function *datashield.methods(conns)*. If they are not, please, ask your data manager for their installation.
+
+## Data formatting and manipulation in DataSHIELD. {#ExposomeHELIXanalysisTwo}
+
+In this section, we will cover how to **manipulate** and **prepare** **input data** with **DataSHIELD** according to the needs of the functions available in the **dsExposomeClient** and **dsMTLClient** packages.
+
+We start by **creating the connection to the opal server** using an user who have **DataSHIELD permissions** to Opal servers. Please, note that in our example, all datasets are hosted in the same Opal but each cohort sub-dataset is accessed separately. In the case each cohort dataset was available in a different Opal, the way of login data would be the same but specifying different connection details.
+
+```{r creating_conns_login_1, echo=TRUE, results="hide", message=FALSE}
+
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "BIB", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "EDEN", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "KANC", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "MoBA", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "Rhea", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+builder$append(server = "INMASAB", url = "https://datashield.isglobal.org/repo",
+               user =  "invited", password = "12345678",
+               profile = "rock-inma")
+logindata <- builder$build()
+conns <- DSI::datashield.login(logins = logindata)
+
+``` 
+
+Next, we will **load** all the **resources** available in the **Opal server**, corresponding to each cohort **exposomeSet** file, using the _DSI::datashield.assign.resource()_ function. This function takes the connections to the server created in the previous code chunk to assign all available **resource objects** from the the **Opal** to an **R object** in the **DataSHIELD remote session**. As it can be seen in the code, **resources** in **DataSHIELD** are called in the function following the next structure *"NameOfOpalProject.NameOfResource"*. 
+
+```{r assign_resources_login_2, echo=TRUE, results="hide", message=FALSE}
+
+# We assign post-natal data from all cohorts to an object called resource_pos
+DSI::datashield.assign.resource(conns[1], "resource_pos", "HELIX.postnatal_BIB")
+DSI::datashield.assign.resource(conns[2], "resource_pos", "HELIX.postnatal_EDE")
+DSI::datashield.assign.resource(conns[3], "resource_pos", "HELIX.postnatal_KAN")
+DSI::datashield.assign.resource(conns[4], "resource_pos", "HELIX.postnatal_MOB")
+DSI::datashield.assign.resource(conns[5], "resource_pos", "HELIX.postnatal_RHE")
+DSI::datashield.assign.resource(conns[6], "resource_pos", "HELIX.postnatal_SAB")
+
+# We assign pre-natal data from all cohorts to an object called resource_pre
+DSI::datashield.assign.resource(conns[1], "resource_pre", "HELIX.pregnancy_BIB")
+DSI::datashield.assign.resource(conns[2], "resource_pre", "HELIX.pregnancy_EDE")
+DSI::datashield.assign.resource(conns[3], "resource_pre", "HELIX.pregnancy_KAN")
+DSI::datashield.assign.resource(conns[4], "resource_pre", "HELIX.pregnancy_MOB")
+DSI::datashield.assign.resource(conns[5], "resource_pre", "HELIX.pregnancy_RHE")
+DSI::datashield.assign.resource(conns[6], "resource_pre", "HELIX.pregnancy_SAB")
+
+```
+
+Then, we have to **resolve the resources** and **retrieve the data in the remote session (server-side)**. For that, we will use the _DSI::datashield.assign.expr()_ function. This function will assign the result of the execution of the argument **expr** to an R object called **exposome_set** in the **Datashield remote session**. In particular, we run the function _as.resource.object()_, which is the **DataSHIELD** function in charge of resolving resources (it coerces the resource to an internal data object that depends on the implementation of the object). As a result, we will get an **R object** (here named **"exposome_Set_pos"** for post-natal data, and **"exposome_Set_pre"** for pre-natal data) containing the **"exposomeSets"** files for all cohorts.
+
+```{r resolve_resources_login_3, echo=TRUE, results="hide", message=FALSE}
+
+# We resolve the resource for post-natal data
+DSI::datashield.assign.expr(conns = conns, symbol = "exposome_set_pos",
+                       expr = as.symbol("as.resource.object(resource_pos)"))
+
+# We resolve the resource for pre-natal data
+DSI::datashield.assign.expr(conns, symbol = "exposome_set_pre", 
+                       expr = as.symbol("as.resource.object(resource_pre)"))
+
+```
+
+Once we have loaded the resources, we have also to load each of the **tables with additional phenotypes** available for each cohort in the **Opal server**. For that purpose, we will use the _DSI::datashield.assign.table()_ function, which assigns **tables** to an **R object** in the **remote session** (here named **pheno**). As a result, the **pheno** object will contain six **data.frames** corresponding to each of the tables with extra phenotype data for the cohorts.
+
+```{r assign_tables_login_4, echo=TRUE, results="hide", message=FALSE}
+
+DSI::datashield.assign.table(conns[1], "pheno", "HELIX.subclinical_cardio_BIB")
+DSI::datashield.assign.table(conns[2], "pheno", "HELIX.subclinical_cardio_EDE")
+DSI::datashield.assign.table(conns[3], "pheno", "HELIX.subclinical_cardio_KAN")
+DSI::datashield.assign.table(conns[4], "pheno", "HELIX.subclinical_cardio_MOB")
+DSI::datashield.assign.table(conns[5], "pheno", "HELIX.subclinical_cardio_RHE")
+DSI::datashield.assign.table(conns[6], "pheno", "HELIX.subclinical_cardio_SAB")
+
+```
+
+To **verify previous steps were performed correctly**, we could apply some **data analysis functions** on created objects. For example, we can check the **class** of each object, or the **name of the variables** included, so we ensure that they exist on the **remote session**. Since each **exposome_set** object (pre, and pos) contains exposomeSet-type files for each cohort, the process for retrieving the names of variables in their case is slightly different than for the data.frames available in **pheno**. For that, we have two functions from the **ds.ExposomeClient** package called *ds.phenotypeNames()* and *ds.exposome_variables()*.
+
+```{r descriptive_1, echo=TRUE, message=FALSE}
+
+# Get the class of the remote "exposome_set" and "pheno" objects for the EDEN
+# cohort:
+ds.class("exposome_set_pos")$EDEN
+ds.class("exposome_set_pre")$EDEN
+ds.class("pheno")$EDEN
+
+# Get the name of the first 5 columns available in the EDEN data.frame of the
+# "pheno" object:
+ds.colnames("pheno")$EDEN[1:5]
+
+# Get the name of the first 5 phenotypes available in the "exposome_Set" files
+# for the EDEN cohort.
+ds.phenotypeNames("exposome_set_pos", conns)$EDEN[1:5]
+ds.phenotypeNames("exposome_set_pre", conns)$EDEN[1:5]
+
+# Get the name of the first 5 exposure variables available in the 
+# "exposome_Set" files for the EDEN cohort.
+ds.exposome_variables("exposome_set_pos" , target="exposures")$EDEN[1:5]
+ds.exposome_variables("exposome_set_pre" , target="exposures")$EDEN[1:5]
+
+```
+
+We will now **merge** the additional phenotype data available in **"pheno"** to the outcomes already available in each **"exposome_set"** file. To do that, there is a function from the **dsExposomeClient** package called _ds.addPhenoData2ExposomeSet()_. This function add new phenotype data contained on a **data.frame** to an **exposomeSet**. The **exposomeSet** may or may not already have phenotype data. If the **data.frame** contains a phenotype already present on the **exposomeSet**, the server function will throw an exception. In the example, we will employ the **"HelixID"** variable as the identifier to match subjects from each dataset. 
+
+```{r data_manipulation_1, echo=TRUE, message=FALSE}
+
+# Adding phenotype data to post-natal datasets.
+ds.addPhenoData2ExposomeSet("exposome_set_pos", "pheno", 
+                            identifier_ExposomeSet = "HelixID", 
+                            identifier_new_phenotypes = "HelixID")
+# Adding phenotype data to pre-natal datasets.
+ds.addPhenoData2ExposomeSet("exposome_set_pre", "pheno", 
+                            identifier_ExposomeSet = "HelixID", 
+                            identifier_new_phenotypes = "HelixID")
+
+```
+
+We can check the process has been conducted successfully by exploring the **dimensions** of the new **"exposome_set"** files created.
+
+```{r descriptive_2, echo=TRUE, message=FALSE}
+
+# Get dimensions of each "exposome_set" file for the EDEN cohort.
+ds.dim("exposome_set_pos")[[2]]
+ds.dim("exposome_set_pre")[[2]]
+
+# We can also check if there is metadata available in each "exposome_set" 
+# file describing the families of exposomes.
+ds.familyNames("exposome_set_pos")$EDEN[1:5]
+ds.familyNames("exposome_set_pre")$EDEN[1:5]
+
+```
+
+## Implementation of ExWAS in DataSHIELD. {#ExposomeHELIXanalysisThree}
+
+The main aim of this **chapter** is to illustrate how to apply **Exposome Wide Association Analysis (ExWAS)** in the prepared data from the **HELIX project**. Particularly, we will be replicating some of the analyses conducted in [@WAREMBOURG20191317], in which the association between a wide range of **postnatal exposures** and **blood pressure (BP)** phenotypes in children was investigated. In the **childhood** period, this work identified a **bulk of external and internal exposures affecting** both diastolic and systolic **blood pressure** measurements (**Figure \@ref(fig:FigureExWASSBP)**). Here, for simplification, we will only **replicate the findings** reported for the **post-natal period** and the **systolic blood pressure phenotype** (**framed in red** in **Figure \@ref(fig:FigureExWASSBP)**). 
+
+<br>
+```{r FigureExWASSBP, echo=FALSE, fig.align = 'center', out.width = "120%", fig.cap = "Environmental-Wide Association Study Between Postnatal Exposome and Systolic and Diastolic Blood Pressure in the HELIX cohort (Warembourg C et al. (2019)[@WAREMBOURG20191317]."}
+knitr::include_graphics(here::here("./fig", "charline_Bp.png"))
+```
+<br>
+
+The **exact estimates and 95% confidence intervals (CIs)** obtained for these **exposures** in the paper are presented in **Table \@ref(tab:tabSBP)**.
+
+|              | Systolic Blood Pressure  |          | Diastolic Blood Pressure  |          |
+|--------------|--------------------------|----------|---------------------------|----------|
+| **Exposure**     | **Beta [95% CI]**            | **P-value**  | **Beta [95% CI]**             | **P-value**  |
+| DDE          | -2.1 [-2.92; -1.28]      | **<0.00001** | -1.11 [-1.88; -0.34]      | **0.00471**  |
+| HCB          | -2.05 [-2.82; -1.29]     | **<0.00001** | -0.82 [-1.54; -0.10]      | **0.02640**  |
+| PCB 153      | -1.90 [-2.85; -0.95]     | **0.00009**  | -0.81 [-1.70; 0.09]       | 0.07759  |
+| PCB 170      | -1.73 [-2.73; -0.73]     | **0.00068**  | -0.93 [-1.86; 0.00]       | 0.05118  |
+| PCBs (sum)   | -1.93 [-2.94; -0.92]     | **0.00018**  | -0.91 [-1.85; 0.04]       | 0.05999  |
+
+: (\#tab:tabSBP) Postnatal ExWAS and systolic and diastolic blood pressure (corrected p-value threshold=0.00068).
+
+Importantly, these analyses were adjusted by **confounders** such as **child age, child height, child sex, child cohort, mother"s age at the moment of birth and mother's BMI at the moment of birth**. In the next chunk of code, we perform some basic **exploratory analyses** on these **confounders** and the **outcome**. 
+
+```{r show_families, echo=TRUE, message=FALSE}
+
+# Retrieve basic summary statistics for the main outcome under study (systolic
+# blood pressure) in the EDEN cohort.
+# The function can be also applied to categorical variables.
+ds.exposome_summary("exposome_set_pos", "hs_bp_sys", conns)$EDEN
+
+```
+
+At this point, we are ready to **apply the ExWAS** on the **systolic blood pressure** phenotype. For simplification, we will start focusing in the particular set of **exposures** belonging the **OCs family**, which presented the highest significance values according to [@WAREMBOURG20191317] paper (**Figure \@ref(fig:FigureExWASSBP)**).
+
+The ExWAS will be performed using the _ds.exwas()_ function, from the **"ds.ExposomeClient"** package. As we will see, there are several **ways** of applying an **ExWAS** in **DataSHIELD** (**_pooled vs. meta_**), and the chosen method will depend on the characteristics of each project. Both methods are based on iteratively fitting different **generalized linear models (GLMs)** for each **feature/exposure** assessing association with the **phenotype of interest**. The “virtually” **pooled approach** is recommended when the user wants to analyse data from different sources and obtain results as if the data were located in a **single computer**. Nevertheless, it should be noticed that this method is not recommended when data are not properly harmonized, or are not comparable between cohorts, whatever the reason. On the other hand, the federated **meta-analysis approach** performs an **ExWAS on every study server** to later **meta-analyse** the results. Thanks to that, it overcomes the limitations raised when performing pooled analysis. 
+
+In the next chunk of code, we present how to apply a **pooled ExWAS** to the **HELIX data example**. Since in our example, for simplification, we want to focus only on **OCs exposures**, it will be vital that our **exposomeSet** input files count on metadata or a **description file**. Then, we will use the **"exposure_family"** argument to indicate the family group of exposures to restrict our analysis to. Other arguments available in the _ds.exwas()_ function include the **"family"** argument, which refers to the type of link function to be used in the GLM (e.g., gaussian for continuous outcomes, binary for binary outomes, or poisson for counts). It's important to note that if the family argument does not match with the nature of the data available in the **phenotype**, the ExWAS will fail.
+
+```{r exwas_analysis_1, echo=TRUE, message=FALSE}
+
+# ExWAS with pooled approach (without adjusting for confounders). Estimated 
+# execution time: approx. 4.675414 mins
+res.pooled_pos <- ds.exwas("hs_bp_sys ~ 1", type = "pooled", 
+                     exposures_family = "OCs", 
+                     Set = "exposome_set_pos", family = "gaussian")
+head(res.pooled_pos)
+
+```
+
+As we said, **ds.exwas** will fit **GLMs between the exposures and the phenotype** as follows:
+
+```
+    phenotype ~ exposure_1 + covar1 + ... + covarN
+    phenotype ~ exposure_2 + covar1 + ... + covarN
+    phenotype ~ exposure_3 + covar1 + ... + covarN
+    ...
+    phenotype ~ exposure_M + covar1 + ... + covarN
+```
+
+The model is written as a string, where the left side term is the **phenotype**, and the right term are the **covariates** or **confounders** (e.g., variables to be adjusted for). A **crude model** is fitted in our particular example using `phenotype ~ 1`. In the case of having **more adjusting covariates** proceed as: `phenotype ~ cov1 + cov2 + ... + covN`. 
+
+To **visualize the results** from the **ExWAS**, the **ds.ExposomeClient** package has the function _ds.plotExwas()_, which takes the output of _ds.exwas()_ and creates two different visualizations depending on the argument **"type"**. Given the nature of the "Manhattan plots", it should be noted that this kind of visualizations is more appropriated when performing an ExWAS study with a higher number of exposures rather than when focusing in a group of exposures such is the current case. 
+
+We can also generate a **plot showing the effects** (beta values) and their **confidence intervals** with:
+  
+```{r plot_effects, fig.width=10, fig.height=12}
+
+# One plot for the whole population
+ds.plotExwas(res.pooled_pos, type="effect")
+
+```
+
+To replicate the findings from [@WAREMBOURG20191317], we will now **repeat the pooled ExWAS** but including previously mentioned **adjusting covariates**. Importantly, the order to adjust the models by cohort is given separately to the function, directly with the argument **"adjust.by.study"**.
+
+```{r exwas_adjusted, echo=TRUE, results="hide", message=FALSE}
+
+# Adjust by cohort and other confounders. 
+# Estimated execution time: approx. 6.830064 mins
+res.pooled_adjusted_pos <- ds.exwas("hs_bp_sys ~ hs_child_age_days_None + hs_c_height_None + e3_sex_None + h_age_None + h_mbmi_None", type = "pooled", 
+                     adjust.by.study = TRUE,
+                       exposures_family = "OCs", 
+                     Set = "exposome_set_pos", family = "gaussian")
+head(res.pooled_adjusted_pos)
+
+```
+
+As it can be seen, we are able to validate the main findings presented in the paper, reporting an **inverse association** between the concentration of some of these **OCs** and the **systolic blood pressure** levels of **children**.
+
+Next, we repeat the process without restricting to the OCs family. 
+
+```{r Full_exwas_adjusted, echo=TRUE, results="hide", message=FALSE, warning=FALSE}
+
+# Adjust by cohort and other covariates.
+# Estimated execution time: approx. 50 mins
+res.pooled_adjusted_pos <- ds.exwas("hs_bp_sys ~ hs_child_age_days_None + hs_c_height_None + e3_sex_None + h_age_None + h_mbmi_None", type = "pooled", 
+                     adjust.by.study = TRUE, 
+                     Set = "exposome_set_pos", family = "gaussian")
+head(res.pooled_adjusted_pos)
+
+```
+
+The effect sizes and p-values derived from the ExWAS can be accessed with the command *res.pooled_adjusted_pos$exwas_results*, and then plotted in a volcano visualization.
+
+```{r VolcanoPlot, echo=TRUE, message=FALSE}
+
+dbvolcan <- as.data.frame(res.pooled_adjusted_pos$exwas_results)
+
+codebook <- read.csv2("./fig/codebook_HELIX.csv")
+codebook <- codebook[1:544,]
+rownames(codebook) <- codebook[,4]
+dbvolcan$exposure <- codebook[dbvolcan$exposure,5]
+
+data <- dbvolcan %>%
+  mutate(
+    Expression = case_when(coefficient > 0 & 
+                           p.value <= 0.05 ~ "Proportional-relationship",
+                           coefficient < 0 & 
+                           p.value <= 0.05 ~ "Inverse-relationship",
+                           TRUE ~ "Unchanged")
+       )
+
+p1 <- ggplot(data, aes(coefficient, -log(p.value,10))) +
+  geom_point(aes(color = Expression), size = 2/5) +
+  xlab(expression("Beta")) +
+  ylab(expression("-log"[10]*"pvalue")) +
+  scale_color_manual(values = c("firebrick3","dodgerblue3","gray50")) +
+  guides(colour = guide_legend(override.aes = list(size=1.5)))
+
+top <- 10
+top_symbol <- bind_rows(
+  data %>%
+    filter(Expression == 'Inverse-relationship') %>%
+    arrange(p.value, desc(abs(coefficient))) %>%
+    head(top),
+  data %>%
+    filter(Expression == 'Proportional-relationship') %>%
+    arrange(p.value, desc(abs(coefficient))) %>%
+    head(top)
+                       )
+
+p1 +  geom_label_repel(data = top_symbol,
+                      mapping = aes(coefficient, -log(p.value,10), 
+                                    label = exposure),
+                      size = 2)
+
+```
+
+
+## Feature selection with penalized methods.  {#ExposomeHELIXanalysisFour}
+
+In this subsection, we present how to perform **variable selection** with **penalized regression methods** in an exposome context. As previously mentioned, the **dsMTL package** allows the implementation of a **federated version** of conventional **regularized regression techniques** (such as Lasso, Ridge or Elastic-net), both in the context of continuous or binary outcomes (linear and logistic regression, respectively). Here, we will show how to apply these methods to the **HELIX data example**, focusing in the **systolic blood pressure** outcome [@WAREMBOURG20191317]. In the paper, the **selection of important exposures** was determined by the **DSA (Deletion-Substitution-Addition) algorithm**. DSA selections were performed separately for the prenatal and postnatal time points, and for systolic and diastolic blood pressure phenotypes. For the postnatal period, a list of selected variables can be found in **Figure \@ref(fig:FigureDSA)** framed in red.
+
+<br>
+```{r FigureDSA, echo=FALSE, fig.align = "center", out.width = "100%", fig.cap = "Exposures Selected Into the Multiple-Exposure Models from [@WAREMBOURG20191317]."}
+knitr::include_graphics(here::here("./fig", "charline DSA_highlighted.png"))
+```
+<br
+
+In this tutorial, we will use **Lasso regression** for variable selection. 
+
+Since the functions from the **dsMTL package** require data of each cohort to be passed as **separate matrices** for predictors and the outcome, and we have our data as **exposomeSet** files, we will have to do some **data preparation** before starting the analysis. Particularly, we will start by generating two **data.frames**, one for **exposure data** and one for the **outcome data**. For that, we have the function _ds.exposures_pData()_, which extracts exposures, phenotype or combined data from an **exposomeSet** to generate a new data.frame on the server side.
+
+```{r get_exposures_cont, results="hide", warning=FALSE, message=FALSE}
+
+# With the "name" argument, we can specify the name of the new R object 
+# to be created.
+
+# Extract exposures
+ds.exposures_pData("exposome_set_pos",  
+                   type = "exposures", exposures_type = "numeric",
+                   name = "table_exposures")
+# Extract phenotype
+ds.exposures_pData("exposome_set_pos",  
+                   type = "phenotypes", exposures_type = "numeric",
+                   name = "table_phenotypes")
+
+```
+
+Once we have **different objects** for **exposure** and **phenotype data** respectively, we can continue with the **data preparation**.
+
+```{r data_preparation_lasso, results="hide", warning=FALSE, message=FALSE}
+
+# We start by assigning the outcome "Systolic Blood pressure" to a new R object
+# of the  type numeric vector called "Y" in the server side.
+ds.assign(toAssign="table_phenotypes$hs_bp_sys", newobj="Y_raw", 
+          datasources = conns)
+
+# We check if there is any NA value in the phenotype vector.
+ds.numNA("Y_raw")
+
+# We replace NA values by the cohort mean.
+Y_means <- ds.mean(x = "Y_raw",type = "split",save.mean.Nvalid = F,
+                   datasources = conns)$Mean.by.Study
+ds.replaceNA(x = "Y_raw", forNA = Y_means[,1], newobj = "Y", 
+             datasources = conns)
+
+# We again check dimensions and attribute names for the resulting objects.
+ds.dim("table_exposures")
+ds.class("table_exposures")
+ds.colnames("table_exposures")[[1]][1:5]
+ds.class("Y")
+ds.length("Y")
+
+# We coerce both Xs and Y into matrices. 
+#ds.asMatrix(x.name = "table_exposures", newobj = "X", datasources = NULL)
+ds.asMatrix(x.name = "table_exposures", newobj = "X", datasources = NULL)
+ds.asMatrix(x.name = "Y", newobj = "Y", datasources = NULL)
+
+# We assign both matrices from the remote session to R objects 
+# in the client-side.
+X="X"; Y="Y"
+
+```
+Once we have the data properly formatted, we can proceed to perform variable selection with penalized methods. **Available functions** in the package for such purpose include:
+
+* _ds.LS_Lasso()_: Solver of **regression with Lasso**.
+* _ds.LR_Lasso()_: Solver of **logistic regression** with **Lasso**.                
+* _ds.Lasso_Train()_: Train a **regularization tree** with **Lasso** for a **sequence of penalty values** (than can be either provided by the user, or directly estimated from the data).
+* _ds.Lasso_CVInSite()_: In-site **cross-validation** procedure for **selecting the optimal penalty**.
+
+In all these functions, there is an argument called **"_C_"**, which is the **hyperparameter** for the **Ridge** regression L2 penalty. Thus, by tuning both the L1 penalty and the C argument (L2 term), one would be able to choose between a **Lasso**, **Ridge** or **Elastic-Net regression**. Likewise, there is an argument called **"_opts_"**, which allow for controlling the optimization algorithm employed to minimize the sum of squared errors (SSE) (**objective function**). Additional details regarding the loss function implemented in these models can be found in the supplementary material of [@Cao2021.08.26.457778]. Within the **"_opts_"** argument we find:
+
+* __"init"__: It determines the starting point.
+
+* __"maxIter"__: It is the maximized iteration number.
+
+* __"ter"__: It  refers to the termination rule used to determine the convergence of the algorithm. There are three termination rules available for *ds.lasso*. The first rule checks whether the current objective value was close enough to 0. The second rule investigates the last two objective values and checks whether the decline was close enough to 0. The third rule allowed the optimization to be performed for a certain maximum number of iterations.
+
+* __"tol"__: It refers to the precision of the convergence and determines the termination of the program.
+
+```{r lassoanalysis_1, warning=FALSE, message=FALSE}
+
+# Default values for the opts argument.
+opts=list();opts$init=0; opts$maxIter=10; opts$tol=0.01; opts$ter=2;
+
+```
+
+A **summary** of the functions that one could use in **DataSHIELD** for performing **feature selection** with **Lasso regression** can be found in **Figure \@ref(fig:FigureDSlassoSummary)**.
+
+<br>
+```{r FigureDSlassoSummary, echo=FALSE, fig.align = "center", out.width = "110%", fig.cap = "DataSHIELD for the implementation of penalized Lasso regression in a federated framework."}
+knitr::include_graphics(here::here("./fig", "dslasso.jpg"))
+```
+<br>
+
+### Lasso regression for a given lambda value. {#ExposomeHELIXanalysisFoura}
+
+With the _ds.LS_Lasso()_ function, we can apply the lasso solver of regression for a **particular** value of the **lambda** penalty. **Input** arguments available in the function include:
+ 
+* _X_:	The design matrices of multiple cohorts.
+* _Y_:	Label vectors of multiple cohorts.
+* _lam_:	Input lambda value.
+* _C_:	The hyper-parameter associated with L2 term.
+* _opts_:	Options controlling the optimization procedure.
+* _datasources_:	The connections of servers.
+* _nDigits_:	The number of digits rounded for each number prepared for network transmission.
+* _W_:	The current estimate of the variables (if available).
+
+**_Note that if we set lam=0 and C>0 we will do Ridge regression, lam>0 and C=0 we will do Lasso, while any other combination of these both will be Elastic-Net._**
+
+The **output** of this function comprises:
+
+* The **vector of weights** estimated for input **predictors**. 
+* The converged result of optimization. 
+* The proximal point of W and the non-smooth part of objective.
+
+In the next chunk, we apply this function to our **example dataset**, setting the value of the **lambda penalty** to "38". For this, we will test the association between the **79 input predictors** and the continuous outcome **Systolic blood pressure**. In case we were interested in modeling a **binary outcome**, we should use the _ds.LR_Lasso()_ function instead, which share exactly the same arguments and options. 
+
+```{r lassoanalysis_2, warning=FALSE, message=FALSE}
+
+# Estimated execution time: approx. 1.976153 mins
+set.seed(123)
+m1=ds.LS_Lasso(X=X, Y=Y, lam=38, C=0, opts, datasources=conns, nDigits=15)
+
+# Get the number of selected variables by the model for the assessed lambda
+sum(m1$w!=0)
+
+```
+
+In our example, with this **lambda penalty**, **61 variables** are selected as significant contributors to the outcome **systolic blood pressure** phenotype. Now, we can get the **names** of selected variables and **plot** estimated coefficients from the model.
+
+```{r lassoanalysis_3, warning=FALSE, message=FALSE}
+
+# Get names of selected variables
+toplot <- data.frame(m1$w,ds.colnames(X)[[1]])
+colnames(toplot) <- c("Coefficient","Index")
+sel_var_m1 <- toplot[which(toplot$Coefficient != 0),2]
+codebook <- read.csv2("./fig/codebook_HELIX.csv")
+codebook <- codebook[1:544,]
+rownames(codebook) <- codebook[,4]
+fun1 <- function(x) { codebook[x,5] }
+fun1(sel_var_m1)
+
+# Plot estimated coefficients
+ggplot(toplot, aes(x=Index, y=Coefficient)) +
+  geom_point() +
+  geom_jitter(width=0.15) +
+  theme(text = element_text(size=5), axis.text.x = element_text(angle = 90))
+
+```
+
+### _ds.Lasso_Train()_ function. {#ExposomeHELIXanalysisFourb}
+
+Instead of using a single value of lambda and fitting the model, a **whole lambda sequence** can be tested (either if it has been **defined by the user**, or if it has been **estimated from the data**). For that purpose, we must use the function _ds.Lasso_Train()_, which trains a whole **regularization tree** with **Lasso** for a **set** of **penalty values**.
+
+Some **input** arguments available here and not present in the previous function are:
+
+* _type_: Regression(=regress) or classification(=classify).
+
+* _nlambda_: The length of lambda sequence.
+
+* _lam_ratio_: This is an option affecting how the lambda sequence is extracted from the data. It refers to the ratio: $min(lambda) / max(lambda)$. 
+
+* _lambda_: The lambda sequence.
+
+* _intercept_: Use intercept(=TRUE) or non-intercept(=FALSE) model.
+
+The process of **lambda sequence estimation from the data** in this function is governed by two arguments: _"nlambda"_ and _"lam_ratio"_. First, the **lambda max** is determined as the smallest value of lambda for which no parameters are selected. In the next chunk, we show the code lines of the function source code that extract the **lambda max** value from the data.
+
+```{r lassoanalysis_4, eval=FALSE, warning=FALSE, message=FALSE}
+
+xys = DSI::datashield.aggregate(datasources, call("xtyDS", X, Y)) 
+# matrix multiplication x * t(y) 
+xys = rowSums(do.call(cbind, xys))/sum(nSubs)
+xy_norm = max(abs(xys))
+
+```
+
+The determination of **λmin** and the number of grid points seems less principled. The **λmin** is calculated as $λmin=λratio∗λmax$, and then a grid of _n_ equally spaced points on the logarithmic scale between **λmin** and **λmax** is generated.
+
+The **output** of the _ds.Lasso_Train()_ function is a list composed of:
+
+* A **matrix** with as many columns as lambdas and as many rows as variables including the **estimated coefficients** for each variable-lambda.^
+* A vector with the **sequence of lambdas** (either if they were estimated from data or introduced by the user).
+
+Next, we show how to apply this function to our **showcase**, estimating a **sequence of 10 lambda penalties** from the data (with a lambda ratio of 0.001). 
+
+```{r lassoanalysis_5, warning=FALSE, message=FALSE}
+
+# Estimated execution time: approx. 19.1657 mins
+m2=ds.Lasso_Train(X=X, Y=Y, type="regress", nlambda=10, lam_ratio=0.001,
+                  C=0, opts=opts,datasources=conns, nDigits=15)
+
+```
+
+From the output of this function, the **number and names of selected variables** for each lambda value can also be extracted:
+
+```{r lassoanalysis_6, warning=FALSE, message=FALSE}
+
+# Get the number of selected variables per lambda
+fun2 <- function(x) { length(which(x != 0)) }
+apply(m2$ws,2,fun2)
+
+# Get the name of selected variables per lambda
+variable_names <- ds.colnames("X")[[1]]
+fun3 <- function(x) { variable_names[which(x != 0)] }
+sel_var_per_lam_m2 <- apply(m2$ws,2,fun3)
+lapply(sel_var_per_lam_m2,fun1)
+
+# We save the estimated sequence of lambdas in a variable named lamseq.
+lamseq <- m2$lam_seq
+lamseq
+
+```
+
+And we can plot the results (**regularization tree**). If the estimation of the **λmax** penalty has been performed correctly, all horizontal lines in the plot should begin with _w=0_, since, as we said before, by definition, the **λmax** is the smallest value of lambda for which no parameters are selected.
+
+```{r lassoanalysis_7, warning=FALSE, message=FALSE}
+
+matplot(t(m2$ws), type = "l", main="solution Path", xlab = "lambda", 
+        ylab = "coefficients")
+
+```
+
+_Please, note that the values in the **X** axis refer to the appearance order of each lambda in the lambda sequence vector, i.e., Lam1=38347.3,  Lam2=17799.24167, Lam3=8261.67614 and Lam4=3834.73037_ ... and so on.
+
+
+### _ds.Lasso_CVInSite()_ function. {#ExposomeHELIXanalysisFourc}
+
+The **dsMTL package** also allows the selection of the **optimal lambda** by a **k-fold cross-validation (CV) procedure**. This is done with the function _ds.Lasso_CVInSite()_, which has practically the same arguments than previous functions, except for the _"nfolds"_ argument, referring to the number of folds for the CV procedure. 
+
+From the application of this function to our **showcase**, we identify the **optimal lambda** from the lambda sequence of 10 values with a 5-fold CV procedure:
+
+```{r lassoanalysis_9, eval=TRUE, warning=FALSE, message=FALSE}
+
+# Estimated execution time: approx. 90 mins
+
+# Identification of the optimal lambda value by k-fold crossvalidation.
+cvResult=ds.Lasso_CVInSite(X=X, Y=Y, type="regress", lambda=lamseq, 
+                           opts=opts, C=0, datasources=conns, nDigits=4, 
+                           nfolds=5)
+
+# Boxplot showing the averaged MSE obtained for lambda values over folds
+dataset <- na.omit(melt(cvResult$mse_fold))
+pal <- brewer.pal(10,"Paired")
+ggplot(dataset,aes(x=Var1,y=value,fill=Var2))+geom_boxplot()+ 
+  scale_fill_manual(values=pal)+ labs(x = "Averaged lambda over folds",
+                                      y = "Mean squared error")
+
+```
+
+From this model, we could select the **optimal lambda value** directly from the **output** with the _"cvResult$lambda.min"_ element, and then **fit a new model** with optimal hyperparameters.
+
+```{r lassoanalysis_10, eval=TRUE, warning=FALSE, message=FALSE}
+
+# Estimated execution time: approx. 1.84234 mins
+
+# Optimal lambda from CV
+cvResult$lambda.min
+
+# Training a new model with selected hype-parameter
+m4=ds.Lasso_Train(X=X, Y=Y, type="regress", lambda=cvResult$lambda.min,
+                   opts=opts, C=0, datasources=conns, nDigits=4)
+
+# Get the number of selected variables
+apply(m4$ws,2,fun2)
+
+# Get names of selected variables
+toplot <- data.frame(m4$ws,ds.colnames(X)[[1]])
+colnames(toplot) <- c("Coefficient","Index")
+sel_var_m4 <- toplot[which(toplot$Coefficient != 0),2]
+fun1(sel_var_m4)
+
+# Plot estimated coefficients
+ggplot(toplot, aes(x=Index, y=Coefficient)) +
+  geom_point() +
+  geom_jitter(width=0.15) +
+  theme(text = element_text(size=5), axis.text.x = element_text(angle = 90))
+
+```
+
+If we compare the list of **selected variables** from our optimal **Lasso model** and the list of features selected by **DSA** in  [@WAREMBOURG20191317], we can see how there are **several coincident factors** (one with systolic blood pressure and two with diastolic blood pressure):
+
+* _Dichlorodiphenyldichloroethylene (DDE)_.
+* _Cupper (Cu)_.
+* _Temperature_.
+
+With this **showcase**, we thereby demonstrate that **DataSHIELD** and the available packages **dsExposomeClient** and **dsMTLClient** constitute a powerful infrastructure for performing secure and non-disclosive **exposome data analysis** in sensitive **multi-centre research studies**. 
+
+
+```{r logout}
+datashield.logout(conns)
+```

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Exposome data analysis in the HELIX project. | Applications of OmicDataSHIELD in real data</title>
+  <meta name="description" content="2 Exposome data analysis in the HELIX project. | Applications of OmicDataSHIELD in real data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Exposome data analysis in the HELIX project. | Applications of OmicDataSHIELD in real data" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Exposome data analysis in the HELIX project. | Applications of OmicDataSHIELD in real data" />
+  
+  
+  
+
+
+
+<meta name="date" content="2022-03-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="DatasetDescription.html"/>
+<link rel="next" href="TranscriptHELIX.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script>
+  function unrolltab(evt, divName, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementById(divName).getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementById(divName).getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("gwas_results_1").click();
+    document.getElementById("gwas_plot_1").click();
+    document.getElementById("manhattan-plots-tab").click();
+    document.getElementById("locuszoom-plots-tabs").click();
+ });
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="" target="blank">OmicSHIELD</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="DatasetDescription.html"><a href="DatasetDescription.html"><i class="fa fa-check"></i><b>1</b> Dataset description.</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="DatasetDescription.html"><a href="DatasetDescription.html#HELIXdescription"><i class="fa fa-check"></i><b>1.1</b> HELIX project.</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="DatasetDescription.html"><a href="DatasetDescription.html#HELIXopal"><i class="fa fa-check"></i><b>1.1.1</b> Data organization in the Opal server.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html"><i class="fa fa-check"></i><b>2</b> Exposome data analysis in the HELIX project.</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisOne"><i class="fa fa-check"></i><b>2.1</b> Getting started.</a></li>
+<li class="chapter" data-level="2.2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisTwo"><i class="fa fa-check"></i><b>2.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.3" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisThree"><i class="fa fa-check"></i><b>2.3</b> Implementation of ExWAS in DataSHIELD.</a></li>
+<li class="chapter" data-level="2.4" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFour"><i class="fa fa-check"></i><b>2.4</b> Feature selection with penalized methods.</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFoura"><i class="fa fa-check"></i><b>2.4.1</b> Lasso regression for a given lambda value.</a></li>
+<li class="chapter" data-level="2.4.2" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFourb"><i class="fa fa-check"></i><b>2.4.2</b> <em>ds.Lasso_Train()</em> function.</a></li>
+<li class="chapter" data-level="2.4.3" data-path="ExposomeHELIXanalysis.html"><a href="ExposomeHELIXanalysis.html#ExposomeHELIXanalysisFourc"><i class="fa fa-check"></i><b>2.4.3</b> <em>ds.Lasso_CVInSite()</em> function.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html"><i class="fa fa-check"></i><b>3</b> Transcriptomic analysis in the HELIX cohort.</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXone"><i class="fa fa-check"></i><b>3.1</b> Getting started.</a></li>
+<li class="chapter" data-level="3.2" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXdatamanip"><i class="fa fa-check"></i><b>3.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="3.3" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXDGE"><i class="fa fa-check"></i><b>3.3</b> Differential gene expression analysis.</a></li>
+<li class="chapter" data-level="3.4" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXsurrogateAnnot"><i class="fa fa-check"></i><b>3.4</b> Surrogate variable analysis.</a></li>
+<li class="chapter" data-level="3.5" data-path="TranscriptHELIX.html"><a href="TranscriptHELIX.html#TranscriptHELIXenrichment"><i class="fa fa-check"></i><b>3.5</b> Enrichment analysis of functional annotations.</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html"><i class="fa fa-check"></i><b>4</b> Epigenetic analysis in the HELIX cohort.</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_gettingstarted"><i class="fa fa-check"></i><b>4.1</b> Getting started.</a></li>
+<li class="chapter" data-level="4.2" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_load"><i class="fa fa-check"></i><b>4.2</b> Data formatting and manipulation in DataSHIELD.</a></li>
+<li class="chapter" data-level="4.3" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis1"><i class="fa fa-check"></i><b>4.3</b> Single CpG pooled analysis.</a></li>
+<li class="chapter" data-level="4.4" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis2"><i class="fa fa-check"></i><b>4.4</b> Multiple CpGs pooled analysis.</a></li>
+<li class="chapter" data-level="4.5" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis3"><i class="fa fa-check"></i><b>4.5</b> Full genome meta-analysis.</a></li>
+<li class="chapter" data-level="4.6" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIX_analysis4"><i class="fa fa-check"></i><b>4.6</b> Adjusting for surrogate variables.</a></li>
+<li class="chapter" data-level="4.7" data-path="DNAmHELIX.html"><a href="DNAmHELIX.html#DNAmHELIXenrichment"><i class="fa fa-check"></i><b>4.7</b> Enrichment analysis of functional annotations.</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applications of OmicDataSHIELD in real data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ExposomeHELIXanalysis" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Exposome data analysis in the HELIX project.</h1>
+<p>The main aim of this <strong>chapter</strong> is to illustrate how to perform an <strong>exposome analysis</strong> on a <strong>multi-centre study</strong> framework using <strong>DataSHIELD</strong>. Particularly, we will cover how to apply <strong>Exposome Wide Association Analysis (ExWAS)</strong> and <strong>variable selection with penalized regressions</strong>. To illustrate the power and possibilities emanating from <strong>DataSHIELD</strong> in this context, we will <strong>replicate</strong> some of the analyses conducted in <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>, in which the association between a wide range of <strong>prenatal and postnatal exposures</strong> and <strong>blood pressure</strong> in children is investigated.</p>
+<p>For that purpose, we will use the <strong>exposome data</strong> from the <strong>HELIX project</strong> previously described (section <a href="DatasetDescription.html#HELIXdescription">1.1</a>), and two <strong>DataSHIELD packages</strong>; (1) the <a href="https://github.com/isglobal-brge/dsExposomeClient"><strong>dsExposomeClient</strong></a> developed by the <a href="https://brge.isglobal.org/">BRGE research group</a>, and (2) the <a href="https://github.com/transbioZI/dsMTLBase"><strong>dsMTLClient</strong></a> by <span class="citation">(<a href="#ref-Cao2021.08.26.457778" role="doc-biblioref">Cao et al. 2021</a>)</span>. Some <strong>topics</strong> covered in this <strong>tutorial</strong> include: 1) Setting up the <strong>R environment</strong> for working with these packages in <strong>DataSHIELD</strong>, 2) <strong>Loading</strong> the <strong>HELIX data</strong> from an <strong>Opal</strong> server to the <strong>DataSHIELD</strong> environment, and 3) Application of <strong>ExWAS</strong> and <strong>Lasso regression</strong> for <strong>association analysis</strong> and <strong>variable-selection</strong>.</p>
+<div id="ExposomeHELIXanalysisOne" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Getting started.</h2>
+<p>In this section, we will describe how to <strong>configure R and DataSHIELD</strong> with the <strong>needed packages</strong> to carry out proposed analyses in remote.</p>
+<p>We start by <strong>installing</strong> the <em>client-side</em> version of the following <strong>DataSHIELD/Opal</strong> integration packages.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="ExposomeHELIXanalysis.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DSOpal&quot;</span>, <span class="at">dependencies=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="ExposomeHELIXanalysis.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DSI&quot;</span>, <span class="at">dependencies=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Make sure you also install the <strong>DataSHIELD</strong> <em>client-side</em> version of the package <strong>dsBaseClient</strong>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="ExposomeHELIXanalysis.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dsBaseClient&quot;</span>, </span>
+<span id="cb2-2"><a href="ExposomeHELIXanalysis.html#cb2-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;http://cran.datashield.org&quot;</span>,<span class="st">&quot;https://cloud.r-project.org/&quot;</span>),</span>
+<span id="cb2-3"><a href="ExposomeHELIXanalysis.html#cb2-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Then, install the <em>client-side</em> version of the <strong>dsExposomeClient</strong> and <strong>dsMTLClient</strong> packages directly from <em>GitHub</em>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="ExposomeHELIXanalysis.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb3-2"><a href="ExposomeHELIXanalysis.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb3-3"><a href="ExposomeHELIXanalysis.html#cb3-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;isglobal-brge/dsExposomeClient&quot;</span>)</span>
+<span id="cb3-4"><a href="ExposomeHELIXanalysis.html#cb3-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;transbioZI/dsMTLClient&quot;</span>)</span></code></pre></div>
+<p>Once installations are completed, all the packages are <strong>loaded</strong> as usual.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="ExposomeHELIXanalysis.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(DSOpal)</span>
+<span id="cb4-2"><a href="ExposomeHELIXanalysis.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(DSI)</span>
+<span id="cb4-3"><a href="ExposomeHELIXanalysis.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dsBaseClient)</span>
+<span id="cb4-4"><a href="ExposomeHELIXanalysis.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dsExposomeClient)</span>
+<span id="cb4-5"><a href="ExposomeHELIXanalysis.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dsMTLClient)</span>
+<span id="cb4-6"><a href="ExposomeHELIXanalysis.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="ExposomeHELIXanalysis.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading additional required packages</span></span>
+<span id="cb4-8"><a href="ExposomeHELIXanalysis.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dplyr)</span>
+<span id="cb4-9"><a href="ExposomeHELIXanalysis.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggplot2)</span>
+<span id="cb4-10"><a href="ExposomeHELIXanalysis.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggrepel)</span>
+<span id="cb4-11"><a href="ExposomeHELIXanalysis.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(EnhancedVolcano)</span>
+<span id="cb4-12"><a href="ExposomeHELIXanalysis.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
+<span id="cb4-13"><a href="ExposomeHELIXanalysis.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggrepel)</span>
+<span id="cb4-14"><a href="ExposomeHELIXanalysis.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(reshape2)</span>
+<span id="cb4-15"><a href="ExposomeHELIXanalysis.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(RColorBrewer)</span></code></pre></div>
+<p>In this <strong>tutorial</strong>, we will use the <a href="https://datashield.isglobal.org/brge/ui/index.html">Opal BRGE site</a> to illustrate how to perform mentioned analyses in <strong>DataSHIELD</strong>. Details for <strong>accessing</strong> the server can be found below. Before starting analysis, it is always advisable to check that the <em>server-side</em> version of the functions of these packages are available in the <strong>Opal server</strong>. For that purpose, once you are logged into the Opal, you can use the function <em>datashield.methods(conns)</em>. If they are not, please, ask your data manager for their installation.</p>
+</div>
+<div id="ExposomeHELIXanalysisTwo" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Data formatting and manipulation in DataSHIELD.</h2>
+<p>In this section, we will cover how to <strong>manipulate</strong> and <strong>prepare</strong> <strong>input data</strong> with <strong>DataSHIELD</strong> according to the needs of the functions available in the <strong>dsExposomeClient</strong> and <strong>dsMTLClient</strong> packages.</p>
+<p>We start by <strong>creating the connection to the opal server</strong> using an user who have <strong>DataSHIELD permissions</strong> to Opal servers. Please, note that in our example, all datasets are hosted in the same Opal but each cohort sub-dataset is accessed separately. In the case each cohort dataset was available in a different Opal, the way of login data would be the same but specifying different connection details.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="ExposomeHELIXanalysis.html#cb5-1" aria-hidden="true" tabindex="-1"></a>builder <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">newDSLoginBuilder</span>()</span>
+<span id="cb5-2"><a href="ExposomeHELIXanalysis.html#cb5-2" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;BIB&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-3"><a href="ExposomeHELIXanalysis.html#cb5-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-4"><a href="ExposomeHELIXanalysis.html#cb5-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-5"><a href="ExposomeHELIXanalysis.html#cb5-5" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;EDEN&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-6"><a href="ExposomeHELIXanalysis.html#cb5-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-7"><a href="ExposomeHELIXanalysis.html#cb5-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-8"><a href="ExposomeHELIXanalysis.html#cb5-8" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;KANC&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-9"><a href="ExposomeHELIXanalysis.html#cb5-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-10"><a href="ExposomeHELIXanalysis.html#cb5-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-11"><a href="ExposomeHELIXanalysis.html#cb5-11" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;MoBA&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-12"><a href="ExposomeHELIXanalysis.html#cb5-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-13"><a href="ExposomeHELIXanalysis.html#cb5-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-14"><a href="ExposomeHELIXanalysis.html#cb5-14" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;Rhea&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-15"><a href="ExposomeHELIXanalysis.html#cb5-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-16"><a href="ExposomeHELIXanalysis.html#cb5-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-17"><a href="ExposomeHELIXanalysis.html#cb5-17" aria-hidden="true" tabindex="-1"></a>builder<span class="sc">$</span><span class="fu">append</span>(<span class="at">server =</span> <span class="st">&quot;INMASAB&quot;</span>, <span class="at">url =</span> <span class="st">&quot;https://datashield.isglobal.org/repo&quot;</span>,</span>
+<span id="cb5-18"><a href="ExposomeHELIXanalysis.html#cb5-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">user =</span>  <span class="st">&quot;invited&quot;</span>, <span class="at">password =</span> <span class="st">&quot;12345678&quot;</span>,</span>
+<span id="cb5-19"><a href="ExposomeHELIXanalysis.html#cb5-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">&quot;rock-inma&quot;</span>)</span>
+<span id="cb5-20"><a href="ExposomeHELIXanalysis.html#cb5-20" aria-hidden="true" tabindex="-1"></a>logindata <span class="ot">&lt;-</span> builder<span class="sc">$</span><span class="fu">build</span>()</span>
+<span id="cb5-21"><a href="ExposomeHELIXanalysis.html#cb5-21" aria-hidden="true" tabindex="-1"></a>conns <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">datashield.login</span>(<span class="at">logins =</span> logindata)</span></code></pre></div>
+<p>Next, we will <strong>load</strong> all the <strong>resources</strong> available in the <strong>Opal server</strong>, corresponding to each cohort <strong>exposomeSet</strong> file, using the <em>DSI::datashield.assign.resource()</em> function. This function takes the connections to the server created in the previous code chunk to assign all available <strong>resource objects</strong> from the the <strong>Opal</strong> to an <strong>R object</strong> in the <strong>DataSHIELD remote session</strong>. As it can be seen in the code, <strong>resources</strong> in <strong>DataSHIELD</strong> are called in the function following the next structure <em>“NameOfOpalProject.NameOfResource”</em>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="ExposomeHELIXanalysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We assign post-natal data from all cohorts to an object called resource_pos</span></span>
+<span id="cb6-2"><a href="ExposomeHELIXanalysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">1</span>], <span class="st">&quot;resource_pos&quot;</span>, <span class="st">&quot;HELIX.postnatal_BIB&quot;</span>)</span>
+<span id="cb6-3"><a href="ExposomeHELIXanalysis.html#cb6-3" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">2</span>], <span class="st">&quot;resource_pos&quot;</span>, <span class="st">&quot;HELIX.postnatal_EDE&quot;</span>)</span>
+<span id="cb6-4"><a href="ExposomeHELIXanalysis.html#cb6-4" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">3</span>], <span class="st">&quot;resource_pos&quot;</span>, <span class="st">&quot;HELIX.postnatal_KAN&quot;</span>)</span>
+<span id="cb6-5"><a href="ExposomeHELIXanalysis.html#cb6-5" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">4</span>], <span class="st">&quot;resource_pos&quot;</span>, <span class="st">&quot;HELIX.postnatal_MOB&quot;</span>)</span>
+<span id="cb6-6"><a href="ExposomeHELIXanalysis.html#cb6-6" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">5</span>], <span class="st">&quot;resource_pos&quot;</span>, <span class="st">&quot;HELIX.postnatal_RHE&quot;</span>)</span>
+<span id="cb6-7"><a href="ExposomeHELIXanalysis.html#cb6-7" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">6</span>], <span class="st">&quot;resource_pos&quot;</span>, <span class="st">&quot;HELIX.postnatal_SAB&quot;</span>)</span>
+<span id="cb6-8"><a href="ExposomeHELIXanalysis.html#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="ExposomeHELIXanalysis.html#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We assign pre-natal data from all cohorts to an object called resource_pre</span></span>
+<span id="cb6-10"><a href="ExposomeHELIXanalysis.html#cb6-10" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">1</span>], <span class="st">&quot;resource_pre&quot;</span>, <span class="st">&quot;HELIX.pregnancy_BIB&quot;</span>)</span>
+<span id="cb6-11"><a href="ExposomeHELIXanalysis.html#cb6-11" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">2</span>], <span class="st">&quot;resource_pre&quot;</span>, <span class="st">&quot;HELIX.pregnancy_EDE&quot;</span>)</span>
+<span id="cb6-12"><a href="ExposomeHELIXanalysis.html#cb6-12" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">3</span>], <span class="st">&quot;resource_pre&quot;</span>, <span class="st">&quot;HELIX.pregnancy_KAN&quot;</span>)</span>
+<span id="cb6-13"><a href="ExposomeHELIXanalysis.html#cb6-13" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">4</span>], <span class="st">&quot;resource_pre&quot;</span>, <span class="st">&quot;HELIX.pregnancy_MOB&quot;</span>)</span>
+<span id="cb6-14"><a href="ExposomeHELIXanalysis.html#cb6-14" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">5</span>], <span class="st">&quot;resource_pre&quot;</span>, <span class="st">&quot;HELIX.pregnancy_RHE&quot;</span>)</span>
+<span id="cb6-15"><a href="ExposomeHELIXanalysis.html#cb6-15" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.resource</span>(conns[<span class="dv">6</span>], <span class="st">&quot;resource_pre&quot;</span>, <span class="st">&quot;HELIX.pregnancy_SAB&quot;</span>)</span></code></pre></div>
+<p>Then, we have to <strong>resolve the resources</strong> and <strong>retrieve the data in the remote session (server-side)</strong>. For that, we will use the <em>DSI::datashield.assign.expr()</em> function. This function will assign the result of the execution of the argument <strong>expr</strong> to an R object called <strong>exposome_set</strong> in the <strong>Datashield remote session</strong>. In particular, we run the function <em>as.resource.object()</em>, which is the <strong>DataSHIELD</strong> function in charge of resolving resources (it coerces the resource to an internal data object that depends on the implementation of the object). As a result, we will get an <strong>R object</strong> (here named <strong>“exposome_Set_pos”</strong> for post-natal data, and <strong>“exposome_Set_pre”</strong> for pre-natal data) containing the <strong>“exposomeSets”</strong> files for all cohorts.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="ExposomeHELIXanalysis.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We resolve the resource for post-natal data</span></span>
+<span id="cb7-2"><a href="ExposomeHELIXanalysis.html#cb7-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(<span class="at">conns =</span> conns, <span class="at">symbol =</span> <span class="st">&quot;exposome_set_pos&quot;</span>,</span>
+<span id="cb7-3"><a href="ExposomeHELIXanalysis.html#cb7-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">expr =</span> <span class="fu">as.symbol</span>(<span class="st">&quot;as.resource.object(resource_pos)&quot;</span>))</span>
+<span id="cb7-4"><a href="ExposomeHELIXanalysis.html#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="ExposomeHELIXanalysis.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># We resolve the resource for pre-natal data</span></span>
+<span id="cb7-6"><a href="ExposomeHELIXanalysis.html#cb7-6" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.expr</span>(conns, <span class="at">symbol =</span> <span class="st">&quot;exposome_set_pre&quot;</span>, </span>
+<span id="cb7-7"><a href="ExposomeHELIXanalysis.html#cb7-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">expr =</span> <span class="fu">as.symbol</span>(<span class="st">&quot;as.resource.object(resource_pre)&quot;</span>))</span></code></pre></div>
+<p>Once we have loaded the resources, we have also to load each of the <strong>tables with additional phenotypes</strong> available for each cohort in the <strong>Opal server</strong>. For that purpose, we will use the <em>DSI::datashield.assign.table()</em> function, which assigns <strong>tables</strong> to an <strong>R object</strong> in the <strong>remote session</strong> (here named <strong>pheno</strong>). As a result, the <strong>pheno</strong> object will contain six <strong>data.frames</strong> corresponding to each of the tables with extra phenotype data for the cohorts.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="ExposomeHELIXanalysis.html#cb8-1" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.table</span>(conns[<span class="dv">1</span>], <span class="st">&quot;pheno&quot;</span>, <span class="st">&quot;HELIX.subclinical_cardio_BIB&quot;</span>)</span>
+<span id="cb8-2"><a href="ExposomeHELIXanalysis.html#cb8-2" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.table</span>(conns[<span class="dv">2</span>], <span class="st">&quot;pheno&quot;</span>, <span class="st">&quot;HELIX.subclinical_cardio_EDE&quot;</span>)</span>
+<span id="cb8-3"><a href="ExposomeHELIXanalysis.html#cb8-3" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.table</span>(conns[<span class="dv">3</span>], <span class="st">&quot;pheno&quot;</span>, <span class="st">&quot;HELIX.subclinical_cardio_KAN&quot;</span>)</span>
+<span id="cb8-4"><a href="ExposomeHELIXanalysis.html#cb8-4" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.table</span>(conns[<span class="dv">4</span>], <span class="st">&quot;pheno&quot;</span>, <span class="st">&quot;HELIX.subclinical_cardio_MOB&quot;</span>)</span>
+<span id="cb8-5"><a href="ExposomeHELIXanalysis.html#cb8-5" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.table</span>(conns[<span class="dv">5</span>], <span class="st">&quot;pheno&quot;</span>, <span class="st">&quot;HELIX.subclinical_cardio_RHE&quot;</span>)</span>
+<span id="cb8-6"><a href="ExposomeHELIXanalysis.html#cb8-6" aria-hidden="true" tabindex="-1"></a>DSI<span class="sc">::</span><span class="fu">datashield.assign.table</span>(conns[<span class="dv">6</span>], <span class="st">&quot;pheno&quot;</span>, <span class="st">&quot;HELIX.subclinical_cardio_SAB&quot;</span>)</span></code></pre></div>
+<p>To <strong>verify previous steps were performed correctly</strong>, we could apply some <strong>data analysis functions</strong> on created objects. For example, we can check the <strong>class</strong> of each object, or the <strong>name of the variables</strong> included, so we ensure that they exist on the <strong>remote session</strong>. Since each <strong>exposome_set</strong> object (pre, and pos) contains exposomeSet-type files for each cohort, the process for retrieving the names of variables in their case is slightly different than for the data.frames available in <strong>pheno</strong>. For that, we have two functions from the <strong>ds.ExposomeClient</strong> package called <em>ds.phenotypeNames()</em> and <em>ds.exposome_variables()</em>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="ExposomeHELIXanalysis.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the class of the remote &quot;exposome_set&quot; and &quot;pheno&quot; objects for the EDEN</span></span>
+<span id="cb9-2"><a href="ExposomeHELIXanalysis.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># cohort:</span></span>
+<span id="cb9-3"><a href="ExposomeHELIXanalysis.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;exposome_set_pos&quot;</span>)<span class="sc">$</span>EDEN</span></code></pre></div>
+<pre><code>[1] &quot;ExposomeSet&quot;
+attr(,&quot;package&quot;)
+[1] &quot;rexposome&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="ExposomeHELIXanalysis.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;exposome_set_pre&quot;</span>)<span class="sc">$</span>EDEN</span></code></pre></div>
+<pre><code>[1] &quot;ExposomeSet&quot;
+attr(,&quot;package&quot;)
+[1] &quot;rexposome&quot;</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="ExposomeHELIXanalysis.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;pheno&quot;</span>)<span class="sc">$</span>EDEN</span></code></pre></div>
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="ExposomeHELIXanalysis.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the name of the first 5 columns available in the EDEN data.frame of the</span></span>
+<span id="cb15-2"><a href="ExposomeHELIXanalysis.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;pheno&quot; object:</span></span>
+<span id="cb15-3"><a href="ExposomeHELIXanalysis.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">&quot;pheno&quot;</span>)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;HelixID&quot;    &quot;hs_bp_sys&quot;  &quot;hs_bp_dia&quot;  &quot;hs_zsys_bp&quot; &quot;hs_zdia_bp&quot;</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="ExposomeHELIXanalysis.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the name of the first 5 phenotypes available in the &quot;exposome_Set&quot; files</span></span>
+<span id="cb17-2"><a href="ExposomeHELIXanalysis.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for the EDEN cohort.</span></span>
+<span id="cb17-3"><a href="ExposomeHELIXanalysis.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.phenotypeNames</span>(<span class="st">&quot;exposome_set_pos&quot;</span>, conns)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;.id.1&quot;          &quot;.imp.1&quot;         &quot;HelixID&quot;        &quot;SampleID&quot;      
+[5] &quot;hs_bmicat_None&quot;</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="ExposomeHELIXanalysis.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.phenotypeNames</span>(<span class="st">&quot;exposome_set_pre&quot;</span>, conns)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;.id.1&quot;          &quot;.imp.1&quot;         &quot;HelixID&quot;        &quot;SampleID&quot;      
+[5] &quot;hs_bmicat_None&quot;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="ExposomeHELIXanalysis.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the name of the first 5 exposure variables available in the </span></span>
+<span id="cb21-2"><a href="ExposomeHELIXanalysis.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;exposome_Set&quot; files for the EDEN cohort.</span></span>
+<span id="cb21-3"><a href="ExposomeHELIXanalysis.html#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.exposome_variables</span>(<span class="st">&quot;exposome_set_pos&quot;</span> , <span class="at">target=</span><span class="st">&quot;exposures&quot;</span>)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;FAS_cat_None&quot;     &quot;h_Absorbance_Log&quot; &quot;h_Benzene_Log&quot;    &quot;h_bfdur_Ter&quot;     
+[5] &quot;h_NO2_Log&quot;       </code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="ExposomeHELIXanalysis.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.exposome_variables</span>(<span class="st">&quot;exposome_set_pre&quot;</span> , <span class="at">target=</span><span class="st">&quot;exposures&quot;</span>)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;e3_alcpreg_yn_None&quot;         &quot;e3_asmokyn_p_None&quot;         
+[3] &quot;h_abs_ratio_preg_Log&quot;       &quot;h_accesslines300_preg_dic0&quot;
+[5] &quot;h_accesspoints300_preg_Log&quot;</code></pre>
+<p>We will now <strong>merge</strong> the additional phenotype data available in <strong>“pheno”</strong> to the outcomes already available in each <strong>“exposome_set”</strong> file. To do that, there is a function from the <strong>dsExposomeClient</strong> package called <em>ds.addPhenoData2ExposomeSet()</em>. This function add new phenotype data contained on a <strong>data.frame</strong> to an <strong>exposomeSet</strong>. The <strong>exposomeSet</strong> may or may not already have phenotype data. If the <strong>data.frame</strong> contains a phenotype already present on the <strong>exposomeSet</strong>, the server function will throw an exception. In the example, we will employ the <strong>“HelixID”</strong> variable as the identifier to match subjects from each dataset.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="ExposomeHELIXanalysis.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding phenotype data to post-natal datasets.</span></span>
+<span id="cb25-2"><a href="ExposomeHELIXanalysis.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.addPhenoData2ExposomeSet</span>(<span class="st">&quot;exposome_set_pos&quot;</span>, <span class="st">&quot;pheno&quot;</span>, </span>
+<span id="cb25-3"><a href="ExposomeHELIXanalysis.html#cb25-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">identifier_ExposomeSet =</span> <span class="st">&quot;HelixID&quot;</span>, </span>
+<span id="cb25-4"><a href="ExposomeHELIXanalysis.html#cb25-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">identifier_new_phenotypes =</span> <span class="st">&quot;HelixID&quot;</span>)</span>
+<span id="cb25-5"><a href="ExposomeHELIXanalysis.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding phenotype data to pre-natal datasets.</span></span>
+<span id="cb25-6"><a href="ExposomeHELIXanalysis.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.addPhenoData2ExposomeSet</span>(<span class="st">&quot;exposome_set_pre&quot;</span>, <span class="st">&quot;pheno&quot;</span>, </span>
+<span id="cb25-7"><a href="ExposomeHELIXanalysis.html#cb25-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">identifier_ExposomeSet =</span> <span class="st">&quot;HelixID&quot;</span>, </span>
+<span id="cb25-8"><a href="ExposomeHELIXanalysis.html#cb25-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">identifier_new_phenotypes =</span> <span class="st">&quot;HelixID&quot;</span>)</span></code></pre></div>
+<p>We can check the process has been conducted successfully by exploring the <strong>dimensions</strong> of the new <strong>“exposome_set”</strong> files created.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="ExposomeHELIXanalysis.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get dimensions of each &quot;exposome_set&quot; file for the EDEN cohort.</span></span>
+<span id="cb26-2"><a href="ExposomeHELIXanalysis.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">&quot;exposome_set_pos&quot;</span>)[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>exposures   samples phenotyes 
+      115       198        88 </code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="ExposomeHELIXanalysis.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">&quot;exposome_set_pre&quot;</span>)[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>exposures   samples phenotyes 
+       93       198        88 </code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="ExposomeHELIXanalysis.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can also check if there is metadata available in each &quot;exposome_set&quot; </span></span>
+<span id="cb30-2"><a href="ExposomeHELIXanalysis.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># file describing the families of exposomes.</span></span>
+<span id="cb30-3"><a href="ExposomeHELIXanalysis.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.familyNames</span>(<span class="st">&quot;exposome_set_pos&quot;</span>)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;Socio-eco capital_Fac&quot; &quot;Indoor air&quot;            &quot;Lifestyle&quot;            
+[4] &quot;Built Environment&quot;     &quot;Metals&quot;               </code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="ExposomeHELIXanalysis.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.familyNames</span>(<span class="st">&quot;exposome_set_pre&quot;</span>)<span class="sc">$</span>EDEN[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>[1] &quot;Lifestyle_fac&quot;         &quot;Tobacco Smoke_fac&quot;     &quot;Air Pollution&quot;        
+[4] &quot;Built Environment_fac&quot; &quot;Built Environment&quot;    </code></pre>
+</div>
+<div id="ExposomeHELIXanalysisThree" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Implementation of ExWAS in DataSHIELD.</h2>
+<p>The main aim of this <strong>chapter</strong> is to illustrate how to apply <strong>Exposome Wide Association Analysis (ExWAS)</strong> in the prepared data from the <strong>HELIX project</strong>. Particularly, we will be replicating some of the analyses conducted in <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>, in which the association between a wide range of <strong>postnatal exposures</strong> and <strong>blood pressure (BP)</strong> phenotypes in children was investigated. In the <strong>childhood</strong> period, this work identified a <strong>bulk of external and internal exposures affecting</strong> both diastolic and systolic <strong>blood pressure</strong> measurements (<strong>Figure <a href="ExposomeHELIXanalysis.html#fig:FigureExWASSBP">2.1</a></strong>). Here, for simplification, we will only <strong>replicate the findings</strong> reported for the <strong>post-natal period</strong> and the <strong>systolic blood pressure phenotype</strong> (<strong>framed in red</strong> in <strong>Figure <a href="ExposomeHELIXanalysis.html#fig:FigureExWASSBP">2.1</a></strong>).</p>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigureExWASSBP"></span>
+<img src="fig/charline_Bp.png" alt="Environmental-Wide Association Study Between Postnatal Exposome and Systolic and Diastolic Blood Pressure in the HELIX cohort (Warembourg C et al. (2019)[@WAREMBOURG20191317]." width="120%" />
+<p class="caption">
+Figure 2.1: Environmental-Wide Association Study Between Postnatal Exposome and Systolic and Diastolic Blood Pressure in the HELIX cohort (Warembourg C et al. (2019)<span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>.
+</p>
+</div>
+<p><br></p>
+<p>The <strong>exact estimates and 95% confidence intervals (CIs)</strong> obtained for these <strong>exposures</strong> in the paper are presented in <strong>Table <a href="ExposomeHELIXanalysis.html#tab:tabSBP">2.1</a></strong>.</p>
+<table>
+<caption><span id="tab:tabSBP">Table 2.1: </span> Postnatal ExWAS and systolic and diastolic blood pressure (corrected p-value threshold=0.00068).</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th>Systolic Blood Pressure</th>
+<th></th>
+<th>Diastolic Blood Pressure</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Exposure</strong></td>
+<td><strong>Beta [95% CI]</strong></td>
+<td><strong>P-value</strong></td>
+<td><strong>Beta [95% CI]</strong></td>
+<td><strong>P-value</strong></td>
+</tr>
+<tr class="even">
+<td>DDE</td>
+<td>-2.1 [-2.92; -1.28]</td>
+<td><strong>&lt;0.00001</strong></td>
+<td>-1.11 [-1.88; -0.34]</td>
+<td><strong>0.00471</strong></td>
+</tr>
+<tr class="odd">
+<td>HCB</td>
+<td>-2.05 [-2.82; -1.29]</td>
+<td><strong>&lt;0.00001</strong></td>
+<td>-0.82 [-1.54; -0.10]</td>
+<td><strong>0.02640</strong></td>
+</tr>
+<tr class="even">
+<td>PCB 153</td>
+<td>-1.90 [-2.85; -0.95]</td>
+<td><strong>0.00009</strong></td>
+<td>-0.81 [-1.70; 0.09]</td>
+<td>0.07759</td>
+</tr>
+<tr class="odd">
+<td>PCB 170</td>
+<td>-1.73 [-2.73; -0.73]</td>
+<td><strong>0.00068</strong></td>
+<td>-0.93 [-1.86; 0.00]</td>
+<td>0.05118</td>
+</tr>
+<tr class="even">
+<td>PCBs (sum)</td>
+<td>-1.93 [-2.94; -0.92]</td>
+<td><strong>0.00018</strong></td>
+<td>-0.91 [-1.85; 0.04]</td>
+<td>0.05999</td>
+</tr>
+</tbody>
+</table>
+<p>Importantly, these analyses were adjusted by <strong>confounders</strong> such as <strong>child age, child height, child sex, child cohort, mother”s age at the moment of birth and mother’s BMI at the moment of birth</strong>. In the next chunk of code, we perform some basic <strong>exploratory analyses</strong> on these <strong>confounders</strong> and the <strong>outcome</strong>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="ExposomeHELIXanalysis.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve basic summary statistics for the main outcome under study (systolic</span></span>
+<span id="cb34-2"><a href="ExposomeHELIXanalysis.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># blood pressure) in the EDEN cohort.</span></span>
+<span id="cb34-3"><a href="ExposomeHELIXanalysis.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The function can be also applied to categorical variables.</span></span>
+<span id="cb34-4"><a href="ExposomeHELIXanalysis.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.exposome_summary</span>(<span class="st">&quot;exposome_set_pos&quot;</span>, <span class="st">&quot;hs_bp_sys&quot;</span>, conns)<span class="sc">$</span>EDEN</span></code></pre></div>
+<pre><code>$class
+[1] &quot;numeric&quot;
+
+$length
+[1] 198
+
+$`quantiles &amp; mean`
+      5%      10%      25%      50%      75%      90%      95%     Mean 
+ 92.5000  96.5000 100.5000 105.5000 111.5000 118.1500 121.5000 106.2854 </code></pre>
+<p>At this point, we are ready to <strong>apply the ExWAS</strong> on the <strong>systolic blood pressure</strong> phenotype. For simplification, we will start focusing in the particular set of <strong>exposures</strong> belonging the <strong>OCs family</strong>, which presented the highest significance values according to <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span> paper (<strong>Figure <a href="ExposomeHELIXanalysis.html#fig:FigureExWASSBP">2.1</a></strong>).</p>
+<p>The ExWAS will be performed using the <em>ds.exwas()</em> function, from the <strong>“ds.ExposomeClient”</strong> package. As we will see, there are several <strong>ways</strong> of applying an <strong>ExWAS</strong> in <strong>DataSHIELD</strong> (<strong><em>pooled vs. meta</em></strong>), and the chosen method will depend on the characteristics of each project. Both methods are based on iteratively fitting different <strong>generalized linear models (GLMs)</strong> for each <strong>feature/exposure</strong> assessing association with the <strong>phenotype of interest</strong>. The “virtually” <strong>pooled approach</strong> is recommended when the user wants to analyse data from different sources and obtain results as if the data were located in a <strong>single computer</strong>. Nevertheless, it should be noticed that this method is not recommended when data are not properly harmonized, or are not comparable between cohorts, whatever the reason. On the other hand, the federated <strong>meta-analysis approach</strong> performs an <strong>ExWAS on every study server</strong> to later <strong>meta-analyse</strong> the results. Thanks to that, it overcomes the limitations raised when performing pooled analysis.</p>
+<p>In the next chunk of code, we present how to apply a <strong>pooled ExWAS</strong> to the <strong>HELIX data example</strong>. Since in our example, for simplification, we want to focus only on <strong>OCs exposures</strong>, it will be vital that our <strong>exposomeSet</strong> input files count on metadata or a <strong>description file</strong>. Then, we will use the <strong>“exposure_family”</strong> argument to indicate the family group of exposures to restrict our analysis to. Other arguments available in the <em>ds.exwas()</em> function include the <strong>“family”</strong> argument, which refers to the type of link function to be used in the GLM (e.g., gaussian for continuous outcomes, binary for binary outomes, or poisson for counts). It’s important to note that if the family argument does not match with the nature of the data available in the <strong>phenotype</strong>, the ExWAS will fail.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="ExposomeHELIXanalysis.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ExWAS with pooled approach (without adjusting for confounders). Estimated </span></span>
+<span id="cb36-2"><a href="ExposomeHELIXanalysis.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># execution time: approx. 4.675414 mins</span></span>
+<span id="cb36-3"><a href="ExposomeHELIXanalysis.html#cb36-3" aria-hidden="true" tabindex="-1"></a>res.pooled_pos <span class="ot">&lt;-</span> <span class="fu">ds.exwas</span>(<span class="st">&quot;hs_bp_sys ~ 1&quot;</span>, <span class="at">type =</span> <span class="st">&quot;pooled&quot;</span>, </span>
+<span id="cb36-4"><a href="ExposomeHELIXanalysis.html#cb36-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">exposures_family =</span> <span class="st">&quot;OCs&quot;</span>, </span>
+<span id="cb36-5"><a href="ExposomeHELIXanalysis.html#cb36-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Set =</span> <span class="st">&quot;exposome_set_pos&quot;</span>, <span class="at">family =</span> <span class="st">&quot;gaussian&quot;</span>)</span></code></pre></div>
+<pre><code>[1] &quot;The computation of threshold for effective tests was not successful. NAs were generated on the correlation matrix so the calculation was aborted.&quot;</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="ExposomeHELIXanalysis.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res.pooled_pos)</span></code></pre></div>
+<pre><code>$exwas_results
+             exposure family coefficient      minE        maxE      p.value
+1    hs_dde_cadj_Log2    OCs  -3.6203404 -4.173032 -3.06764924 9.976229e-38
+2    hs_ddt_cadj_Log2    OCs  -2.0533429 -2.505415 -1.60127115 5.470142e-19
+3    hs_hcb_cadj_Log2    OCs  -7.5606414 -8.702722 -6.41856079 1.694248e-38
+4 hs_pcb118_cadj_Log2    OCs  -4.0522375 -5.209499 -2.89497594 6.744828e-12
+5 hs_pcb138_cadj_Log2    OCs  -3.0908785 -4.079692 -2.10206552 8.980604e-10
+6 hs_pcb153_cadj_Log2    OCs  -2.6037560 -3.655924 -1.55158813 1.233115e-06
+7 hs_pcb170_cadj_Log2    OCs  -0.5434277 -1.107247  0.02039150 5.888131e-02
+8 hs_pcb180_cadj_Log2    OCs  -0.5266027 -1.121772  0.06856693 8.288881e-02
+
+$alpha_corrected
+[1] 0.0121022</code></pre>
+<p>As we said, <strong>ds.exwas</strong> will fit <strong>GLMs between the exposures and the phenotype</strong> as follows:</p>
+<pre><code>    phenotype ~ exposure_1 + covar1 + ... + covarN
+    phenotype ~ exposure_2 + covar1 + ... + covarN
+    phenotype ~ exposure_3 + covar1 + ... + covarN
+    ...
+    phenotype ~ exposure_M + covar1 + ... + covarN</code></pre>
+<p>The model is written as a string, where the left side term is the <strong>phenotype</strong>, and the right term are the <strong>covariates</strong> or <strong>confounders</strong> (e.g., variables to be adjusted for). A <strong>crude model</strong> is fitted in our particular example using <code>phenotype ~ 1</code>. In the case of having <strong>more adjusting covariates</strong> proceed as: <code>phenotype ~ cov1 + cov2 + ... + covN</code>.</p>
+<p>To <strong>visualize the results</strong> from the <strong>ExWAS</strong>, the <strong>ds.ExposomeClient</strong> package has the function <em>ds.plotExwas()</em>, which takes the output of <em>ds.exwas()</em> and creates two different visualizations depending on the argument <strong>“type”</strong>. Given the nature of the “Manhattan plots,” it should be noted that this kind of visualizations is more appropriated when performing an ExWAS study with a higher number of exposures rather than when focusing in a group of exposures such is the current case.</p>
+<p>We can also generate a <strong>plot showing the effects</strong> (beta values) and their <strong>confidence intervals</strong> with:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="ExposomeHELIXanalysis.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One plot for the whole population</span></span>
+<span id="cb41-2"><a href="ExposomeHELIXanalysis.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.plotExwas</span>(res.pooled_pos, <span class="at">type=</span><span class="st">&quot;effect&quot;</span>)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/plot_effects-1.png" width="960" /></p>
+<p>To replicate the findings from <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>, we will now <strong>repeat the pooled ExWAS</strong> but including previously mentioned <strong>adjusting covariates</strong>. Importantly, the order to adjust the models by cohort is given separately to the function, directly with the argument <strong>“adjust.by.study”</strong>.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="ExposomeHELIXanalysis.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust by cohort and other confounders. </span></span>
+<span id="cb42-2"><a href="ExposomeHELIXanalysis.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimated execution time: approx. 6.830064 mins</span></span>
+<span id="cb42-3"><a href="ExposomeHELIXanalysis.html#cb42-3" aria-hidden="true" tabindex="-1"></a>res.pooled_adjusted_pos <span class="ot">&lt;-</span> <span class="fu">ds.exwas</span>(<span class="st">&quot;hs_bp_sys ~ hs_child_age_days_None + hs_c_height_None + e3_sex_None + h_age_None + h_mbmi_None&quot;</span>, <span class="at">type =</span> <span class="st">&quot;pooled&quot;</span>, </span>
+<span id="cb42-4"><a href="ExposomeHELIXanalysis.html#cb42-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">adjust.by.study =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb42-5"><a href="ExposomeHELIXanalysis.html#cb42-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">exposures_family =</span> <span class="st">&quot;OCs&quot;</span>, </span>
+<span id="cb42-6"><a href="ExposomeHELIXanalysis.html#cb42-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Set =</span> <span class="st">&quot;exposome_set_pos&quot;</span>, <span class="at">family =</span> <span class="st">&quot;gaussian&quot;</span>)</span>
+<span id="cb42-7"><a href="ExposomeHELIXanalysis.html#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res.pooled_adjusted_pos)</span></code></pre></div>
+<p>As it can be seen, we are able to validate the main findings presented in the paper, reporting an <strong>inverse association</strong> between the concentration of some of these <strong>OCs</strong> and the <strong>systolic blood pressure</strong> levels of <strong>children</strong>.</p>
+<p>Next, we repeat the process without restricting to the OCs family.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="ExposomeHELIXanalysis.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust by cohort and other covariates.</span></span>
+<span id="cb43-2"><a href="ExposomeHELIXanalysis.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimated execution time: approx. 50 mins</span></span>
+<span id="cb43-3"><a href="ExposomeHELIXanalysis.html#cb43-3" aria-hidden="true" tabindex="-1"></a>res.pooled_adjusted_pos <span class="ot">&lt;-</span> <span class="fu">ds.exwas</span>(<span class="st">&quot;hs_bp_sys ~ hs_child_age_days_None + hs_c_height_None + e3_sex_None + h_age_None + h_mbmi_None&quot;</span>, <span class="at">type =</span> <span class="st">&quot;pooled&quot;</span>, </span>
+<span id="cb43-4"><a href="ExposomeHELIXanalysis.html#cb43-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">adjust.by.study =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb43-5"><a href="ExposomeHELIXanalysis.html#cb43-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Set =</span> <span class="st">&quot;exposome_set_pos&quot;</span>, <span class="at">family =</span> <span class="st">&quot;gaussian&quot;</span>)</span>
+<span id="cb43-6"><a href="ExposomeHELIXanalysis.html#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res.pooled_adjusted_pos)</span></code></pre></div>
+<p>The effect sizes and p-values derived from the ExWAS can be accessed with the command <em>res.pooled_adjusted_pos$exwas_results</em>, and then plotted in a volcano visualization.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="ExposomeHELIXanalysis.html#cb44-1" aria-hidden="true" tabindex="-1"></a>dbvolcan <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(res.pooled_adjusted_pos<span class="sc">$</span>exwas_results)</span>
+<span id="cb44-2"><a href="ExposomeHELIXanalysis.html#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="ExposomeHELIXanalysis.html#cb44-3" aria-hidden="true" tabindex="-1"></a>codebook <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;./fig/codebook_HELIX.csv&quot;</span>)</span>
+<span id="cb44-4"><a href="ExposomeHELIXanalysis.html#cb44-4" aria-hidden="true" tabindex="-1"></a>codebook <span class="ot">&lt;-</span> codebook[<span class="dv">1</span><span class="sc">:</span><span class="dv">544</span>,]</span>
+<span id="cb44-5"><a href="ExposomeHELIXanalysis.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(codebook) <span class="ot">&lt;-</span> codebook[,<span class="dv">4</span>]</span>
+<span id="cb44-6"><a href="ExposomeHELIXanalysis.html#cb44-6" aria-hidden="true" tabindex="-1"></a>dbvolcan<span class="sc">$</span>exposure <span class="ot">&lt;-</span> codebook[dbvolcan<span class="sc">$</span>exposure,<span class="dv">5</span>]</span>
+<span id="cb44-7"><a href="ExposomeHELIXanalysis.html#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="ExposomeHELIXanalysis.html#cb44-8" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> dbvolcan <span class="sc">%&gt;%</span></span>
+<span id="cb44-9"><a href="ExposomeHELIXanalysis.html#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb44-10"><a href="ExposomeHELIXanalysis.html#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Expression =</span> <span class="fu">case_when</span>(coefficient <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> </span>
+<span id="cb44-11"><a href="ExposomeHELIXanalysis.html#cb44-11" aria-hidden="true" tabindex="-1"></a>                           p.value <span class="sc">&lt;=</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">&quot;Proportional-relationship&quot;</span>,</span>
+<span id="cb44-12"><a href="ExposomeHELIXanalysis.html#cb44-12" aria-hidden="true" tabindex="-1"></a>                           coefficient <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> </span>
+<span id="cb44-13"><a href="ExposomeHELIXanalysis.html#cb44-13" aria-hidden="true" tabindex="-1"></a>                           p.value <span class="sc">&lt;=</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">&quot;Inverse-relationship&quot;</span>,</span>
+<span id="cb44-14"><a href="ExposomeHELIXanalysis.html#cb44-14" aria-hidden="true" tabindex="-1"></a>                           <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Unchanged&quot;</span>)</span>
+<span id="cb44-15"><a href="ExposomeHELIXanalysis.html#cb44-15" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb44-16"><a href="ExposomeHELIXanalysis.html#cb44-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-17"><a href="ExposomeHELIXanalysis.html#cb44-17" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(coefficient, <span class="sc">-</span><span class="fu">log</span>(p.value,<span class="dv">10</span>))) <span class="sc">+</span></span>
+<span id="cb44-18"><a href="ExposomeHELIXanalysis.html#cb44-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Expression), <span class="at">size =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb44-19"><a href="ExposomeHELIXanalysis.html#cb44-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(<span class="st">&quot;Beta&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb44-20"><a href="ExposomeHELIXanalysis.html#cb44-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="st">&quot;-log&quot;</span>[<span class="dv">10</span>]<span class="sc">*</span><span class="st">&quot;pvalue&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb44-21"><a href="ExposomeHELIXanalysis.html#cb44-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;firebrick3&quot;</span>,<span class="st">&quot;dodgerblue3&quot;</span>,<span class="st">&quot;gray50&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb44-22"><a href="ExposomeHELIXanalysis.html#cb44-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size=</span><span class="fl">1.5</span>)))</span>
+<span id="cb44-23"><a href="ExposomeHELIXanalysis.html#cb44-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-24"><a href="ExposomeHELIXanalysis.html#cb44-24" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb44-25"><a href="ExposomeHELIXanalysis.html#cb44-25" aria-hidden="true" tabindex="-1"></a>top_symbol <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb44-26"><a href="ExposomeHELIXanalysis.html#cb44-26" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span></span>
+<span id="cb44-27"><a href="ExposomeHELIXanalysis.html#cb44-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Expression <span class="sc">==</span> <span class="st">&#39;Inverse-relationship&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-28"><a href="ExposomeHELIXanalysis.html#cb44-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(p.value, <span class="fu">desc</span>(<span class="fu">abs</span>(coefficient))) <span class="sc">%&gt;%</span></span>
+<span id="cb44-29"><a href="ExposomeHELIXanalysis.html#cb44-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(top),</span>
+<span id="cb44-30"><a href="ExposomeHELIXanalysis.html#cb44-30" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span></span>
+<span id="cb44-31"><a href="ExposomeHELIXanalysis.html#cb44-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Expression <span class="sc">==</span> <span class="st">&#39;Proportional-relationship&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-32"><a href="ExposomeHELIXanalysis.html#cb44-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(p.value, <span class="fu">desc</span>(<span class="fu">abs</span>(coefficient))) <span class="sc">%&gt;%</span></span>
+<span id="cb44-33"><a href="ExposomeHELIXanalysis.html#cb44-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(top)</span>
+<span id="cb44-34"><a href="ExposomeHELIXanalysis.html#cb44-34" aria-hidden="true" tabindex="-1"></a>                       )</span>
+<span id="cb44-35"><a href="ExposomeHELIXanalysis.html#cb44-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-36"><a href="ExposomeHELIXanalysis.html#cb44-36" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span>  <span class="fu">geom_label_repel</span>(<span class="at">data =</span> top_symbol,</span>
+<span id="cb44-37"><a href="ExposomeHELIXanalysis.html#cb44-37" aria-hidden="true" tabindex="-1"></a>                      <span class="at">mapping =</span> <span class="fu">aes</span>(coefficient, <span class="sc">-</span><span class="fu">log</span>(p.value,<span class="dv">10</span>), </span>
+<span id="cb44-38"><a href="ExposomeHELIXanalysis.html#cb44-38" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">label =</span> exposure),</span>
+<span id="cb44-39"><a href="ExposomeHELIXanalysis.html#cb44-39" aria-hidden="true" tabindex="-1"></a>                      <span class="at">size =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/VolcanoPlot-1.png" width="672" /></p>
+</div>
+<div id="ExposomeHELIXanalysisFour" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Feature selection with penalized methods.</h2>
+<p>In this subsection, we present how to perform <strong>variable selection</strong> with <strong>penalized regression methods</strong> in an exposome context. As previously mentioned, the <strong>dsMTL package</strong> allows the implementation of a <strong>federated version</strong> of conventional <strong>regularized regression techniques</strong> (such as Lasso, Ridge or Elastic-net), both in the context of continuous or binary outcomes (linear and logistic regression, respectively). Here, we will show how to apply these methods to the <strong>HELIX data example</strong>, focusing in the <strong>systolic blood pressure</strong> outcome <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>. In the paper, the <strong>selection of important exposures</strong> was determined by the <strong>DSA (Deletion-Substitution-Addition) algorithm</strong>. DSA selections were performed separately for the prenatal and postnatal time points, and for systolic and diastolic blood pressure phenotypes. For the postnatal period, a list of selected variables can be found in <strong>Figure <a href="ExposomeHELIXanalysis.html#fig:FigureDSA">2.2</a></strong> framed in red.</p>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigureDSA"></span>
+<img src="fig/charline%20DSA_highlighted.png" alt="Exposures Selected Into the Multiple-Exposure Models from [@WAREMBOURG20191317]." width="100%" />
+<p class="caption">
+Figure 2.2: Exposures Selected Into the Multiple-Exposure Models from <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>.
+</p>
+</div>
+<p>&lt;br</p>
+<p>In this tutorial, we will use <strong>Lasso regression</strong> for variable selection.</p>
+<p>Since the functions from the <strong>dsMTL package</strong> require data of each cohort to be passed as <strong>separate matrices</strong> for predictors and the outcome, and we have our data as <strong>exposomeSet</strong> files, we will have to do some <strong>data preparation</strong> before starting the analysis. Particularly, we will start by generating two <strong>data.frames</strong>, one for <strong>exposure data</strong> and one for the <strong>outcome data</strong>. For that, we have the function <em>ds.exposures_pData()</em>, which extracts exposures, phenotype or combined data from an <strong>exposomeSet</strong> to generate a new data.frame on the server side.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="ExposomeHELIXanalysis.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># With the &quot;name&quot; argument, we can specify the name of the new R object </span></span>
+<span id="cb45-2"><a href="ExposomeHELIXanalysis.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># to be created.</span></span>
+<span id="cb45-3"><a href="ExposomeHELIXanalysis.html#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="ExposomeHELIXanalysis.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract exposures</span></span>
+<span id="cb45-5"><a href="ExposomeHELIXanalysis.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.exposures_pData</span>(<span class="st">&quot;exposome_set_pos&quot;</span>,  </span>
+<span id="cb45-6"><a href="ExposomeHELIXanalysis.html#cb45-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">type =</span> <span class="st">&quot;exposures&quot;</span>, <span class="at">exposures_type =</span> <span class="st">&quot;numeric&quot;</span>,</span>
+<span id="cb45-7"><a href="ExposomeHELIXanalysis.html#cb45-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">name =</span> <span class="st">&quot;table_exposures&quot;</span>)</span>
+<span id="cb45-8"><a href="ExposomeHELIXanalysis.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract phenotype</span></span>
+<span id="cb45-9"><a href="ExposomeHELIXanalysis.html#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.exposures_pData</span>(<span class="st">&quot;exposome_set_pos&quot;</span>,  </span>
+<span id="cb45-10"><a href="ExposomeHELIXanalysis.html#cb45-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">type =</span> <span class="st">&quot;phenotypes&quot;</span>, <span class="at">exposures_type =</span> <span class="st">&quot;numeric&quot;</span>,</span>
+<span id="cb45-11"><a href="ExposomeHELIXanalysis.html#cb45-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">name =</span> <span class="st">&quot;table_phenotypes&quot;</span>)</span></code></pre></div>
+<p>Once we have <strong>different objects</strong> for <strong>exposure</strong> and <strong>phenotype data</strong> respectively, we can continue with the <strong>data preparation</strong>.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="ExposomeHELIXanalysis.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We start by assigning the outcome &quot;Systolic Blood pressure&quot; to a new R object</span></span>
+<span id="cb46-2"><a href="ExposomeHELIXanalysis.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co"># of the  type numeric vector called &quot;Y&quot; in the server side.</span></span>
+<span id="cb46-3"><a href="ExposomeHELIXanalysis.html#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.assign</span>(<span class="at">toAssign=</span><span class="st">&quot;table_phenotypes$hs_bp_sys&quot;</span>, <span class="at">newobj=</span><span class="st">&quot;Y_raw&quot;</span>, </span>
+<span id="cb46-4"><a href="ExposomeHELIXanalysis.html#cb46-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">datasources =</span> conns)</span>
+<span id="cb46-5"><a href="ExposomeHELIXanalysis.html#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="ExposomeHELIXanalysis.html#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We check if there is any NA value in the phenotype vector.</span></span>
+<span id="cb46-7"><a href="ExposomeHELIXanalysis.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.numNA</span>(<span class="st">&quot;Y_raw&quot;</span>)</span>
+<span id="cb46-8"><a href="ExposomeHELIXanalysis.html#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="ExposomeHELIXanalysis.html#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We replace NA values by the cohort mean.</span></span>
+<span id="cb46-10"><a href="ExposomeHELIXanalysis.html#cb46-10" aria-hidden="true" tabindex="-1"></a>Y_means <span class="ot">&lt;-</span> <span class="fu">ds.mean</span>(<span class="at">x =</span> <span class="st">&quot;Y_raw&quot;</span>,<span class="at">type =</span> <span class="st">&quot;split&quot;</span>,<span class="at">save.mean.Nvalid =</span> F,</span>
+<span id="cb46-11"><a href="ExposomeHELIXanalysis.html#cb46-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">datasources =</span> conns)<span class="sc">$</span>Mean.by.Study</span>
+<span id="cb46-12"><a href="ExposomeHELIXanalysis.html#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.replaceNA</span>(<span class="at">x =</span> <span class="st">&quot;Y_raw&quot;</span>, <span class="at">forNA =</span> Y_means[,<span class="dv">1</span>], <span class="at">newobj =</span> <span class="st">&quot;Y&quot;</span>, </span>
+<span id="cb46-13"><a href="ExposomeHELIXanalysis.html#cb46-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">datasources =</span> conns)</span>
+<span id="cb46-14"><a href="ExposomeHELIXanalysis.html#cb46-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-15"><a href="ExposomeHELIXanalysis.html#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="co"># We again check dimensions and attribute names for the resulting objects.</span></span>
+<span id="cb46-16"><a href="ExposomeHELIXanalysis.html#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.dim</span>(<span class="st">&quot;table_exposures&quot;</span>)</span>
+<span id="cb46-17"><a href="ExposomeHELIXanalysis.html#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;table_exposures&quot;</span>)</span>
+<span id="cb46-18"><a href="ExposomeHELIXanalysis.html#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.colnames</span>(<span class="st">&quot;table_exposures&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb46-19"><a href="ExposomeHELIXanalysis.html#cb46-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.class</span>(<span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb46-20"><a href="ExposomeHELIXanalysis.html#cb46-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.length</span>(<span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb46-21"><a href="ExposomeHELIXanalysis.html#cb46-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-22"><a href="ExposomeHELIXanalysis.html#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="co"># We coerce both Xs and Y into matrices. </span></span>
+<span id="cb46-23"><a href="ExposomeHELIXanalysis.html#cb46-23" aria-hidden="true" tabindex="-1"></a><span class="co">#ds.asMatrix(x.name = &quot;table_exposures&quot;, newobj = &quot;X&quot;, datasources = NULL)</span></span>
+<span id="cb46-24"><a href="ExposomeHELIXanalysis.html#cb46-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">&quot;table_exposures&quot;</span>, <span class="at">newobj =</span> <span class="st">&quot;X&quot;</span>, <span class="at">datasources =</span> <span class="cn">NULL</span>)</span>
+<span id="cb46-25"><a href="ExposomeHELIXanalysis.html#cb46-25" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.asMatrix</span>(<span class="at">x.name =</span> <span class="st">&quot;Y&quot;</span>, <span class="at">newobj =</span> <span class="st">&quot;Y&quot;</span>, <span class="at">datasources =</span> <span class="cn">NULL</span>)</span>
+<span id="cb46-26"><a href="ExposomeHELIXanalysis.html#cb46-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-27"><a href="ExposomeHELIXanalysis.html#cb46-27" aria-hidden="true" tabindex="-1"></a><span class="co"># We assign both matrices from the remote session to R objects </span></span>
+<span id="cb46-28"><a href="ExposomeHELIXanalysis.html#cb46-28" aria-hidden="true" tabindex="-1"></a><span class="co"># in the client-side.</span></span>
+<span id="cb46-29"><a href="ExposomeHELIXanalysis.html#cb46-29" aria-hidden="true" tabindex="-1"></a>X<span class="ot">=</span><span class="st">&quot;X&quot;</span>; Y<span class="ot">=</span><span class="st">&quot;Y&quot;</span></span></code></pre></div>
+<p>Once we have the data properly formatted, we can proceed to perform variable selection with penalized methods. <strong>Available functions</strong> in the package for such purpose include:</p>
+<ul>
+<li><em>ds.LS_Lasso()</em>: Solver of <strong>regression with Lasso</strong>.</li>
+<li><em>ds.LR_Lasso()</em>: Solver of <strong>logistic regression</strong> with <strong>Lasso</strong>.<br />
+</li>
+<li><em>ds.Lasso_Train()</em>: Train a <strong>regularization tree</strong> with <strong>Lasso</strong> for a <strong>sequence of penalty values</strong> (than can be either provided by the user, or directly estimated from the data).</li>
+<li><em>ds.Lasso_CVInSite()</em>: In-site <strong>cross-validation</strong> procedure for <strong>selecting the optimal penalty</strong>.</li>
+</ul>
+<p>In all these functions, there is an argument called <strong>“<em>C</em>”</strong>, which is the <strong>hyperparameter</strong> for the <strong>Ridge</strong> regression L2 penalty. Thus, by tuning both the L1 penalty and the C argument (L2 term), one would be able to choose between a <strong>Lasso</strong>, <strong>Ridge</strong> or <strong>Elastic-Net regression</strong>. Likewise, there is an argument called <strong>“<em>opts</em>”</strong>, which allow for controlling the optimization algorithm employed to minimize the sum of squared errors (SSE) (<strong>objective function</strong>). Additional details regarding the loss function implemented in these models can be found in the supplementary material of <span class="citation">(<a href="#ref-Cao2021.08.26.457778" role="doc-biblioref">Cao et al. 2021</a>)</span>. Within the <strong>“<em>opts</em>”</strong> argument we find:</p>
+<ul>
+<li><p><strong>“init”</strong>: It determines the starting point.</p></li>
+<li><p><strong>“maxIter”</strong>: It is the maximized iteration number.</p></li>
+<li><p><strong>“ter”</strong>: It refers to the termination rule used to determine the convergence of the algorithm. There are three termination rules available for <em>ds.lasso</em>. The first rule checks whether the current objective value was close enough to 0. The second rule investigates the last two objective values and checks whether the decline was close enough to 0. The third rule allowed the optimization to be performed for a certain maximum number of iterations.</p></li>
+<li><p><strong>“tol”</strong>: It refers to the precision of the convergence and determines the termination of the program.</p></li>
+</ul>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="ExposomeHELIXanalysis.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Default values for the opts argument.</span></span>
+<span id="cb47-2"><a href="ExposomeHELIXanalysis.html#cb47-2" aria-hidden="true" tabindex="-1"></a>opts<span class="ot">=</span><span class="fu">list</span>();opts<span class="sc">$</span>init<span class="ot">=</span><span class="dv">0</span>; opts<span class="sc">$</span>maxIter<span class="ot">=</span><span class="dv">10</span>; opts<span class="sc">$</span>tol<span class="ot">=</span><span class="fl">0.01</span>; opts<span class="sc">$</span>ter<span class="ot">=</span><span class="dv">2</span>;</span></code></pre></div>
+<p>A <strong>summary</strong> of the functions that one could use in <strong>DataSHIELD</strong> for performing <strong>feature selection</strong> with <strong>Lasso regression</strong> can be found in <strong>Figure <a href="ExposomeHELIXanalysis.html#fig:FigureDSlassoSummary">2.3</a></strong>.</p>
+<br>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:FigureDSlassoSummary"></span>
+<img src="fig/dslasso.jpg" alt="DataSHIELD for the implementation of penalized Lasso regression in a federated framework." width="110%" />
+<p class="caption">
+Figure 2.3: DataSHIELD for the implementation of penalized Lasso regression in a federated framework.
+</p>
+</div>
+<p><br></p>
+<div id="ExposomeHELIXanalysisFoura" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Lasso regression for a given lambda value.</h3>
+<p>With the <em>ds.LS_Lasso()</em> function, we can apply the lasso solver of regression for a <strong>particular</strong> value of the <strong>lambda</strong> penalty. <strong>Input</strong> arguments available in the function include:</p>
+<ul>
+<li><em>X</em>: The design matrices of multiple cohorts.</li>
+<li><em>Y</em>: Label vectors of multiple cohorts.</li>
+<li><em>lam</em>: Input lambda value.</li>
+<li><em>C</em>: The hyper-parameter associated with L2 term.</li>
+<li><em>opts</em>: Options controlling the optimization procedure.</li>
+<li><em>datasources</em>: The connections of servers.</li>
+<li><em>nDigits</em>: The number of digits rounded for each number prepared for network transmission.</li>
+<li><em>W</em>: The current estimate of the variables (if available).</li>
+</ul>
+<p><strong><em>Note that if we set lam=0 and C&gt;0 we will do Ridge regression, lam&gt;0 and C=0 we will do Lasso, while any other combination of these both will be Elastic-Net.</em></strong></p>
+<p>The <strong>output</strong> of this function comprises:</p>
+<ul>
+<li>The <strong>vector of weights</strong> estimated for input <strong>predictors</strong>.</li>
+<li>The converged result of optimization.</li>
+<li>The proximal point of W and the non-smooth part of objective.</li>
+</ul>
+<p>In the next chunk, we apply this function to our <strong>example dataset</strong>, setting the value of the <strong>lambda penalty</strong> to “38.” For this, we will test the association between the <strong>79 input predictors</strong> and the continuous outcome <strong>Systolic blood pressure</strong>. In case we were interested in modeling a <strong>binary outcome</strong>, we should use the <em>ds.LR_Lasso()</em> function instead, which share exactly the same arguments and options.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="ExposomeHELIXanalysis.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimated execution time: approx. 1.976153 mins</span></span>
+<span id="cb48-2"><a href="ExposomeHELIXanalysis.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb48-3"><a href="ExposomeHELIXanalysis.html#cb48-3" aria-hidden="true" tabindex="-1"></a>m1<span class="ot">=</span><span class="fu">ds.LS_Lasso</span>(<span class="at">X=</span>X, <span class="at">Y=</span>Y, <span class="at">lam=</span><span class="dv">38</span>, <span class="at">C=</span><span class="dv">0</span>, opts, <span class="at">datasources=</span>conns, <span class="at">nDigits=</span><span class="dv">15</span>)</span>
+<span id="cb48-4"><a href="ExposomeHELIXanalysis.html#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="ExposomeHELIXanalysis.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of selected variables by the model for the assessed lambda</span></span>
+<span id="cb48-6"><a href="ExposomeHELIXanalysis.html#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(m1<span class="sc">$</span>w<span class="sc">!=</span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>[1] 63</code></pre>
+<p>In our example, with this <strong>lambda penalty</strong>, <strong>61 variables</strong> are selected as significant contributors to the outcome <strong>systolic blood pressure</strong> phenotype. Now, we can get the <strong>names</strong> of selected variables and <strong>plot</strong> estimated coefficients from the model.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="ExposomeHELIXanalysis.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get names of selected variables</span></span>
+<span id="cb50-2"><a href="ExposomeHELIXanalysis.html#cb50-2" aria-hidden="true" tabindex="-1"></a>toplot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(m1<span class="sc">$</span>w,<span class="fu">ds.colnames</span>(X)[[<span class="dv">1</span>]])</span>
+<span id="cb50-3"><a href="ExposomeHELIXanalysis.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(toplot) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Coefficient&quot;</span>,<span class="st">&quot;Index&quot;</span>)</span>
+<span id="cb50-4"><a href="ExposomeHELIXanalysis.html#cb50-4" aria-hidden="true" tabindex="-1"></a>sel_var_m1 <span class="ot">&lt;-</span> toplot[<span class="fu">which</span>(toplot<span class="sc">$</span>Coefficient <span class="sc">!=</span> <span class="dv">0</span>),<span class="dv">2</span>]</span>
+<span id="cb50-5"><a href="ExposomeHELIXanalysis.html#cb50-5" aria-hidden="true" tabindex="-1"></a>codebook <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;./fig/codebook_HELIX.csv&quot;</span>)</span>
+<span id="cb50-6"><a href="ExposomeHELIXanalysis.html#cb50-6" aria-hidden="true" tabindex="-1"></a>codebook <span class="ot">&lt;-</span> codebook[<span class="dv">1</span><span class="sc">:</span><span class="dv">544</span>,]</span>
+<span id="cb50-7"><a href="ExposomeHELIXanalysis.html#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(codebook) <span class="ot">&lt;-</span> codebook[,<span class="dv">4</span>]</span>
+<span id="cb50-8"><a href="ExposomeHELIXanalysis.html#cb50-8" aria-hidden="true" tabindex="-1"></a>fun1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { codebook[x,<span class="dv">5</span>] }</span>
+<span id="cb50-9"><a href="ExposomeHELIXanalysis.html#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="fu">fun1</span>(sel_var_m1)</span></code></pre></div>
+<pre><code> [1] &quot;Benzene in&quot;            &quot;NO2 in&quot;                &quot;PM2.5 in&quot;             
+ [4] &quot;BTEX in&quot;               &quot;Access_stops_home&quot;     &quot;BPA&quot;                  
+ [7] &quot;Building_home&quot;         &quot;BUPA&quot;                  &quot;Cd&quot;                   
+[10] &quot;Co&quot;                    &quot;Connectivity&quot;          &quot;Cs&quot;                   
+[13] &quot;Cu&quot;                    &quot;DDE&quot;                   &quot;DEP&quot;                  
+[16] &quot;Distance road&quot;         &quot;DMDTP&quot;                 &quot;Facility_dens&quot;        
+[19] &quot;HCB&quot;                   &quot;House crowding&quot;        &quot;Hum.(month)&quot;          
+[22] &quot;K&quot;                     &quot;KIDMED&quot;                &quot;MBZP&quot;                 
+[25] &quot;MECPP&quot;                 &quot;MEHHP&quot;                 &quot;MEHP&quot;                 
+[28] &quot;MEOHP&quot;                 &quot;MEP&quot;                   &quot;MEPA&quot;                 
+[31] &quot;Mg&quot;                    &quot;MIBP&quot;                  &quot;Mn&quot;                   
+[34] &quot;MNBP&quot;                  &quot;PA&quot;                    &quot;Na&quot;                   
+[37] &quot;NO2 out&quot;               &quot;OHMiNP&quot;                &quot;OXBE&quot;                 
+[40] &quot;OXOMINP&quot;               &quot;Pb&quot;                    &quot;PBDE 153&quot;             
+[43] &quot;PBDE 47&quot;               &quot;PCB 118&quot;               &quot;PCB 138&quot;              
+[46] &quot;PCB 153&quot;               &quot;PCB 180&quot;               &quot;PFHXS&quot;                
+[49] &quot;PFNA&quot;                  &quot;PFOS&quot;                  &quot;PFUNDA&quot;               
+[52] &quot;PM10&quot;                  &quot;PM2.5&quot;                 &quot;Population&quot;           
+[55] &quot;PRPA&quot;                  &quot;Sedentary&quot;             &quot;Se&quot;                   
+[58] &quot;T(month)&quot;              &quot;Trafficload - nearest&quot; &quot;Traffic near&quot;         
+[61] &quot;UV(month)&quot;             &quot;Zn&quot;                    &quot;Mat. stress&quot;          </code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="ExposomeHELIXanalysis.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot estimated coefficients</span></span>
+<span id="cb52-2"><a href="ExposomeHELIXanalysis.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(toplot, <span class="fu">aes</span>(<span class="at">x=</span>Index, <span class="at">y=</span>Coefficient)) <span class="sc">+</span></span>
+<span id="cb52-3"><a href="ExposomeHELIXanalysis.html#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb52-4"><a href="ExposomeHELIXanalysis.html#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb52-5"><a href="ExposomeHELIXanalysis.html#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/lassoanalysis_3-1.png" width="672" /></p>
+</div>
+<div id="ExposomeHELIXanalysisFourb" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> <em>ds.Lasso_Train()</em> function.</h3>
+<p>Instead of using a single value of lambda and fitting the model, a <strong>whole lambda sequence</strong> can be tested (either if it has been <strong>defined by the user</strong>, or if it has been <strong>estimated from the data</strong>). For that purpose, we must use the function <em>ds.Lasso_Train()</em>, which trains a whole <strong>regularization tree</strong> with <strong>Lasso</strong> for a <strong>set</strong> of <strong>penalty values</strong>.</p>
+<p>Some <strong>input</strong> arguments available here and not present in the previous function are:</p>
+<ul>
+<li><p><em>type</em>: Regression(=regress) or classification(=classify).</p></li>
+<li><p><em>nlambda</em>: The length of lambda sequence.</p></li>
+<li><p><em>lam_ratio</em>: This is an option affecting how the lambda sequence is extracted from the data. It refers to the ratio: <span class="math inline">\(min(lambda) / max(lambda)\)</span>.</p></li>
+<li><p><em>lambda</em>: The lambda sequence.</p></li>
+<li><p><em>intercept</em>: Use intercept(=TRUE) or non-intercept(=FALSE) model.</p></li>
+</ul>
+<p>The process of <strong>lambda sequence estimation from the data</strong> in this function is governed by two arguments: <em>“nlambda”</em> and <em>“lam_ratio”</em>. First, the <strong>lambda max</strong> is determined as the smallest value of lambda for which no parameters are selected. In the next chunk, we show the code lines of the function source code that extract the <strong>lambda max</strong> value from the data.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="ExposomeHELIXanalysis.html#cb53-1" aria-hidden="true" tabindex="-1"></a>xys <span class="ot">=</span> DSI<span class="sc">::</span><span class="fu">datashield.aggregate</span>(datasources, <span class="fu">call</span>(<span class="st">&quot;xtyDS&quot;</span>, X, Y)) </span>
+<span id="cb53-2"><a href="ExposomeHELIXanalysis.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co"># matrix multiplication x * t(y) </span></span>
+<span id="cb53-3"><a href="ExposomeHELIXanalysis.html#cb53-3" aria-hidden="true" tabindex="-1"></a>xys <span class="ot">=</span> <span class="fu">rowSums</span>(<span class="fu">do.call</span>(cbind, xys))<span class="sc">/</span><span class="fu">sum</span>(nSubs)</span>
+<span id="cb53-4"><a href="ExposomeHELIXanalysis.html#cb53-4" aria-hidden="true" tabindex="-1"></a>xy_norm <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">abs</span>(xys))</span></code></pre></div>
+<p>The determination of <strong>λmin</strong> and the number of grid points seems less principled. The <strong>λmin</strong> is calculated as <span class="math inline">\(λmin=λratio∗λmax\)</span>, and then a grid of <em>n</em> equally spaced points on the logarithmic scale between <strong>λmin</strong> and <strong>λmax</strong> is generated.</p>
+<p>The <strong>output</strong> of the <em>ds.Lasso_Train()</em> function is a list composed of:</p>
+<ul>
+<li>A <strong>matrix</strong> with as many columns as lambdas and as many rows as variables including the <strong>estimated coefficients</strong> for each variable-lambda.^</li>
+<li>A vector with the <strong>sequence of lambdas</strong> (either if they were estimated from data or introduced by the user).</li>
+</ul>
+<p>Next, we show how to apply this function to our <strong>showcase</strong>, estimating a <strong>sequence of 10 lambda penalties</strong> from the data (with a lambda ratio of 0.001).</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="ExposomeHELIXanalysis.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimated execution time: approx. 19.1657 mins</span></span>
+<span id="cb54-2"><a href="ExposomeHELIXanalysis.html#cb54-2" aria-hidden="true" tabindex="-1"></a>m2<span class="ot">=</span><span class="fu">ds.Lasso_Train</span>(<span class="at">X=</span>X, <span class="at">Y=</span>Y, <span class="at">type=</span><span class="st">&quot;regress&quot;</span>, <span class="at">nlambda=</span><span class="dv">10</span>, <span class="at">lam_ratio=</span><span class="fl">0.001</span>,</span>
+<span id="cb54-3"><a href="ExposomeHELIXanalysis.html#cb54-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">C=</span><span class="dv">0</span>, <span class="at">opts=</span>opts,<span class="at">datasources=</span>conns, <span class="at">nDigits=</span><span class="dv">15</span>)</span></code></pre></div>
+<p>From the output of this function, the <strong>number and names of selected variables</strong> for each lambda value can also be extracted:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="ExposomeHELIXanalysis.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of selected variables per lambda</span></span>
+<span id="cb55-2"><a href="ExposomeHELIXanalysis.html#cb55-2" aria-hidden="true" tabindex="-1"></a>fun2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { <span class="fu">length</span>(<span class="fu">which</span>(x <span class="sc">!=</span> <span class="dv">0</span>)) }</span>
+<span id="cb55-3"><a href="ExposomeHELIXanalysis.html#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(m2<span class="sc">$</span>ws,<span class="dv">2</span>,fun2)</span></code></pre></div>
+<pre><code> Lam=38347.3 Lam=17799.24  Lam=8261.68  Lam=3834.73  Lam=1779.92   Lam=826.17 
+           1            1            2            2            2            3 
+  Lam=383.47   Lam=177.99    Lam=82.62    Lam=38.35 
+           4            5           13           22 </code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="ExposomeHELIXanalysis.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the name of selected variables per lambda</span></span>
+<span id="cb57-2"><a href="ExposomeHELIXanalysis.html#cb57-2" aria-hidden="true" tabindex="-1"></a>variable_names <span class="ot">&lt;-</span> <span class="fu">ds.colnames</span>(<span class="st">&quot;X&quot;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb57-3"><a href="ExposomeHELIXanalysis.html#cb57-3" aria-hidden="true" tabindex="-1"></a>fun3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { variable_names[<span class="fu">which</span>(x <span class="sc">!=</span> <span class="dv">0</span>)] }</span>
+<span id="cb57-4"><a href="ExposomeHELIXanalysis.html#cb57-4" aria-hidden="true" tabindex="-1"></a>sel_var_per_lam_m2 <span class="ot">&lt;-</span> <span class="fu">apply</span>(m2<span class="sc">$</span>ws,<span class="dv">2</span>,fun3)</span>
+<span id="cb57-5"><a href="ExposomeHELIXanalysis.html#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(sel_var_per_lam_m2,fun1)</span></code></pre></div>
+<pre><code>$`Lam=38347.3`
+[1] &quot;Building_home&quot;
+
+$`Lam=17799.24`
+[1] &quot;Building_home&quot;
+
+$`Lam=8261.68`
+[1] &quot;Building_home&quot; &quot;Sedentary&quot;    
+
+$`Lam=3834.73`
+[1] &quot;Building_home&quot; &quot;Sedentary&quot;    
+
+$`Lam=1779.92`
+[1] &quot;Building_home&quot; &quot;Sedentary&quot;    
+
+$`Lam=826.17`
+[1] &quot;Building_home&quot; &quot;Hum.(month)&quot;   &quot;Sedentary&quot;    
+
+$`Lam=383.47`
+[1] &quot;Building_home&quot; &quot;Hum.(month)&quot;   &quot;PA&quot;            &quot;Sedentary&quot;    
+
+$`Lam=177.99`
+[1] &quot;Building_home&quot; &quot;Hum.(month)&quot;   &quot;PA&quot;            &quot;PM10&quot;         
+[5] &quot;Sedentary&quot;    
+
+$`Lam=82.62`
+ [1] &quot;Building_home&quot;         &quot;Cu&quot;                    &quot;Hum.(month)&quot;          
+ [4] &quot;K&quot;                     &quot;PA&quot;                    &quot;Na&quot;                   
+ [7] &quot;PM10&quot;                  &quot;PM2.5&quot;                 &quot;Population&quot;           
+[10] &quot;Sedentary&quot;             &quot;T(month)&quot;              &quot;Trafficload - nearest&quot;
+[13] &quot;Zn&quot;                   
+
+$`Lam=38.35`
+ [1] &quot;Building_home&quot;         &quot;Connectivity&quot;          &quot;Cu&quot;                   
+ [4] &quot;DDE&quot;                   &quot;Hum.(month)&quot;           &quot;K&quot;                    
+ [7] &quot;MECPP&quot;                 &quot;MEHHP&quot;                 &quot;MEP&quot;                  
+[10] &quot;Mg&quot;                    &quot;MIBP&quot;                  &quot;PA&quot;                   
+[13] &quot;Na&quot;                    &quot;PM10&quot;                  &quot;PM2.5&quot;                
+[16] &quot;Population&quot;            &quot;Sedentary&quot;             &quot;Se&quot;                   
+[19] &quot;T(month)&quot;              &quot;Trafficload - nearest&quot; &quot;Traffic near&quot;         
+[22] &quot;Zn&quot;                   </code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="ExposomeHELIXanalysis.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We save the estimated sequence of lambdas in a variable named lamseq.</span></span>
+<span id="cb59-2"><a href="ExposomeHELIXanalysis.html#cb59-2" aria-hidden="true" tabindex="-1"></a>lamseq <span class="ot">&lt;-</span> m2<span class="sc">$</span>lam_seq</span>
+<span id="cb59-3"><a href="ExposomeHELIXanalysis.html#cb59-3" aria-hidden="true" tabindex="-1"></a>lamseq</span></code></pre></div>
+<pre><code> [1] 38347.30370 17799.24167  8261.67614  3834.73037  1779.92417   826.16761
+ [7]   383.47304   177.99242    82.61676    38.34730</code></pre>
+<p>And we can plot the results (<strong>regularization tree</strong>). If the estimation of the <strong>λmax</strong> penalty has been performed correctly, all horizontal lines in the plot should begin with <em>w=0</em>, since, as we said before, by definition, the <strong>λmax</strong> is the smallest value of lambda for which no parameters are selected.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="ExposomeHELIXanalysis.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="fu">t</span>(m2<span class="sc">$</span>ws), <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">main=</span><span class="st">&quot;solution Path&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;lambda&quot;</span>, </span>
+<span id="cb61-2"><a href="ExposomeHELIXanalysis.html#cb61-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">&quot;coefficients&quot;</span>)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/lassoanalysis_7-1.png" width="672" /></p>
+<p><em>Please, note that the values in the <strong>X</strong> axis refer to the appearance order of each lambda in the lambda sequence vector, i.e., Lam1=38347.3, Lam2=17799.24167, Lam3=8261.67614 and Lam4=3834.73037</em> … and so on.</p>
+</div>
+<div id="ExposomeHELIXanalysisFourc" class="section level3" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> <em>ds.Lasso_CVInSite()</em> function.</h3>
+<p>The <strong>dsMTL package</strong> also allows the selection of the <strong>optimal lambda</strong> by a <strong>k-fold cross-validation (CV) procedure</strong>. This is done with the function <em>ds.Lasso_CVInSite()</em>, which has practically the same arguments than previous functions, except for the <em>“nfolds”</em> argument, referring to the number of folds for the CV procedure.</p>
+<p>From the application of this function to our <strong>showcase</strong>, we identify the <strong>optimal lambda</strong> from the lambda sequence of 10 values with a 5-fold CV procedure:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="ExposomeHELIXanalysis.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimated execution time: approx. 90 mins</span></span>
+<span id="cb62-2"><a href="ExposomeHELIXanalysis.html#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="ExposomeHELIXanalysis.html#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Identification of the optimal lambda value by k-fold crossvalidation.</span></span>
+<span id="cb62-4"><a href="ExposomeHELIXanalysis.html#cb62-4" aria-hidden="true" tabindex="-1"></a>cvResult<span class="ot">=</span><span class="fu">ds.Lasso_CVInSite</span>(<span class="at">X=</span>X, <span class="at">Y=</span>Y, <span class="at">type=</span><span class="st">&quot;regress&quot;</span>, <span class="at">lambda=</span>lamseq, </span>
+<span id="cb62-5"><a href="ExposomeHELIXanalysis.html#cb62-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">opts=</span>opts, <span class="at">C=</span><span class="dv">0</span>, <span class="at">datasources=</span>conns, <span class="at">nDigits=</span><span class="dv">4</span>, </span>
+<span id="cb62-6"><a href="ExposomeHELIXanalysis.html#cb62-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">nfolds=</span><span class="dv">5</span>)</span>
+<span id="cb62-7"><a href="ExposomeHELIXanalysis.html#cb62-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-8"><a href="ExposomeHELIXanalysis.html#cb62-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot showing the averaged MSE obtained for lambda values over folds</span></span>
+<span id="cb62-9"><a href="ExposomeHELIXanalysis.html#cb62-9" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">melt</span>(cvResult<span class="sc">$</span>mse_fold))</span>
+<span id="cb62-10"><a href="ExposomeHELIXanalysis.html#cb62-10" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">10</span>,<span class="st">&quot;Paired&quot;</span>)</span>
+<span id="cb62-11"><a href="ExposomeHELIXanalysis.html#cb62-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dataset,<span class="fu">aes</span>(<span class="at">x=</span>Var1,<span class="at">y=</span>value,<span class="at">fill=</span>Var2))<span class="sc">+</span><span class="fu">geom_boxplot</span>()<span class="sc">+</span> </span>
+<span id="cb62-12"><a href="ExposomeHELIXanalysis.html#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>pal)<span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Averaged lambda over folds&quot;</span>,</span>
+<span id="cb62-13"><a href="ExposomeHELIXanalysis.html#cb62-13" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">y =</span> <span class="st">&quot;Mean squared error&quot;</span>)</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/lassoanalysis_9-1.png" width="672" /></p>
+<p>From this model, we could select the <strong>optimal lambda value</strong> directly from the <strong>output</strong> with the <em>“cvResult$lambda.min”</em> element, and then <strong>fit a new model</strong> with optimal hyperparameters.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="ExposomeHELIXanalysis.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimated execution time: approx. 1.84234 mins</span></span>
+<span id="cb63-2"><a href="ExposomeHELIXanalysis.html#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="ExposomeHELIXanalysis.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimal lambda from CV</span></span>
+<span id="cb63-4"><a href="ExposomeHELIXanalysis.html#cb63-4" aria-hidden="true" tabindex="-1"></a>cvResult<span class="sc">$</span>lambda.min</span></code></pre></div>
+<pre><code>[1] 38.3473</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="ExposomeHELIXanalysis.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Training a new model with selected hype-parameter</span></span>
+<span id="cb65-2"><a href="ExposomeHELIXanalysis.html#cb65-2" aria-hidden="true" tabindex="-1"></a>m4<span class="ot">=</span><span class="fu">ds.Lasso_Train</span>(<span class="at">X=</span>X, <span class="at">Y=</span>Y, <span class="at">type=</span><span class="st">&quot;regress&quot;</span>, <span class="at">lambda=</span>cvResult<span class="sc">$</span>lambda.min,</span>
+<span id="cb65-3"><a href="ExposomeHELIXanalysis.html#cb65-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">opts=</span>opts, <span class="at">C=</span><span class="dv">0</span>, <span class="at">datasources=</span>conns, <span class="at">nDigits=</span><span class="dv">4</span>)</span>
+<span id="cb65-4"><a href="ExposomeHELIXanalysis.html#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="ExposomeHELIXanalysis.html#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of selected variables</span></span>
+<span id="cb65-6"><a href="ExposomeHELIXanalysis.html#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(m4<span class="sc">$</span>ws,<span class="dv">2</span>,fun2)</span></code></pre></div>
+<pre><code>Lam=38.35 
+       23 </code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="ExposomeHELIXanalysis.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get names of selected variables</span></span>
+<span id="cb67-2"><a href="ExposomeHELIXanalysis.html#cb67-2" aria-hidden="true" tabindex="-1"></a>toplot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(m4<span class="sc">$</span>ws,<span class="fu">ds.colnames</span>(X)[[<span class="dv">1</span>]])</span>
+<span id="cb67-3"><a href="ExposomeHELIXanalysis.html#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(toplot) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Coefficient&quot;</span>,<span class="st">&quot;Index&quot;</span>)</span>
+<span id="cb67-4"><a href="ExposomeHELIXanalysis.html#cb67-4" aria-hidden="true" tabindex="-1"></a>sel_var_m4 <span class="ot">&lt;-</span> toplot[<span class="fu">which</span>(toplot<span class="sc">$</span>Coefficient <span class="sc">!=</span> <span class="dv">0</span>),<span class="dv">2</span>]</span>
+<span id="cb67-5"><a href="ExposomeHELIXanalysis.html#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fun1</span>(sel_var_m4)</span></code></pre></div>
+<pre><code> [1] &quot;Building_home&quot;         &quot;Connectivity&quot;          &quot;Cu&quot;                   
+ [4] &quot;DDE&quot;                   &quot;House crowding&quot;        &quot;Hum.(month)&quot;          
+ [7] &quot;K&quot;                     &quot;MECPP&quot;                 &quot;MEHHP&quot;                
+[10] &quot;MEP&quot;                   &quot;Mg&quot;                    &quot;MIBP&quot;                 
+[13] &quot;PA&quot;                    &quot;Na&quot;                    &quot;PM10&quot;                 
+[16] &quot;PM2.5&quot;                 &quot;Population&quot;            &quot;Sedentary&quot;            
+[19] &quot;Se&quot;                    &quot;T(month)&quot;              &quot;Trafficload - nearest&quot;
+[22] &quot;Traffic near&quot;          &quot;Zn&quot;                   </code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="ExposomeHELIXanalysis.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot estimated coefficients</span></span>
+<span id="cb69-2"><a href="ExposomeHELIXanalysis.html#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(toplot, <span class="fu">aes</span>(<span class="at">x=</span>Index, <span class="at">y=</span>Coefficient)) <span class="sc">+</span></span>
+<span id="cb69-3"><a href="ExposomeHELIXanalysis.html#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb69-4"><a href="ExposomeHELIXanalysis.html#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb69-5"><a href="ExposomeHELIXanalysis.html#cb69-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>), <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code></pre></div>
+<p><img src="OmicSHIELD_bookdown_files/figure-html/lassoanalysis_10-1.png" width="672" /></p>
+<p>If we compare the list of <strong>selected variables</strong> from our optimal <strong>Lasso model</strong> and the list of features selected by <strong>DSA</strong> in <span class="citation">(<a href="#ref-WAREMBOURG20191317" role="doc-biblioref">Warembourg et al. 2019</a>)</span>, we can see how there are <strong>several coincident factors</strong> (one with systolic blood pressure and two with diastolic blood pressure):</p>
+<ul>
+<li><em>Dichlorodiphenyldichloroethylene (DDE)</em>.</li>
+<li><em>Cupper (Cu)</em>.</li>
+<li><em>Temperature</em>.</li>
+</ul>
+<p>With this <strong>showcase</strong>, we thereby demonstrate that <strong>DataSHIELD</strong> and the available packages <strong>dsExposomeClient</strong> and <strong>dsMTLClient</strong> constitute a powerful infrastructure for performing secure and non-disclosive <strong>exposome data analysis</strong> in sensitive <strong>multi-centre research studies</strong>.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="ExposomeHELIXanalysis.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datashield.logout</span>(conns)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Cao2021.08.26.457778" class="csl-entry">
+Cao, Han, Youcheng Zhang, Jan Baumbach, Paul R Burton, Dominic Dwyer, Nikolaos Koutsouleris, Julian Matschinske, et al. 2021. <span>“dsMTL - a Computational Framework for Privacy-Preserving, Distributed Multi-Task Machine Learning.”</span> Edited by Emanuel Schwarz, Dag Alnæs, Ole A. Andreassen, Han Cao, Junfang Chen, Franziska Degenhardt, Daria Doncevic, et al. <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2021.08.26.457778">https://doi.org/10.1101/2021.08.26.457778</a>.
+</div>
+<div id="ref-WAREMBOURG20191317" class="csl-entry">
+Warembourg, Charline, Léa Maitre, Ibon Tamayo-Uria, Serena Fossati, Theano Roumeliotaki, Gunn Marit Aasvang, Sandra Andrusaityte, et al. 2019. <span>“Early-Life Environmental Exposures and Blood Pressure in Children.”</span> <em>Journal of the American College of Cardiology</em> 74 (10): 1317–28. https://doi.org/<a href="https://doi.org/10.1016/j.jacc.2019.06.069">https://doi.org/10.1016/j.jacc.2019.06.069</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="DatasetDescription.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="TranscriptHELIX.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["OmicSHIELD_bookdown.pdf", "OmicSHIELD_bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
